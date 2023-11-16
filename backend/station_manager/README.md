@@ -65,3 +65,10 @@ Run the docker image:
 ```shell
 make docker_run
 ```
+
+If you are interested in additional gradle features you can read it online or
+execute following command to list available tasks:
+
+```shell
+gradle tasks --all
+```
