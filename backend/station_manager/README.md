@@ -17,6 +17,7 @@ IntelliJ IDEA is an IDE of chosen.
 - Use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) to format your commit message
 - PR should be at max 300-400 lines (better less 200)
 - Always add description to your pull request
+- Use `squash and merge` to merge your PR to target branch
 - Notify other about the work being done
 
 ## Local development
