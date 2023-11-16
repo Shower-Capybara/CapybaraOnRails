@@ -4,6 +4,9 @@ STATION_MANAGER_CONTAINER_NAME ?= station_manager
 run:
 	env $$(cat .env) gradle app:run
 
+test:
+	env $$(cat .env) gradle app:test
+
 build:
 	docker build -t $(STATION_MANAGER_IMAGE_NAME) .
 
