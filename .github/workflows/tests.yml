@@ -27,5 +27,6 @@ jobs:
           java-version: "20"
 
       - name: "Run tests"
-        run: gradle -p station_manager app:test
+        run: |
+          gradle -p station_manager app:test
           gradle -p generator app:test
