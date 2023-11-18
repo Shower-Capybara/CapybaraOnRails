@@ -10,10 +10,6 @@ repos:
       - id: check-yaml
         args:
           - --allow-multiple-documents
-      - id: check-docstring-first
-      - id: fix-encoding-pragma
-        args:
-          - --remove
       - id: detect-aws-credentials
 
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
