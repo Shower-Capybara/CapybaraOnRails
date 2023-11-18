@@ -37,14 +37,14 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass.set("com.gradle.StationManager.Main")
+    mainClass.set("com.StationManager.app.Main")
 }
 
 tasks.withType<Jar>() {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     manifest {
-        attributes["Main-Class"] = "com.gradle.StationManager.Main"
+        attributes["Main-Class"] = "com.StationManager.app.Main"
     }
     configurations["compileClasspath"].forEach { file: File ->
         from(zipTree(file.absoluteFile))

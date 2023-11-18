@@ -1,4 +1,4 @@
-package com.gradle.StationManager;
+package com.StationManager.app;
 
 import io.javalin.Javalin;
 

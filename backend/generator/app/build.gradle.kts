@@ -35,14 +35,14 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass.set("com.gradle.Generator.Main")
+    mainClass.set("com.StationManager.generator.Main")
 }
 
 tasks.withType<Jar>() {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     manifest {
-        attributes["Main-Class"] = "com.gradle.Generator.Main"
+        attributes["Main-Class"] = "com.StationManager.generator.Main"
     }
     configurations["compileClasspath"].forEach { file: File ->
         from(zipTree(file.absoluteFile))

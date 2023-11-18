@@ -1,4 +1,4 @@
-package com.gradle.Generator;
+package com.StationManager.generator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
