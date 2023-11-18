@@ -2,8 +2,8 @@
 
 ## About
 
-This part of the project is the core of the whole system. 
-It's responsible for holding all the business logic, messages bus 
+This part of the project is the core of the whole system.
+It's responsible for holding all the business logic, messages bus
 and the REST API.
 
 Javalin is a web framework of chosen.<br />
@@ -23,8 +23,15 @@ IntelliJ IDEA is an IDE of chosen.
 ## Local development
 
 First clone the repo with a given command:
+
 ```shell
 git clone https://github.com/Shower-Capybara/CapybaraOnRails.git
+```
+
+Then install pre-commit hook with a given command:
+
+```shell
+pre-commit install
 ```
 
 Once finished, open the project in IntelliJ IDEA. For some reason, it's not
@@ -33,12 +40,13 @@ one of the projects and then on the right-hand side click `Gradle` -> `+` and at
 another project.
 
 Ask your teammates for environment variables values
-and populate `.env` file with appropriate values from 
+and populate `.env` file with appropriate values from
 [.env.local.template](.env.local.template).
 
 ## Useful commands
 
 Requirements:
+
 - `GNU make`
 - `Docker`
 - `docker-compose` (future)
