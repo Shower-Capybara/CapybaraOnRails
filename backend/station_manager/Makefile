@@ -8,6 +8,7 @@ test:
 	env $$(cat .env) gradle app:test
 
 build:
+	gradle app:build
 	docker build -t $(STATION_MANAGER_IMAGE_NAME) .
 
 docker_run:
