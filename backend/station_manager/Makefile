@@ -2,10 +2,10 @@ STATION_MANAGER_IMAGE_NAME ?= station_manager.core
 STATION_MANAGER_CONTAINER_NAME ?= station_manager
 
 run:
-	env $$(cat .env) gradle app:run
+	env $$(cat .env) ./gradlew app:run
 
 test:
-	env $$(cat .env) gradle app:test
+	env $$(cat .env) ./gradlew app:test
 
 build:
 	gradle app:build
