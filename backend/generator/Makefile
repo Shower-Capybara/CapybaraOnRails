@@ -2,10 +2,10 @@ GENERATOR_IMAGE_NAME ?= station_manager.generator
 GENERATOR_CONTAINER_NAME ?= generator
 
 run:
-	env $$(cat .env) gradle app:run
+	env $$(cat .env) ./gradlew app:run
 
 test:
-	env $$(cat .env) gradle app:test
+	env $$(cat .env) ./gradlew app:test
 
 build:
 	gradle app:build
