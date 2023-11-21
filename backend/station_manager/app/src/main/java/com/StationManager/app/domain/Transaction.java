@@ -1,4 +1,4 @@
-package transaction;
+package com.StationManager.app.domain;
 
 import client.Client;
 

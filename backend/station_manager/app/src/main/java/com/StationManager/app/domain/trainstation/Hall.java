@@ -1,6 +1,6 @@
-package trainstation;
+package com.StationManager.app.domain.trainstation;
 
-import client.Client;
+import com.StationManager.app.domain.client.Client;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package client;
+package com.StationManager.app.domain.client;
 
 import java.awt.*;
 

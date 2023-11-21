@@ -1,10 +1,8 @@
-package trainstation;
+package com.StationManager.app.domain.trainstation;
 
-import client.Client;
-
-import queue.Queue;
-
-import transaction.Transaction;
+import com.StationManager.app.domain.Queue;
+import com.StationManager.app.domain.Transaction;
+import com.StationManager.app.domain.client.Client;
 
 public class TicketOffice {
     private Position position;
@@ -12,6 +10,7 @@ public class TicketOffice {
     private Integer timeToServeTicket;
     private Boolean isClosed;
     private Boolean isReserved;
+    private Direction direction;
     private Iterable<Transaction> transactions;
 
     // public Iterable<IEvent> events;
@@ -30,5 +29,13 @@ public class TicketOffice {
 
     public Queue getQueue() {
         return this.queue;
+    }
+
+    public Direction getDirection() {
+        return this.direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 }

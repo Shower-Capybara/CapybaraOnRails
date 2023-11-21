@@ -1,4 +1,4 @@
-package trainstation;
+package com.StationManager.app.domain.trainstation;
 
 import java.awt.*;
 
