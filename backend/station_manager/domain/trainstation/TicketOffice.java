@@ -9,7 +9,7 @@ import transaction.Transaction;
 public class TicketOffice {
     private Position position;
     private Queue queue;
-    private Integer timeToServeClient;
+    private Integer timeToServeTicket;
     private Boolean isClosed;
     private Boolean isReserved;
     private Iterable<Transaction> transactions;
