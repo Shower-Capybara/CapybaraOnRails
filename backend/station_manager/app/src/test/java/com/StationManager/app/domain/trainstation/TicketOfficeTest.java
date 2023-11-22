@@ -14,8 +14,8 @@ import java.awt.*;
 class TicketOfficeTest {
 
     @Test
-    @DisplayName("Test remove client from")
-    void removeClient() {
+    @DisplayName("Removing client from queue when there are clients")
+    void testTicketOfficeRemovesClientFromQueue() {
         Position ticketOfficePosition = new Position(new Point(0, 1), new Point(2, 0));
         TicketOffice ticketOffice = new TicketOffice(ticketOfficePosition, Direction.Down);
         Client client1 =

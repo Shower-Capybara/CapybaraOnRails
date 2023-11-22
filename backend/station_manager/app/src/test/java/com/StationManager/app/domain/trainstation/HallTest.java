@@ -15,7 +15,7 @@ class HallTest {
 
     @Test
     @DisplayName("Adding TicketOffice when Position is Free should update the list")
-    void addTicketOfficeCorrect() {
+    void testAddTicketOfficeToHall() {
         ArrayList<Position> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
@@ -40,7 +40,7 @@ class HallTest {
 
     @Test
     @DisplayName("Adding TicketOffice when Position is taken. Should throw exception")
-    void addTicketOfficeException() {
+    void testAddTicketOfficeToHallFailsWhenAddingOnTakenPosition() {
         ArrayList<Position> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
@@ -61,7 +61,7 @@ class HallTest {
 
     @Test
     @DisplayName("Adding client to single ticket office in up")
-    void addClientToSingleTicketOfficeUp() {
+    void testAddClientToSingleUpTicketOffice() {
         ArrayList<Position> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
@@ -88,7 +88,7 @@ class HallTest {
 
     @Test
     @DisplayName("Adding client to single ticket office in down")
-    void addClientToSingleTicketOfficeDown() {
+    void testAddClientToSingleDownTicketOffice() {
         ArrayList<Position> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
@@ -115,7 +115,7 @@ class HallTest {
 
     @Test
     @DisplayName("Adding client to single ticket office in left")
-    void addClientToSingleTicketOfficeLeft() {
+    void testAddClientToSingleLeftTicketOffice() {
         ArrayList<Position> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
@@ -142,7 +142,7 @@ class HallTest {
 
     @Test
     @DisplayName("Adding client to single ticket office in right")
-    void addClientToSingleTicketOfficerRight() {
+    void testAddClientToSingleRightTicketOffice() {
         ArrayList<Position> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
@@ -171,7 +171,7 @@ class HallTest {
     @DisplayName(
             "Adding clients to multiple ticket offices. Should be added to the closest with the"
                     + " least number of clients")
-    void addClientMultipleTicketsOffices() {
+    void testAddClientsToMultipleTicketsOffices() {
         ArrayList<Position> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
