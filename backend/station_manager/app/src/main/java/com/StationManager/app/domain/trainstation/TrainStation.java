@@ -6,11 +6,11 @@ public class TrainStation {
 
     // public Queue<IEvent> events;
 
-    public void SetHall(Hall hall) {
+    public void setHall(Hall hall) {
         this.hall = hall;
     }
 
-    public Hall GetHall() {
+    public Hall getHall() {
         return this.hall;
     }
 }

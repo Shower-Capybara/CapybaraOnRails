@@ -23,16 +23,16 @@ public class MapManager {
     }
 
     // Assigning client to the closest suitable ticket office
-    public void AssignClientToClosestTicketOffice(
+    public void assignClientToClosestTicketOffice(
             Client client, ArrayList<TicketOffice> ticketOffices) {
         if (ticketOffices.size() == 1) {
-            client.setPosition(CalculatePositionForNewClient(ticketOffices.get(0)));
-            ticketOffices.get(0).AddClient(client);
+            client.setPosition(calculatePositionForNewClient(ticketOffices.get(0)));
+            ticketOffices.get(0).addClient(client);
         } else {
             Map<TicketOffice, Point> points = new HashMap<>();
 
             for (TicketOffice t : ticketOffices) {
-                points.put(t, CalculatePositionForNewClient(t));
+                points.put(t, calculatePositionForNewClient(t));
             }
 
             TicketOffice closestTicketOffice = null;
@@ -49,16 +49,16 @@ public class MapManager {
                 }
             }
 
-            client.setPosition(CalculatePositionForNewClient(closestTicketOffice));
-            closestTicketOffice.AddClient(client);
+            client.setPosition(calculatePositionForNewClient(closestTicketOffice));
+            closestTicketOffice.addClient(client);
         }
     }
 
     // Calculation of Point (Position) for new client
-    public Point CalculatePositionForNewClient(TicketOffice ticketOffice) {
+    public Point calculatePositionForNewClient(TicketOffice ticketOffice) {
         Point calculatedPoint = null;
 
-        if (ticketOffice.getQueue().IsEmpty()) {
+        if (ticketOffice.getQueue().isEmpty()) {
             // Calculation of first client's position in queue
 
             // TicketBox Is In Top
@@ -89,13 +89,13 @@ public class MapManager {
                 calculatedPoint = new Point(midX + 1, midY);
             }
 
-            if (PositionIsFree(new Position(calculatedPoint, calculatedPoint))) {
+            if (positionIsFree(new Position(calculatedPoint, calculatedPoint))) {
                 return calculatedPoint;
             }
         } else {
             // Calculation of further clients' positions in queue
 
-            Point lastClientPoint = ticketOffice.getQueue().GetLastClientPoint();
+            Point lastClientPoint = ticketOffice.getQueue().getLastClientPoint();
             // TicketBox Is In Top
             if (ticketOffice.getDirection() == Direction.Up) {
                 int newX = lastClientPoint.x;
@@ -123,7 +123,7 @@ public class MapManager {
                 calculatedPoint = new Point(newX, newY);
             }
 
-            if (PositionIsFree(new Position(calculatedPoint, calculatedPoint))) {
+            if (positionIsFree(new Position(calculatedPoint, calculatedPoint))) {
                 return calculatedPoint;
             }
         }
@@ -132,7 +132,7 @@ public class MapManager {
     }
 
     // Check if position is free
-    public Boolean PositionIsFree(Position position) {
+    public Boolean positionIsFree(Position position) {
         // Check if position is not out of bounds
         if (position.getStart().x < size.getStart().x
                 || position.getStart().y > size.getStart().y
@@ -142,12 +142,12 @@ public class MapManager {
         }
 
         // Check if position is free
-        if (entrances.stream().anyMatch(pos -> PosiotionsOverlap(pos, position))) {
+        if (entrances.stream().anyMatch(pos -> posiotionsOverlap(pos, position))) {
             return false;
         }
         if (ticketOffices.stream()
                 .anyMatch(
-                        ticketOffice -> PosiotionsOverlap(ticketOffice.getPosition(), position))) {
+                        ticketOffice -> posiotionsOverlap(ticketOffice.getPosition(), position))) {
             return false;
         }
         if (ticketOffices.stream()
@@ -156,7 +156,7 @@ public class MapManager {
                                 ticketOffice.getQueue().getClients().stream()
                                         .anyMatch(
                                                 client ->
-                                                        PositionContainsPoint(
+                                                        positionContainsPoint(
                                                                 position, client.getPosition())))) {
             return false;
         }
@@ -164,7 +164,7 @@ public class MapManager {
     }
 
     // Check if position contains point
-    public static Boolean PositionContainsPoint(Position position, Point point) {
+    public static Boolean positionContainsPoint(Position position, Point point) {
         int pointX = point.x;
         int pointY = point.y;
 
@@ -177,7 +177,7 @@ public class MapManager {
     }
 
     // Check if two postiotions overlap each other
-    public static Boolean PosiotionsOverlap(Position position1, Position position2) {
+    public static Boolean posiotionsOverlap(Position position1, Position position2) {
         ArrayList<Point> points1 = new ArrayList<>();
         ArrayList<Point> points2 = new ArrayList<>();
 

@@ -21,18 +21,18 @@ public class Hall {
         mapManager = new MapManager(size, this.ticketOffices, this.entrances);
     }
 
-    public void AddTicketOffice(TicketOffice ticketOffice) {
-        if (mapManager.PositionIsFree(ticketOffice.getPosition())) {
+    public void addTicketOffice(TicketOffice ticketOffice) {
+        if (mapManager.positionIsFree(ticketOffice.getPosition())) {
             ticketOffices.add(ticketOffice);
         } else {
             throw new IllegalStateException("Position is taken");
         }
     }
 
-    public void AddClient(Client client) {
+    public void addClient(Client client) {
         ArrayList<TicketOffice> WorkingTicketOffices =
                 ticketOffices.stream()
-                        .filter(ticketOffice -> !ticketOffice.GetClosed())
+                        .filter(ticketOffice -> !ticketOffice.getClosed())
                         .collect(Collectors.toCollection(ArrayList::new));
 
         int size = getSizeOfSmallestQueue(WorkingTicketOffices);
@@ -42,7 +42,7 @@ public class Hall {
                         .filter(ticketOffice -> ticketOffice.getQueue().getClients().size() == size)
                         .collect(Collectors.toCollection(ArrayList::new));
 
-        mapManager.AssignClientToClosestTicketOffice(client, smallestTicketOffices);
+        mapManager.assignClientToClosestTicketOffice(client, smallestTicketOffices);
     }
 
     private static int getSizeOfSmallestQueue(ArrayList<TicketOffice> WorkingTicketOffices) {
@@ -61,7 +61,7 @@ public class Hall {
         return lowestSizeTicketOffice.getQueue().getClients().size();
     }
 
-    public Boolean IsCellFree(Position position) {
-        return mapManager.PositionIsFree(position);
+    public Boolean isCellFree(Position position) {
+        return mapManager.positionIsFree(position);
     }
 }

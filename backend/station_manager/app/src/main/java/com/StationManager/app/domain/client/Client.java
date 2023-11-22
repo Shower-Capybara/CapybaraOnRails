@@ -1,6 +1,7 @@
 package com.StationManager.app.domain.client;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class Client {
     private Integer id;
@@ -73,5 +74,22 @@ public class Client {
 
     public void setPosition(Point position) {
         this.position = position;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Client client)) return false;
+        return Objects.equals(id, client.id)
+                && Objects.equals(firstName, client.firstName)
+                && Objects.equals(lastName, client.lastName)
+                && Objects.equals(ticketsToBuy, client.ticketsToBuy)
+                && Objects.equals(privilegy, client.privilegy)
+                && Objects.equals(position, client.position);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, ticketsToBuy, privilegy, position);
     }
 }

@@ -23,17 +23,17 @@ public class TicketOffice {
         this.direction = direction;
     }
 
-    public void ServeClient() {
+    public void serveClient() {
         throw new UnsupportedOperationException("This method is not yet implemented");
     }
 
     // public Iterable<IEvent> RemoveClient(){
-    public void RemoveClient() {
-        if (queue.IsEmpty()) {
+    public void removeClient() {
+        if (queue.isEmpty()) {
             throw new IllegalStateException(
                     "Client queue is empty: There are no clients to delete");
         }
-        Client removedClient = queue.Pop();
+        Client removedClient = queue.pop();
         Point previousClientPosition = removedClient.getPosition();
         for (Client client : queue.getClients()) {
             Point currentClientPosition = client.getPosition();
@@ -42,8 +42,8 @@ public class TicketOffice {
         }
     }
 
-    public void AddClient(Client client) {
-        this.queue.Add(client);
+    public void addClient(Client client) {
+        this.queue.add(client);
     }
 
     public Queue getQueue() {
@@ -62,15 +62,15 @@ public class TicketOffice {
         return this.position;
     }
 
-    public void SetPosition(Position position) {
+    public void setPosition(Position position) {
         this.position = position;
     }
 
-    public void SetClosed(Boolean bool) {
+    public void setClosed(Boolean bool) {
         this.isClosed = bool;
     }
 
-    public Boolean GetClosed() {
+    public Boolean getClosed() {
         return this.isClosed;
     }
 }

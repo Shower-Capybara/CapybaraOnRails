@@ -1,5 +1,7 @@
 package com.StationManager.app.domain.client;
 
+import java.util.Objects;
+
 public class Privilegy {
     private String type;
     private Integer priority;
@@ -23,5 +25,18 @@ public class Privilegy {
 
     public void setPriority(Integer priority) {
         this.priority = priority;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Privilegy privilegy = (Privilegy) o;
+        return Objects.equals(type, privilegy.type) && Objects.equals(priority, privilegy.priority);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, priority);
     }
 }

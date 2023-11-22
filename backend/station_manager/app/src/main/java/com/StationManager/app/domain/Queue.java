@@ -12,11 +12,11 @@ public class Queue {
         this.clients = new LinkedList<>();
     }
 
-    public void Add(Client client) {
+    public void add(Client client) {
         clients.add(client);
     }
 
-    public Client Pop() {
+    public Client pop() {
         if (clients.isEmpty()) {
             throw new IllegalStateException("Queue is empty, cannot pop");
         }
@@ -31,11 +31,11 @@ public class Queue {
         return this.clients;
     }
 
-    public Boolean IsEmpty() {
+    public Boolean isEmpty() {
         return clients.isEmpty();
     }
 
-    public Point GetLastClientPoint() {
+    public Point getLastClientPoint() {
         return clients.get(clients.size() - 1).getPosition();
     }
 }
