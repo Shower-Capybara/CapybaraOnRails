@@ -77,14 +77,25 @@ class HallTest {
         ticketOffice1.setClosed(false);
 
         Client client1 =
-                new Client(2, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(3, 4));
+                new Client(
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(3, 4));
 
         hall.addClient(client1);
 
         assertEquals(
                 ticketOffice1.getQueue().getClients().get(0),
                 new Client(
-                        2, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(11, 8)));
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(11, 8)));
     }
 
     @Test
@@ -104,14 +115,25 @@ class HallTest {
         ticketOffice1.setClosed(false);
 
         Client client1 =
-                new Client(2, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(3, 4));
+                new Client(
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(3, 4));
 
         hall.addClient(client1);
 
         assertEquals(
                 ticketOffice1.getQueue().getClients().get(0),
                 new Client(
-                        2, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(11, 11)));
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(11, 11)));
     }
 
     @Test
@@ -131,14 +153,25 @@ class HallTest {
         ticketOffice1.setClosed(false);
 
         Client client1 =
-                new Client(2, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(3, 4));
+                new Client(
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(3, 4));
 
         hall.addClient(client1);
 
         assertEquals(
                 ticketOffice1.getQueue().getClients().get(0),
                 new Client(
-                        2, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(12, 9)));
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(12, 9)));
     }
 
     @Test
@@ -158,14 +191,25 @@ class HallTest {
         ticketOffice1.setClosed(false);
 
         Client client1 =
-                new Client(2, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(3, 4));
+                new Client(
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(3, 4));
 
         hall.addClient(client1);
 
         assertEquals(
                 ticketOffice1.getQueue().getClients().get(0),
                 new Client(
-                        2, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(9, 9)));
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(9, 9)));
     }
 
     @Test
@@ -198,47 +242,99 @@ class HallTest {
 
         Client clientRight1 =
                 new Client(
-                        1, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(18, 7));
+                        1,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(18, 7));
         Client clientRight2 =
                 new Client(
-                        2, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(19, 12));
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(19, 12));
         Client clientUp1 =
                 new Client(
-                        3, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(9, 17));
+                        3,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(9, 17));
         Client clientDown1 =
-                new Client(4, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(7, 1));
+                new Client(
+                        4,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(7, 1));
         Client clientDown2 =
-                new Client(5, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(0, 0));
+                new Client(
+                        5,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(0, 0));
 
         hall.addClient(clientRight1);
         assertEquals(
                 ticketOffice3.getQueue().getClients().get(0),
                 new Client(
-                        1, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(18, 9)));
+                        1,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(18, 9)));
 
         hall.addClient(clientUp1);
         assertEquals(
                 ticketOffice2.getQueue().getClients().get(0),
                 new Client(
-                        3, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(10, 18)));
+                        3,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(10, 18)));
 
         hall.addClient(clientDown1);
         assertEquals(
                 ticketOffice1.getQueue().getClients().get(0),
                 new Client(
-                        4, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(10, 2)));
+                        4,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(10, 2)));
 
         hall.addClient(clientRight2);
         assertEquals(
                 ticketOffice3.getQueue().getClients().get(1),
                 new Client(
-                        2, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(17, 9)));
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(17, 9)));
 
         hall.addClient(clientDown2);
         assertEquals(
                 ticketOffice1.getQueue().getClients().get(1),
                 new Client(
-                        5, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(10, 3)));
+                        5,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(10, 3)));
     }
 
     @Test
@@ -260,11 +356,29 @@ class HallTest {
         ticketOffice.setClosed(false);
 
         Client client1 =
-                new Client(1, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(3, 4));
+                new Client(
+                        1,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(3, 4));
         Client client2 =
-                new Client(2, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(4, 4));
+                new Client(
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(4, 4));
         Client client3 =
-                new Client(3, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(5, 7));
+                new Client(
+                        3,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(5, 7));
 
         hall.addClient(client1);
         hall.addClient(client2);
@@ -275,10 +389,20 @@ class HallTest {
         LinkedList<Client> expectedClientsQueue = new LinkedList<Client>();
         expectedClientsQueue.add(
                 new Client(
-                        2, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(11, 8)));
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(11, 8)));
         expectedClientsQueue.add(
                 new Client(
-                        3, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(11, 7)));
+                        3,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(11, 7)));
         assertIterableEquals(
                 hall.getTicketOffices().get(0).getQueue().getClients(), expectedClientsQueue);
 
@@ -286,8 +410,13 @@ class HallTest {
         expectedClientsQueue = new LinkedList<Client>();
         expectedClientsQueue.add(
                 new Client(
-                        3, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(11, 8)));
+                        3,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(11, 8)));
         assertIterableEquals(
-                hall.getTicketOffices().get(0).getQueue().getClients(), expectedClientsQueue);
+                expectedClientsQueue, hall.getTicketOffices().get(0).getQueue().getClients());
     }
 }

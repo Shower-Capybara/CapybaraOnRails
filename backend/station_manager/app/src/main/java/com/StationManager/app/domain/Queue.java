@@ -12,6 +12,10 @@ public class Queue {
         this.clients = new LinkedList<>();
     }
 
+    public void add(int index, Client client) {
+        clients.add(index, client);
+    }
+
     public void add(Client client) {
         clients.add(client);
     }
