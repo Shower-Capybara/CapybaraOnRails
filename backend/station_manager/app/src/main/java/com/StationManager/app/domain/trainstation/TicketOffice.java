@@ -4,6 +4,8 @@ import com.StationManager.app.domain.Queue;
 import com.StationManager.app.domain.Transaction;
 import com.StationManager.app.domain.client.Client;
 
+import java.awt.Point;
+
 public class TicketOffice {
     private Position position;
     private Queue queue;
@@ -21,13 +23,24 @@ public class TicketOffice {
         this.direction = direction;
     }
 
-    public void ServeClient(Client client) {
+    public void ServeClient() {
         throw new UnsupportedOperationException("This method is not yet implemented");
     }
 
-    //    public Iterable<IEvent> RemoveClient(){
-    //
-    //    }
+    // public Iterable<IEvent> RemoveClient(){
+    public void RemoveClient() {
+        if (queue.IsEmpty()) {
+            throw new IllegalStateException(
+                    "Client queue is empty: There are no clients to delete");
+        }
+        Client removedClient = queue.Pop();
+        Point previousClientPosition = removedClient.getPosition();
+        for (Client client : queue.getClients()) {
+            Point currentClientPosition = client.getPosition();
+            client.setPosition(previousClientPosition);
+            previousClientPosition = currentClientPosition;
+        }
+    }
 
     public void AddClient(Client client) {
         this.queue.Add(client);

@@ -3,13 +3,13 @@ package com.StationManager.app.domain;
 import com.StationManager.app.domain.client.Client;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Queue {
-    private ArrayList<Client> clients;
+    private LinkedList<Client> clients;
 
     public Queue() {
-        this.clients = new ArrayList<>();
+        this.clients = new LinkedList<>();
     }
 
     public void Add(Client client) {
@@ -27,7 +27,7 @@ public class Queue {
         return removedClient;
     }
 
-    public ArrayList<Client> getClients() {
+    public LinkedList<Client> getClients() {
         return this.clients;
     }
 
