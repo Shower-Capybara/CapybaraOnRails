@@ -1,6 +1,6 @@
 package com.StationManager.app.domain;
 
-import client.Client;
+import com.StationManager.app.domain.client.Client;
 
 import java.time.LocalDateTime;
 

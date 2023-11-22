@@ -15,6 +15,12 @@ public class TicketOffice {
 
     // public Iterable<IEvent> events;
 
+    public TicketOffice(Position position, Direction direction) {
+        this.position = position;
+        this.queue = new Queue();
+        this.direction = direction;
+    }
+
     public void ServeClient(Client client) {
         throw new UnsupportedOperationException("This method is not yet implemented");
     }
@@ -37,5 +43,21 @@ public class TicketOffice {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public Position getPosition() {
+        return this.position;
+    }
+
+    public void SetPosition(Position position) {
+        this.position = position;
+    }
+
+    public void SetClosed(Boolean bool) {
+        this.isClosed = bool;
+    }
+
+    public Boolean GetClosed() {
+        return this.isClosed;
     }
 }

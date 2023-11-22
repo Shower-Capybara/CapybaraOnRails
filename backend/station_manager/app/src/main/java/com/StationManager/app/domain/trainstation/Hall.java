@@ -1,37 +1,67 @@
 package com.StationManager.app.domain.trainstation;
 
+import com.StationManager.app.domain.MapManager;
 import com.StationManager.app.domain.client.Client;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class Hall {
     private ArrayList<Position> entrances;
     private ArrayList<TicketOffice> ticketOffices;
     private Position size;
+    private MapManager mapManager;
 
     // public Iterable<IEvent> events;
 
+    Hall(Position size, ArrayList<Position> entrances, ArrayList<TicketOffice> ticketOffices) {
+        this.size = size;
+        this.ticketOffices = ticketOffices;
+        this.entrances = entrances;
+        mapManager = new MapManager(size, this.ticketOffices, this.entrances);
+    }
+
     public void AddTicketOffice(TicketOffice ticketOffice) {
-        ticketOffices.add(ticketOffice);
+        if (mapManager.PositionIsFree(ticketOffice.getPosition())) {
+            ticketOffices.add(ticketOffice);
+        } else {
+            throw new IllegalStateException("Position is taken");
+        }
     }
 
     public void AddClient(Client client) {
-        if (ticketOffices.isEmpty()) {
+        ArrayList<TicketOffice> WorkingTicketOffices =
+                ticketOffices.stream()
+                        .filter(ticketOffice -> !ticketOffice.GetClosed())
+                        .collect(Collectors.toCollection(ArrayList::new));
+
+        int size = getSizeOfSmallestQueue(WorkingTicketOffices);
+
+        ArrayList<TicketOffice> smallestTicketOffices =
+                WorkingTicketOffices.stream()
+                        .filter(ticketOffice -> ticketOffice.getQueue().getClients().size() == size)
+                        .collect(Collectors.toCollection(ArrayList::new));
+
+        mapManager.AssignClientToClosestTicketOffice(client, smallestTicketOffices);
+    }
+
+    private static int getSizeOfSmallestQueue(ArrayList<TicketOffice> WorkingTicketOffices) {
+        if (WorkingTicketOffices.isEmpty()) {
             throw new IllegalStateException("No ticket offices available");
         }
 
-        TicketOffice lowestSizeTicketOffice = ticketOffices.get(0);
-        for (TicketOffice ticketOffice : ticketOffices) {
+        TicketOffice lowestSizeTicketOffice = WorkingTicketOffices.get(0);
+        for (TicketOffice ticketOffice : WorkingTicketOffices) {
             if (ticketOffice.getQueue().getClients().size()
                     < lowestSizeTicketOffice.getQueue().getClients().size()) {
                 lowestSizeTicketOffice = ticketOffice;
             }
         }
 
-        lowestSizeTicketOffice.AddClient(client);
+        return lowestSizeTicketOffice.getQueue().getClients().size();
     }
 
     public Boolean IsCellFree(Position position) {
-        throw new UnsupportedOperationException("This method is not yet implemented");
+        return mapManager.PositionIsFree(position);
     }
 }
