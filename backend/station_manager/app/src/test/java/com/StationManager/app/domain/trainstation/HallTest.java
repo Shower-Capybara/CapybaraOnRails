@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 class HallTest {
 
@@ -238,5 +239,55 @@ class HallTest {
                 ticketOffice1.getQueue().getClients().get(1),
                 new Client(
                         5, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(10, 3)));
+    }
+
+    @Test
+    @DisplayName(
+            "Adding clients to multiple ticket offices. Should be added to the closest with the"
+                    + " least number of clients")
+    void testRemoveClientFromTicketOfficeQueue() {
+        ArrayList<Position> entrances = new ArrayList<>();
+        ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
+
+        Hall hall =
+                new Hall(
+                        new Position(new Point(0, 20), new Point(20, 0)), entrances, ticketOffices);
+
+        Position ticketOfficePosition = new Position(new Point(10, 10), new Point(12, 9));
+        TicketOffice ticketOffice = new TicketOffice(ticketOfficePosition, Direction.Up);
+
+        hall.addTicketOffice(ticketOffice);
+        ticketOffice.setClosed(false);
+
+        Client client1 =
+                new Client(1, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(3, 4));
+        Client client2 =
+                new Client(2, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(4, 4));
+        Client client3 =
+                new Client(3, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(5, 7));
+
+        hall.addClient(client1);
+        hall.addClient(client2);
+        hall.addClient(client3);
+
+        hall.getTicketOffices().get(0).removeClient();
+
+        LinkedList<Client> expectedClientsQueue = new LinkedList<Client>();
+        expectedClientsQueue.add(
+                new Client(
+                        2, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(11, 8)));
+        expectedClientsQueue.add(
+                new Client(
+                        3, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(11, 7)));
+        assertIterableEquals(
+                hall.getTicketOffices().get(0).getQueue().getClients(), expectedClientsQueue);
+
+        hall.getTicketOffices().get(0).removeClient();
+        expectedClientsQueue = new LinkedList<Client>();
+        expectedClientsQueue.add(
+                new Client(
+                        3, "Fname", "Sname", (short) 2, new Privilegy("12", 1), new Point(11, 8)));
+        assertIterableEquals(
+                hall.getTicketOffices().get(0).getQueue().getClients(), expectedClientsQueue);
     }
 }

@@ -34,4 +34,12 @@ class TicketOfficeTest {
 
         assertIterableEquals(expectedResult.getClients(), ticketOffice.getQueue().getClients());
     }
+
+    @Test
+    @DisplayName("Removing client from queue when there are no clients. Should throw exception")
+    void testTicketOfficeRemovesClientFromQueueFailsOnEmptyQueue() {
+        Position ticketOfficePosition = new Position(new Point(0, 1), new Point(2, 0));
+        TicketOffice ticketOffice = new TicketOffice(ticketOfficePosition, Direction.Down);
+        assertThrows(IllegalStateException.class, ticketOffice::removeClient);
+    }
 }
