@@ -18,7 +18,7 @@ public class Hall {
         this.size = size;
         this.ticketOffices = ticketOffices;
         this.entrances = entrances;
-        mapManager = new MapManager(size, this.ticketOffices, this.entrances);
+        mapManager = new MapManager(size, this);
     }
 
     public void addTicketOffice(TicketOffice ticketOffice) {
@@ -63,5 +63,13 @@ public class Hall {
 
     public Boolean isCellFree(Position position) {
         return mapManager.positionIsFree(position);
+    }
+
+    public ArrayList<Position> getEntrances() {
+        return entrances;
+    }
+
+    public ArrayList<TicketOffice> getTicketOffices() {
+        return ticketOffices;
     }
 }

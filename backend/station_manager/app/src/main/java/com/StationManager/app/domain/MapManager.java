@@ -2,6 +2,7 @@ package com.StationManager.app.domain;
 
 import com.StationManager.app.domain.client.Client;
 import com.StationManager.app.domain.trainstation.Direction;
+import com.StationManager.app.domain.trainstation.Hall;
 import com.StationManager.app.domain.trainstation.Position;
 import com.StationManager.app.domain.trainstation.TicketOffice;
 
@@ -12,14 +13,11 @@ import java.util.Map;
 
 public class MapManager {
     private Position size;
-    private ArrayList<Position> entrances;
-    private ArrayList<TicketOffice> ticketOffices;
+    private Hall hall;
 
-    public MapManager(
-            Position size, ArrayList<TicketOffice> ticketOffices, ArrayList<Position> entrances) {
+    public MapManager(Position size, Hall hall) {
         this.size = size;
-        this.ticketOffices = ticketOffices;
-        this.entrances = entrances;
+        this.hall = hall;
     }
 
     // Assigning client to the closest suitable ticket office
@@ -141,6 +139,9 @@ public class MapManager {
             return false;
         }
 
+        var entrances = hall.getEntrances();
+        var ticketOffices = hall.getTicketOffices();
+
         // Check if position is free
         if (entrances.stream().anyMatch(pos -> posiotionsOverlap(pos, position))) {
             return false;
@@ -182,13 +183,13 @@ public class MapManager {
         ArrayList<Point> points2 = new ArrayList<>();
 
         for (int x = position1.getStart().x; x <= position1.getEnd().x; x++) {
-            for (int y = position1.getStart().y; y <= position1.getEnd().y; y++) {
+            for (int y = position1.getEnd().y; y <= position1.getStart().y; y++) {
                 points1.add(new Point(x, y));
             }
         }
 
         for (int x = position2.getStart().x; x <= position2.getEnd().x; x++) {
-            for (int y = position2.getStart().y; y <= position2.getEnd().y; y++) {
+            for (int y = position2.getEnd().y; y <= position2.getStart().y; y++) {
                 points2.add(new Point(x, y));
             }
         }
