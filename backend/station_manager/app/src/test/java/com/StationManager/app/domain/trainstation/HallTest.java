@@ -419,4 +419,280 @@ class HallTest {
         assertIterableEquals(
                 expectedClientsQueue, hall.getTicketOffices().get(0).getQueue().getClients());
     }
+
+    @Test
+    @DisplayName("Adding privileged client to single ticket office in up")
+    void testAddPrivilegedClientToSingleUpTicketOffice() {
+        ArrayList<Position> entrances = new ArrayList<>();
+        ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
+
+        Hall hall =
+                new Hall(
+                        new Position(new Point(0, 20), new Point(20, 0)), entrances, ticketOffices);
+
+        Position ticketOfficePosition1 = new Position(new Point(10, 10), new Point(12, 9));
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up);
+
+        hall.addTicketOffice(ticketOffice1);
+        ticketOffice1.setClosed(false);
+
+        Client client1 =
+                new Client(
+                        1,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(3, 4));
+        Client client2 =
+                new Client(
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(3, 5));
+        Client client3 =
+                new Client(
+                        3,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("withChild", 1, 1),
+                        new Point(3, 6));
+
+        hall.addClient(client1);
+        hall.addClient(client2);
+        hall.addClient(client3);
+
+        var expectedClientsQueue = new LinkedList<Client>();
+        expectedClientsQueue.add(
+                new Client(
+                        1,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(11, 8)));
+        expectedClientsQueue.add(
+                new Client(
+                        3,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("withChild", 1, 1),
+                        new Point(11, 7)));
+        expectedClientsQueue.add(
+                new Client(
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(11, 6)));
+
+        assertIterableEquals(
+                expectedClientsQueue, hall.getTicketOffices().get(0).getQueue().getClients());
+    }
+
+    @Test
+    @DisplayName("Adding privileged clients to single ticket office in up")
+    void testAddPrivilegedClientsToSingleUpTicketOffice() {
+        ArrayList<Position> entrances = new ArrayList<>();
+        ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
+
+        Hall hall =
+                new Hall(
+                        new Position(new Point(0, 20), new Point(20, 0)), entrances, ticketOffices);
+
+        Position ticketOfficePosition1 = new Position(new Point(10, 10), new Point(12, 9));
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up);
+
+        hall.addTicketOffice(ticketOffice1);
+        ticketOffice1.setClosed(false);
+
+        Client client1 =
+                new Client(
+                        1,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(3, 4));
+        Client client2 =
+                new Client(
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(3, 5));
+        Client client3 =
+                new Client(
+                        3,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("withChild", 1, 1),
+                        new Point(3, 6));
+        Client client4 =
+                new Client(
+                        4,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("disabled", 1, 2),
+                        new Point(3, 7));
+
+        hall.addClient(client1);
+        hall.addClient(client2);
+        hall.addClient(client3);
+        hall.addClient(client4);
+
+        var expectedClientsQueue = new LinkedList<Client>();
+        expectedClientsQueue.add(
+                new Client(
+                        1,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(11, 8)));
+        expectedClientsQueue.add(
+                new Client(
+                        4,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("disabled", 1, 2),
+                        new Point(11, 7)));
+        expectedClientsQueue.add(
+                new Client(
+                        3,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("withChild", 1, 1),
+                        new Point(11, 6)));
+        expectedClientsQueue.add(
+                new Client(
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(11, 5)));
+        assertIterableEquals(
+                expectedClientsQueue, hall.getTicketOffices().get(0).getQueue().getClients());
+    }
+
+    @Test
+    @DisplayName(
+            "Adding privileged clients with the same privilege type but different significance to"
+                    + " single ticket office in up")
+    void testAddPrivilegedClientsWithDifferentSignificanceToSingleUpTicketOffice() {
+        ArrayList<Position> entrances = new ArrayList<>();
+        ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
+
+        Hall hall =
+                new Hall(
+                        new Position(new Point(0, 20), new Point(20, 0)), entrances, ticketOffices);
+
+        Position ticketOfficePosition1 = new Position(new Point(10, 10), new Point(12, 9));
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up);
+
+        hall.addTicketOffice(ticketOffice1);
+        ticketOffice1.setClosed(false);
+
+        Client client1 =
+                new Client(
+                        1,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(3, 4));
+        Client client2 =
+                new Client(
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(3, 5));
+        Client client3 =
+                new Client(
+                        3,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("withChild", 2, 1),
+                        new Point(3, 6));
+        Client client4 =
+                new Client(
+                        4,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("disabled", 1, 2),
+                        new Point(3, 7));
+        Client client5 =
+                new Client(
+                        5,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("withChild", 1, 1),
+                        new Point(3, 8));
+
+        hall.addClient(client1);
+        hall.addClient(client2);
+        hall.addClient(client3);
+        hall.addClient(client4);
+        hall.addClient(client5);
+
+        var expectedClientsQueue = new LinkedList<Client>();
+        expectedClientsQueue.add(
+                new Client(
+                        1,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(11, 8)));
+        expectedClientsQueue.add(
+                new Client(
+                        4,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("disabled", 1, 2),
+                        new Point(11, 7)));
+        expectedClientsQueue.add(
+                new Client(
+                        5,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("withChild", 1, 1),
+                        new Point(11, 6)));
+        expectedClientsQueue.add(
+                new Client(
+                        3,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("withChild", 2, 1),
+                        new Point(11, 5)));
+        expectedClientsQueue.add(
+                new Client(
+                        2,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("ordinary", 1, 0),
+                        new Point(11, 4)));
+        assertIterableEquals(
+                expectedClientsQueue, hall.getTicketOffices().get(0).getQueue().getClients());
+    }
 }
