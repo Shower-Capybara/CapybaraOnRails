@@ -4,12 +4,10 @@ import java.util.Objects;
 
 public class Privilegy {
     private String type;
-    private Integer priority;
     private Integer significance;
 
-    public Privilegy(String type, Integer priority, Integer significance) {
+    public Privilegy(String type, Integer significance) {
         this.type = type;
-        this.priority = priority;
         this.significance = significance;
     }
 
@@ -19,14 +17,6 @@ public class Privilegy {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public Integer getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Integer priority) {
-        this.priority = priority;
     }
 
     public Integer getSignificance() {
@@ -42,12 +32,11 @@ public class Privilegy {
         if (this == o) return true;
         if (!(o instanceof Privilegy privilegy)) return false;
         return Objects.equals(type, privilegy.type)
-                && Objects.equals(priority, privilegy.priority)
                 && Objects.equals(significance, privilegy.significance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, priority, significance);
+        return Objects.hash(type, significance);
     }
 }

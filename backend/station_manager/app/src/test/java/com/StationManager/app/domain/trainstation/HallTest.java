@@ -20,9 +20,9 @@ class HallTest {
         ArrayList<Position> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Position ticketOfficePosition1 = new Position(new Point(0, 1), new Point(2, 0));
-        Position ticketOfficePosition2 = new Position(new Point(0, 7), new Point(1, 5));
-        Position ticketOfficePosition3 = new Position(new Point(10, 6), new Point(11, 4));
+        Position ticketOfficePosition1 = new Position(new Point(0, 0), new Point(2, 1));
+        Position ticketOfficePosition2 = new Position(new Point(0, 5), new Point(1, 7));
+        Position ticketOfficePosition3 = new Position(new Point(10, 4), new Point(11, 6));
 
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Down);
         TicketOffice ticketOffice2 = new TicketOffice(ticketOfficePosition2, Direction.Left);
@@ -30,7 +30,7 @@ class HallTest {
 
         Hall hall =
                 new Hall(
-                        new Position(new Point(0, 20), new Point(20, 0)), entrances, ticketOffices);
+                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         hall.addTicketOffice(ticketOffice1);
         hall.addTicketOffice(ticketOffice2);
@@ -47,10 +47,10 @@ class HallTest {
 
         Hall hall =
                 new Hall(
-                        new Position(new Point(0, 20), new Point(20, 0)), entrances, ticketOffices);
+                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(0, 1), new Point(2, 0));
-        Position ticketOfficePosition2 = new Position(new Point(0, 1), new Point(2, 0));
+        Position ticketOfficePosition1 = new Position(new Point(0, 0), new Point(2, 1));
+        Position ticketOfficePosition2 = new Position(new Point(0, 0), new Point(2, 1));
 
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Down);
         TicketOffice ticketOffice2 = new TicketOffice(ticketOfficePosition2, Direction.Down);
@@ -68,9 +68,9 @@ class HallTest {
 
         Hall hall =
                 new Hall(
-                        new Position(new Point(0, 20), new Point(20, 0)), entrances, ticketOffices);
+                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(10, 10), new Point(12, 9));
+        Position ticketOfficePosition1 = new Position(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up);
 
         hall.addTicketOffice(ticketOffice1);
@@ -82,7 +82,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 4));
 
         hall.addClient(client1);
@@ -94,8 +94,8 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(11, 8)));
+                        new Privilegy("ordinary", 0),
+                        new Point(11, 11)));
     }
 
     @Test
@@ -106,9 +106,9 @@ class HallTest {
 
         Hall hall =
                 new Hall(
-                        new Position(new Point(0, 20), new Point(20, 0)), entrances, ticketOffices);
+                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(10, 10), new Point(12, 9));
+        Position ticketOfficePosition1 = new Position(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Down);
 
         hall.addTicketOffice(ticketOffice1);
@@ -120,7 +120,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 4));
 
         hall.addClient(client1);
@@ -132,8 +132,8 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(11, 11)));
+                        new Privilegy("ordinary", 0),
+                        new Point(11, 8)));
     }
 
     @Test
@@ -144,9 +144,9 @@ class HallTest {
 
         Hall hall =
                 new Hall(
-                        new Position(new Point(0, 20), new Point(20, 0)), entrances, ticketOffices);
+                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(10, 10), new Point(11, 8));
+        Position ticketOfficePosition1 = new Position(new Point(10, 8), new Point(11, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Left);
 
         hall.addTicketOffice(ticketOffice1);
@@ -158,7 +158,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 4));
 
         hall.addClient(client1);
@@ -170,7 +170,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(12, 9)));
     }
 
@@ -182,9 +182,9 @@ class HallTest {
 
         Hall hall =
                 new Hall(
-                        new Position(new Point(0, 20), new Point(20, 0)), entrances, ticketOffices);
+                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(10, 10), new Point(11, 8));
+        Position ticketOfficePosition1 = new Position(new Point(10, 8), new Point(11, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Right);
 
         hall.addTicketOffice(ticketOffice1);
@@ -196,7 +196,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 4));
 
         hall.addClient(client1);
@@ -208,7 +208,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(9, 9)));
     }
 
@@ -222,14 +222,14 @@ class HallTest {
 
         Hall hall =
                 new Hall(
-                        new Position(new Point(0, 20), new Point(20, 0)), entrances, ticketOffices);
+                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(9, 1), new Point(11, 0));
-        Position ticketOfficePosition2 = new Position(new Point(9, 20), new Point(11, 19));
-        Position ticketOfficePosition3 = new Position(new Point(19, 10), new Point(20, 8));
+        Position ticketOfficePosition1 = new Position(new Point(9, 0), new Point(11, 1));
+        Position ticketOfficePosition2 = new Position(new Point(9, 19), new Point(11, 20));
+        Position ticketOfficePosition3 = new Position(new Point(19, 8), new Point(20, 10));
 
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Down);
-        TicketOffice ticketOffice2 = new TicketOffice(ticketOfficePosition2, Direction.Up);
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up);
+        TicketOffice ticketOffice2 = new TicketOffice(ticketOfficePosition2, Direction.Down);
         TicketOffice ticketOffice3 = new TicketOffice(ticketOfficePosition3, Direction.Right);
 
         ticketOffice1.setClosed(false);
@@ -246,40 +246,40 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(18, 7));
+                        new Privilegy("ordinary", 0),
+                        new Point(18, 13));
         Client clientRight2 =
                 new Client(
                         2,
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(19, 12));
+                        new Privilegy("ordinary", 0),
+                        new Point(19, 6));
         Client clientUp1 =
                 new Client(
                         3,
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(9, 17));
+                        new Privilegy("ordinary", 0),
+                        new Point(9, 3));
         Client clientDown1 =
                 new Client(
                         4,
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(7, 1));
+                        new Privilegy("ordinary", 0),
+                        new Point(7, 19));
         Client clientDown2 =
                 new Client(
                         5,
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(0, 0));
+                        new Privilegy("ordinary", 0),
+                        new Point(20, 20));
 
         hall.addClient(clientRight1);
         assertEquals(
@@ -289,30 +289,30 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(18, 9)));
 
         hall.addClient(clientUp1);
         assertEquals(
-                ticketOffice2.getQueue().getClients().get(0),
+                ticketOffice1.getQueue().getClients().get(0),
                 new Client(
                         3,
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(10, 18)));
+                        new Privilegy("ordinary", 0),
+                        new Point(10, 2)));
 
         hall.addClient(clientDown1);
         assertEquals(
-                ticketOffice1.getQueue().getClients().get(0),
+                ticketOffice2.getQueue().getClients().get(0),
                 new Client(
                         4,
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(10, 2)));
+                        new Privilegy("ordinary", 0),
+                        new Point(10, 18)));
 
         hall.addClient(clientRight2);
         assertEquals(
@@ -322,19 +322,19 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(17, 9)));
 
         hall.addClient(clientDown2);
         assertEquals(
-                ticketOffice1.getQueue().getClients().get(1),
+                ticketOffice2.getQueue().getClients().get(1),
                 new Client(
                         5,
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(10, 3)));
+                        new Privilegy("ordinary", 0),
+                        new Point(10, 17)));
     }
 
     @Test
@@ -347,9 +347,9 @@ class HallTest {
 
         Hall hall =
                 new Hall(
-                        new Position(new Point(0, 20), new Point(20, 0)), entrances, ticketOffices);
+                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition = new Position(new Point(10, 10), new Point(12, 9));
+        Position ticketOfficePosition = new Position(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice = new TicketOffice(ticketOfficePosition, Direction.Up);
 
         hall.addTicketOffice(ticketOffice);
@@ -361,7 +361,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 4));
         Client client2 =
                 new Client(
@@ -369,7 +369,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(4, 4));
         Client client3 =
                 new Client(
@@ -377,7 +377,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(5, 7));
 
         hall.addClient(client1);
@@ -393,16 +393,16 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(11, 8)));
+                        new Privilegy("ordinary", 0),
+                        new Point(11, 11)));
         expectedClientsQueue.add(
                 new Client(
                         3,
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(11, 7)));
+                        new Privilegy("ordinary", 0),
+                        new Point(11, 12)));
         assertIterableEquals(
                 hall.getTicketOffices().get(0).getQueue().getClients(), expectedClientsQueue);
 
@@ -414,8 +414,8 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(11, 8)));
+                        new Privilegy("ordinary", 0),
+                        new Point(11, 11)));
         assertIterableEquals(
                 expectedClientsQueue, hall.getTicketOffices().get(0).getQueue().getClients());
     }
@@ -428,9 +428,9 @@ class HallTest {
 
         Hall hall =
                 new Hall(
-                        new Position(new Point(0, 20), new Point(20, 0)), entrances, ticketOffices);
+                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(10, 10), new Point(12, 9));
+        Position ticketOfficePosition1 = new Position(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up);
 
         hall.addTicketOffice(ticketOffice1);
@@ -442,7 +442,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 4));
         Client client2 =
                 new Client(
@@ -450,7 +450,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 5));
         Client client3 =
                 new Client(
@@ -458,7 +458,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("withChild", 1, 1),
+                        new Privilegy("withChild", 1),
                         new Point(3, 6));
 
         hall.addClient(client1);
@@ -472,24 +472,24 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(11, 8)));
+                        new Privilegy("ordinary", 0),
+                        new Point(11, 11)));
         expectedClientsQueue.add(
                 new Client(
                         3,
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("withChild", 1, 1),
-                        new Point(11, 7)));
+                        new Privilegy("withChild", 1),
+                        new Point(11, 12)));
         expectedClientsQueue.add(
                 new Client(
                         2,
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(11, 6)));
+                        new Privilegy("ordinary", 0),
+                        new Point(11, 13)));
 
         assertIterableEquals(
                 expectedClientsQueue, hall.getTicketOffices().get(0).getQueue().getClients());
@@ -503,9 +503,9 @@ class HallTest {
 
         Hall hall =
                 new Hall(
-                        new Position(new Point(0, 20), new Point(20, 0)), entrances, ticketOffices);
+                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(10, 10), new Point(12, 9));
+        Position ticketOfficePosition1 = new Position(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up);
 
         hall.addTicketOffice(ticketOffice1);
@@ -517,7 +517,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 4));
         Client client2 =
                 new Client(
@@ -525,7 +525,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 5));
         Client client3 =
                 new Client(
@@ -533,7 +533,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("withChild", 1, 1),
+                        new Privilegy("withChild", 1),
                         new Point(3, 6));
         Client client4 =
                 new Client(
@@ -541,7 +541,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("disabled", 1, 2),
+                        new Privilegy("disabled", 2),
                         new Point(3, 7));
 
         hall.addClient(client1);
@@ -556,32 +556,32 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(11, 8)));
+                        new Privilegy("ordinary", 0),
+                        new Point(11, 11)));
         expectedClientsQueue.add(
                 new Client(
                         4,
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("disabled", 1, 2),
-                        new Point(11, 7)));
+                        new Privilegy("disabled", 2),
+                        new Point(11, 12)));
         expectedClientsQueue.add(
                 new Client(
                         3,
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("withChild", 1, 1),
-                        new Point(11, 6)));
+                        new Privilegy("withChild", 1),
+                        new Point(11, 13)));
         expectedClientsQueue.add(
                 new Client(
                         2,
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(11, 5)));
+                        new Privilegy("ordinary", 0),
+                        new Point(11, 14)));
         assertIterableEquals(
                 expectedClientsQueue, hall.getTicketOffices().get(0).getQueue().getClients());
     }
@@ -596,9 +596,9 @@ class HallTest {
 
         Hall hall =
                 new Hall(
-                        new Position(new Point(0, 20), new Point(20, 0)), entrances, ticketOffices);
+                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(10, 10), new Point(12, 9));
+        Position ticketOfficePosition1 = new Position(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up);
 
         hall.addTicketOffice(ticketOffice1);
@@ -610,7 +610,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 4));
         Client client2 =
                 new Client(
@@ -618,7 +618,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 5));
         Client client3 =
                 new Client(
@@ -626,7 +626,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("withChild", 2, 1),
+                        new Privilegy("withChild", 1),
                         new Point(3, 6));
         Client client4 =
                 new Client(
@@ -634,7 +634,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("disabled", 1, 2),
+                        new Privilegy("disabled", 2),
                         new Point(3, 7));
         Client client5 =
                 new Client(
@@ -642,7 +642,7 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("withChild", 1, 1),
+                        new Privilegy("withChild", 1),
                         new Point(3, 8));
 
         hall.addClient(client1);
@@ -658,40 +658,40 @@ class HallTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(11, 8)));
+                        new Privilegy("ordinary", 0),
+                        new Point(11, 11)));
         expectedClientsQueue.add(
                 new Client(
                         4,
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("disabled", 1, 2),
-                        new Point(11, 7)));
-        expectedClientsQueue.add(
-                new Client(
-                        5,
-                        "Fname",
-                        "Sname",
-                        (short) 2,
-                        new Privilegy("withChild", 1, 1),
-                        new Point(11, 6)));
+                        new Privilegy("disabled", 2),
+                        new Point(11, 12)));
         expectedClientsQueue.add(
                 new Client(
                         3,
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("withChild", 2, 1),
-                        new Point(11, 5)));
+                        new Privilegy("withChild", 1),
+                        new Point(11, 13)));
+        expectedClientsQueue.add(
+                new Client(
+                        5,
+                        "Fname",
+                        "Sname",
+                        (short) 2,
+                        new Privilegy("withChild", 1),
+                        new Point(11, 14)));
         expectedClientsQueue.add(
                 new Client(
                         2,
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(11, 4)));
+                        new Privilegy("ordinary", 0),
+                        new Point(11, 15)));
         assertIterableEquals(
                 expectedClientsQueue, hall.getTicketOffices().get(0).getQueue().getClients());
     }

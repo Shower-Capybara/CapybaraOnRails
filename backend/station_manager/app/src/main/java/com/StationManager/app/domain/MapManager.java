@@ -63,27 +63,27 @@ public class MapManager {
             if (ticketOffice.getDirection() == Direction.Up) {
                 int midX = ticketOffice.getPosition().getStart().x + 1;
                 int midY = ticketOffice.getPosition().getEnd().y;
-                calculatedPoint = new Point(midX, midY - 1);
+                calculatedPoint = new Point(midX, midY + 1);
             }
 
             // TicketBox Is In Bottom
             if (ticketOffice.getDirection() == Direction.Down) {
                 int midX = ticketOffice.getPosition().getStart().x + 1;
                 int midY = ticketOffice.getPosition().getStart().y;
-                calculatedPoint = new Point(midX, midY + 1);
+                calculatedPoint = new Point(midX, midY - 1);
             }
 
             // TicketBox is to the right
             if (ticketOffice.getDirection() == Direction.Right) {
                 int midX = ticketOffice.getPosition().getStart().x;
-                int midY = ticketOffice.getPosition().getStart().y - 1;
+                int midY = ticketOffice.getPosition().getStart().y + 1;
                 calculatedPoint = new Point(midX - 1, midY);
             }
 
             // TicketBox is to the left
             if (ticketOffice.getDirection() == Direction.Left) {
                 int midX = ticketOffice.getPosition().getEnd().x;
-                int midY = ticketOffice.getPosition().getStart().y - 1;
+                int midY = ticketOffice.getPosition().getStart().y + 1;
                 calculatedPoint = new Point(midX + 1, midY);
             }
 
@@ -97,14 +97,14 @@ public class MapManager {
             // TicketBox Is In Top
             if (ticketOffice.getDirection() == Direction.Up) {
                 int newX = lastClientPoint.x;
-                int newY = lastClientPoint.y - 1;
+                int newY = lastClientPoint.y + 1;
                 calculatedPoint = new Point(newX, newY);
             }
 
             // TicketBox Is In Bottom
             if (ticketOffice.getDirection() == Direction.Down) {
                 int newX = lastClientPoint.x;
-                int newY = lastClientPoint.y + 1;
+                int newY = lastClientPoint.y - 1;
                 calculatedPoint = new Point(newX, newY);
             }
 
@@ -133,9 +133,9 @@ public class MapManager {
     public Boolean positionIsFree(Position position) {
         // Check if position is not out of bounds
         if (position.getStart().x < size.getStart().x
-                || position.getStart().y > size.getStart().y
+                || position.getStart().y < size.getStart().y
                 || position.getEnd().x > size.getEnd().x
-                || position.getEnd().y < size.getEnd().y) {
+                || position.getEnd().y > size.getEnd().y) {
             return false;
         }
 
@@ -183,13 +183,13 @@ public class MapManager {
         ArrayList<Point> points2 = new ArrayList<>();
 
         for (int x = position1.getStart().x; x <= position1.getEnd().x; x++) {
-            for (int y = position1.getEnd().y; y <= position1.getStart().y; y++) {
+            for (int y = position1.getStart().y; y <= position1.getEnd().y; y++) {
                 points1.add(new Point(x, y));
             }
         }
 
         for (int x = position2.getStart().x; x <= position2.getEnd().x; x++) {
-            for (int y = position2.getEnd().y; y <= position2.getStart().y; y++) {
+            for (int y = position2.getStart().y; y <= position2.getEnd().y; y++) {
                 points2.add(new Point(x, y));
             }
         }

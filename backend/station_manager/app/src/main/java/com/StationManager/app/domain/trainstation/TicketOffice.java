@@ -115,18 +115,6 @@ public class TicketOffice {
                 if (significanceComparison > 0) {
                     // The newClient has a higher privilege type, insert before existingClient
                     return i;
-                } else if (significanceComparison == 0) {
-                    // Same privilege type, compare priorities
-                    int priorityComparison =
-                            newClient
-                                    .getPrivilegy()
-                                    .getPriority()
-                                    .compareTo(existingClient.getPrivilegy().getPriority());
-
-                    if (priorityComparison < 0) {
-                        // The newClient has a higher priority, insert before existingClient
-                        return i;
-                    }
                 }
             }
         }

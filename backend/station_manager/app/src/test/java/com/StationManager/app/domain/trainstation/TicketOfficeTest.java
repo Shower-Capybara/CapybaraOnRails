@@ -25,7 +25,7 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 3));
         Client client2 =
                 new Client(
@@ -33,7 +33,7 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 4));
         ticketOffice.addClient(client1);
         ticketOffice.addClient(client2);
@@ -47,7 +47,7 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 3)));
 
         assertIterableEquals(expectedResult.getClients(), ticketOffice.getQueue().getClients());
@@ -72,7 +72,7 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 2));
         Client client2 =
                 new Client(
@@ -80,7 +80,7 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 3));
         ticketOffice.addClient(client1);
         ticketOffice.addClient(client2);
@@ -91,7 +91,7 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("disabled", 1, 2),
+                        new Privilegy("disabled", 2),
                         new Point(3, 4));
         ticketOffice.addClient(client3);
 
@@ -102,7 +102,7 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 2)));
         expectedClientsQueue.add(
                 new Client(
@@ -110,7 +110,7 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("disabled", 1, 2),
+                        new Privilegy("disabled", 2),
                         new Point(3, 3)));
         expectedClientsQueue.add(
                 new Client(
@@ -118,7 +118,7 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 4)));
 
         assertIterableEquals(expectedClientsQueue, ticketOffice.getQueue().getClients());
@@ -137,7 +137,7 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 2));
         Client client2 =
                 new Client(
@@ -145,7 +145,7 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 3));
 
         Client client3 =
@@ -154,7 +154,7 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("disabled", 1, 2),
+                        new Privilegy("disabled", 2),
                         new Point(3, 4));
 
         ticketOffice.addClient(client1);
@@ -167,7 +167,7 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("withChild", 1, 1),
+                        new Privilegy("withChild", 1),
                         new Point(3, 5));
         ticketOffice.addClient(client4);
 
@@ -178,7 +178,7 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 2)));
         expectedClientsQueue.add(
                 new Client(
@@ -186,7 +186,7 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("disabled", 1, 2),
+                        new Privilegy("disabled", 2),
                         new Point(3, 3)));
         expectedClientsQueue.add(
                 new Client(
@@ -194,7 +194,7 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("withChild", 1, 1),
+                        new Privilegy("withChild", 1),
                         new Point(3, 4)));
         expectedClientsQueue.add(
                 new Client(
@@ -202,108 +202,8 @@ class TicketOfficeTest {
                         "Fname",
                         "Sname",
                         (short) 2,
-                        new Privilegy("ordinary", 1, 0),
+                        new Privilegy("ordinary", 0),
                         new Point(3, 5)));
-
-        assertIterableEquals(expectedClientsQueue, ticketOffice.getQueue().getClients());
-    }
-
-    @Test
-    @DisplayName(
-            "Adding clients with the same privilegy.significance == 1, but different values of"
-                    + " priority, to queue with ordinary clients")
-    void testAddClientsWithSamePrivilegyDifferentSignificanceToQueue() {
-        Position ticketOfficePosition = new Position(new Point(2, 1), new Point(4, 0));
-        TicketOffice ticketOffice = new TicketOffice(ticketOfficePosition, Direction.Down);
-        Client client1 =
-                new Client(
-                        1,
-                        "Fname",
-                        "Sname",
-                        (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(3, 2));
-        Client client2 =
-                new Client(
-                        2,
-                        "Fname",
-                        "Sname",
-                        (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(3, 3));
-
-        Client client3 =
-                new Client(
-                        3,
-                        "Fname",
-                        "Sname",
-                        (short) 2,
-                        new Privilegy("withChild", 3, 1),
-                        new Point(3, 4));
-        Client client4 =
-                new Client(
-                        4,
-                        "Fname",
-                        "Sname",
-                        (short) 2,
-                        new Privilegy("withChild", 1, 1),
-                        new Point(3, 5));
-        Client client5 =
-                new Client(
-                        5,
-                        "Fname",
-                        "Sname",
-                        (short) 2,
-                        new Privilegy("withChild", 2, 1),
-                        new Point(3, 6));
-
-        ticketOffice.addClient(client1);
-        ticketOffice.addClient(client2);
-        ticketOffice.addClient(client3);
-        ticketOffice.addClient(client4);
-        ticketOffice.addClient(client5);
-
-        var expectedClientsQueue = new LinkedList<Client>();
-        expectedClientsQueue.add(
-                new Client(
-                        1,
-                        "Fname",
-                        "Sname",
-                        (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(3, 2)));
-        expectedClientsQueue.add(
-                new Client(
-                        4,
-                        "Fname",
-                        "Sname",
-                        (short) 2,
-                        new Privilegy("withChild", 1, 1),
-                        new Point(3, 3)));
-        expectedClientsQueue.add(
-                new Client(
-                        5,
-                        "Fname",
-                        "Sname",
-                        (short) 2,
-                        new Privilegy("withChild", 2, 1),
-                        new Point(3, 4)));
-        expectedClientsQueue.add(
-                new Client(
-                        3,
-                        "Fname",
-                        "Sname",
-                        (short) 2,
-                        new Privilegy("withChild", 3, 1),
-                        new Point(3, 5)));
-        expectedClientsQueue.add(
-                new Client(
-                        2,
-                        "Fname",
-                        "Sname",
-                        (short) 2,
-                        new Privilegy("ordinary", 1, 0),
-                        new Point(3, 6)));
 
         assertIterableEquals(expectedClientsQueue, ticketOffice.getQueue().getClients());
     }
