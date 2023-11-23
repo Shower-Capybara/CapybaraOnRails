@@ -78,6 +78,16 @@ public class TicketOffice {
         // Find the position to insert the new client
         int insertIndex = findInsertIndex(client);
         queue.add(insertIndex, client);
+
+        // Take into account the change in customer positions during queue changes
+        Point insertedClientPosition = new Point(client.getPosition());
+        for (int i = insertIndex; i < queue.getClients().size() - 1; i++) {
+            var currentClient = queue.getClients().get(i);
+            var nextClient = queue.getClients().get(i + 1);
+            currentClient.setPosition(nextClient.getPosition());
+        }
+        // Change the position for the last client
+        queue.getClients().getLast().setPosition(insertedClientPosition);
     }
 
     private int findInsertIndex(Client newClient) {
