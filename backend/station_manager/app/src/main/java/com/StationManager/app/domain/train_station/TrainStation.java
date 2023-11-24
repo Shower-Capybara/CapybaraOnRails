@@ -1,4 +1,4 @@
-package com.StationManager.app.domain.trainstation;
+package com.StationManager.app.domain.train_station;
 
 public class TrainStation {
     private Integer id;

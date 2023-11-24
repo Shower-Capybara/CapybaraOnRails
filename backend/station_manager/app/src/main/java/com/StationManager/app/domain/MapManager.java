@@ -1,10 +1,10 @@
 package com.StationManager.app.domain;
 
 import com.StationManager.app.domain.client.Client;
-import com.StationManager.app.domain.trainstation.Direction;
-import com.StationManager.app.domain.trainstation.Hall;
-import com.StationManager.app.domain.trainstation.Position;
-import com.StationManager.app.domain.trainstation.TicketOffice;
+import com.StationManager.app.domain.train_station.Direction;
+import com.StationManager.app.domain.train_station.Hall;
+import com.StationManager.app.domain.train_station.Position;
+import com.StationManager.app.domain.train_station.TicketOffice;
 
 import java.awt.*;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.StationManager.app.domain.trainstation;
+package com.StationManager.app.domain.train_station;
 
 import static org.junit.jupiter.api.Assertions.*;
 

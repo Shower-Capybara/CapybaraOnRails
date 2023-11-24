@@ -1,4 +1,4 @@
-package com.StationManager.app.domain.trainstation;
+package com.StationManager.app.domain.train_station;
 
 import com.StationManager.app.domain.Transaction;
 import com.StationManager.app.domain.client.Client;
@@ -84,46 +84,28 @@ public class TicketOffice {
         int insertIndex = findInsertIndex(client);
         queue.add(insertIndex, client);
 
+        Client nextClient = queue.get(insertIndex);
         // Take into account the change in customer positions during queue changes
         Point insertedClientPosition = new Point(client.getPosition());
         for (int i = insertIndex; i < queue.size() - 1; i++) {
             var currentClient = queue.get(i);
-            var nextClient = queue.get(i + 1);
+            nextClient = queue.get(i + 1);
             currentClient.setPosition(nextClient.getPosition());
         }
         // Change the position for the last client
-        queue.getLast().setPosition(insertedClientPosition);
+        nextClient.setPosition(insertedClientPosition);
     }
 
     private int findInsertIndex(Client newClient) {
-        // Check if there are only ordinary clients in the queue
-        boolean hasOnlyOrdinaryClients =
-                queue.stream().allMatch(c -> c.getPrivilegy().getType().equals("ordinary"));
-
-        if (hasOnlyOrdinaryClients && (!newClient.getPrivilegy().getType().equals("ordinary"))) {
-            // Insert new client at position 1
-            return 1;
-        } else {
-            // Iterate through the queue to find the appropriate position based on privilege type
-            // and priority
-            for (int i = 1; i < queue.size(); i++) {
-                Client existingClient = queue.get(i);
-
-                // Compare privilege types
-                int significanceComparison =
-                        newClient
-                                .getPrivilegy()
-                                .getSignificance()
-                                .compareTo(existingClient.getPrivilegy().getSignificance());
-
-                if (significanceComparison > 0) {
-                    // The newClient has a higher privilege type, insert before existingClient
-                    return i;
-                }
+        int index = 0;
+        for (var client : queue) {
+            if ((newClient.getPrivilegy().getSignificance()
+                            > client.getPrivilegy().getSignificance())
+                    && (index != 0)) {
+                break;
             }
+            index += 1;
         }
-
-        // If no specific position is found, insert at the end
-        return queue.size();
+        return index;
     }
 }

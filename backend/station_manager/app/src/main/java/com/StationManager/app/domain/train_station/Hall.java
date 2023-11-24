@@ -1,4 +1,4 @@
-package com.StationManager.app.domain.trainstation;
+package com.StationManager.app.domain.train_station;
 
 import com.StationManager.app.domain.MapManager;
 import com.StationManager.app.domain.client.Client;
