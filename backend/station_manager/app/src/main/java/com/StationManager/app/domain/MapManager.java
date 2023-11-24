@@ -92,7 +92,7 @@ public class MapManager {
             put(Direction.Right, new Point(-1, 0));
         }}.get(ticketOffice.getDirection());
 
-        for (var unused: ticketOffice.getQueue()) initialPoint.move(step.x, step.y);
+        for (var unused: ticketOffice.getQueue()) initialPoint.translate(step.x, step.y);
         return initialPoint;
     }
 
