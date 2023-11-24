@@ -31,8 +31,7 @@ public class Privilegy {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Privilegy privilegy)) return false;
-        return Objects.equals(type, privilegy.type)
-                && Objects.equals(significance, privilegy.significance);
+        return Objects.equals(type, privilegy.type);
     }
 
     @Override

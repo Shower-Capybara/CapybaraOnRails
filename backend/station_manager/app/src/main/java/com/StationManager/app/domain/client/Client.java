@@ -7,23 +7,14 @@ public class Client {
     private Integer id;
     private String firstName;
     private String lastName;
-    private Short ticketsToBuy;
     private Privilegy privilegy;
     private Point position;
 
-    public Client() {}
-
     public Client(
-            Integer id,
-            String firstName,
-            String lastName,
-            Short ticketsToBuy,
-            Privilegy privilegy,
-            Point position) {
+            Integer id, String firstName, String lastName, Privilegy privilegy, Point position) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.ticketsToBuy = ticketsToBuy;
         this.privilegy = privilegy;
         this.position = position;
     }
@@ -52,14 +43,6 @@ public class Client {
         this.lastName = lastName;
     }
 
-    public Short getTicketsToBuy() {
-        return ticketsToBuy;
-    }
-
-    public void setTicketsToBuy(Short ticketsToBuy) {
-        this.ticketsToBuy = ticketsToBuy;
-    }
-
     public Privilegy getPrivilegy() {
         return privilegy;
     }
@@ -80,16 +63,11 @@ public class Client {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Client client)) return false;
-        return Objects.equals(id, client.id)
-                && Objects.equals(firstName, client.firstName)
-                && Objects.equals(lastName, client.lastName)
-                && Objects.equals(ticketsToBuy, client.ticketsToBuy)
-                && Objects.equals(privilegy, client.privilegy)
-                && Objects.equals(position, client.position);
+        return Objects.equals(id, client.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, ticketsToBuy, privilegy, position);
+        return Objects.hash(id, firstName, lastName, privilegy, position);
     }
 }
