@@ -2,7 +2,6 @@ package com.StationManager.app.domain;
 
 import com.StationManager.app.domain.client.Client;
 import com.StationManager.app.domain.train_station.Direction;
-import com.StationManager.app.domain.train_station.Hall;
 import com.StationManager.app.domain.train_station.Segment;
 import com.StationManager.app.domain.train_station.TicketOffice;
 
@@ -12,25 +11,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MapManager {
-    private Segment size;
-    private Hall hall;
+    private static Segment size;
 
-    public MapManager(Segment size, Hall hall) {
-        this.size = size;
-        this.hall = hall;
+    public static void setSize(Segment newSize) {
+        size = newSize;
     }
 
     // Assigning client to the closest suitable ticket office
-    public void assignClientToClosestTicketOffice(
-            Client client, ArrayList<TicketOffice> ticketOffices) {
+    public static void assignClientToClosestTicketOffice(
+            Client client, ArrayList<Segment> entrances, ArrayList<TicketOffice> ticketOffices) {
         if (ticketOffices.size() == 1) {
-            client.setPosition(calculatePositionForNewClient(ticketOffices.get(0)));
+            client.setPosition(
+                    calculatePositionForNewClient(ticketOffices.get(0), entrances, ticketOffices));
             ticketOffices.get(0).addClient(client);
         } else {
             Map<TicketOffice, Point> points = new HashMap<>();
 
             for (TicketOffice t : ticketOffices) {
-                points.put(t, calculatePositionForNewClient(t));
+                points.put(t, calculatePositionForNewClient(t, entrances, ticketOffices));
             }
 
             TicketOffice closestTicketOffice = null;
@@ -47,13 +45,17 @@ public class MapManager {
                 }
             }
 
-            client.setPosition(calculatePositionForNewClient(closestTicketOffice));
+            client.setPosition(
+                    calculatePositionForNewClient(closestTicketOffice, entrances, ticketOffices));
             closestTicketOffice.addClient(client);
         }
     }
 
     // Calculation of Point (Position) for new client
-    public Point calculatePositionForNewClient(TicketOffice ticketOffice) {
+    public static Point calculatePositionForNewClient(
+            TicketOffice ticketOffice,
+            ArrayList<Segment> entrances,
+            ArrayList<TicketOffice> ticketOffices) {
         Point calculatedPoint = null;
 
         if (ticketOffice.getQueue().isEmpty()) {
@@ -87,7 +89,7 @@ public class MapManager {
                 calculatedPoint = new Point(midX + 1, midY);
             }
 
-            if (IsFree(new Segment(calculatedPoint, calculatedPoint))) {
+            if (IsFree(new Segment(calculatedPoint, calculatedPoint), entrances, ticketOffices)) {
                 return calculatedPoint;
             }
         } else {
@@ -121,7 +123,7 @@ public class MapManager {
                 calculatedPoint = new Point(newX, newY);
             }
 
-            if (IsFree(new Segment(calculatedPoint, calculatedPoint))) {
+            if (IsFree(new Segment(calculatedPoint, calculatedPoint), entrances, ticketOffices)) {
                 return calculatedPoint;
             }
         }
@@ -130,7 +132,8 @@ public class MapManager {
     }
 
     // Check if position is free
-    public Boolean IsFree(Segment segment) {
+    public static Boolean IsFree(
+            Segment segment, ArrayList<Segment> entrances, ArrayList<TicketOffice> ticketOffices) {
         // Check if position is not out of bounds
         if (segment.getStart().x < size.getStart().x
                 || segment.getStart().y < size.getStart().y
@@ -138,9 +141,6 @@ public class MapManager {
                 || segment.getEnd().y > size.getEnd().y) {
             return false;
         }
-
-        var entrances = hall.getEntrances();
-        var ticketOffices = hall.getTicketOffices();
 
         // Check if position is free
         if (entrances.stream().anyMatch(pos -> posiotionsOverlap(pos, segment))) {

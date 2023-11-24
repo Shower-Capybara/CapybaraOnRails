@@ -18,11 +18,11 @@ public class Hall {
         this.size = size;
         this.ticketOffices = ticketOffices;
         this.entrances = entrances;
-        mapManager = new MapManager(size, this);
+        mapManager.setSize(size);
     }
 
     public void addTicketOffice(TicketOffice ticketOffice) {
-        if (mapManager.IsFree(ticketOffice.getPosition())) {
+        if (mapManager.IsFree(ticketOffice.getPosition(), entrances, ticketOffices)) {
             ticketOffices.add(ticketOffice);
         } else {
             throw new IllegalStateException("Position is taken");
@@ -42,7 +42,7 @@ public class Hall {
                         .filter(ticketOffice -> ticketOffice.getQueue().size() == size)
                         .collect(Collectors.toCollection(ArrayList::new));
 
-        mapManager.assignClientToClosestTicketOffice(client, shortestQueueTicketOffices);
+        mapManager.assignClientToClosestTicketOffice(client, entrances, shortestQueueTicketOffices);
     }
 
     private static int getSizeOfShortestQueue(ArrayList<TicketOffice> WorkingTicketOffices) {
@@ -61,7 +61,7 @@ public class Hall {
     }
 
     public Boolean isCellFree(Segment segment) {
-        return mapManager.IsFree(segment);
+        return mapManager.IsFree(segment, entrances, ticketOffices);
     }
 
     public ArrayList<Segment> getEntrances() {
