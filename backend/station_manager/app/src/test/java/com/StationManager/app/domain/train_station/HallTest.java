@@ -25,25 +25,24 @@ class HallTest {
     @Test
     @DisplayName("Adding TicketOffice when Position is Free should update the list")
     void testAddTicketOfficeToHall() {
-        ArrayList<Position> entrances = new ArrayList<>();
+        ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Position ticketOfficePosition1 = new Position(new Point(0, 0), new Point(2, 1));
-        Position ticketOfficePosition2 = new Position(new Point(0, 5), new Point(1, 7));
-        Position ticketOfficePosition3 = new Position(new Point(10, 4), new Point(11, 6));
+        Segment ticketOfficeSegment1 = new Segment(new Point(0, 0), new Point(2, 1));
+        Segment ticketOfficeSegment2 = new Segment(new Point(0, 5), new Point(1, 7));
+        Segment ticketOfficeSegment3 = new Segment(new Point(10, 4), new Point(11, 6));
 
         int timeToServeTicket = 5;
 
         TicketOffice ticketOffice1 =
-                new TicketOffice(ticketOfficePosition1, Direction.Down, timeToServeTicket);
+                new TicketOffice(ticketOfficeSegment1, Direction.Down, timeToServeTicket);
         TicketOffice ticketOffice2 =
-                new TicketOffice(ticketOfficePosition2, Direction.Left, timeToServeTicket);
+                new TicketOffice(ticketOfficeSegment2, Direction.Left, timeToServeTicket);
         TicketOffice ticketOffice3 =
-                new TicketOffice(ticketOfficePosition3, Direction.Right, timeToServeTicket);
+                new TicketOffice(ticketOfficeSegment3, Direction.Right, timeToServeTicket);
 
         Hall hall =
-                new Hall(
-                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         hall.addTicketOffice(ticketOffice1);
         hall.addTicketOffice(ticketOffice2);
@@ -55,21 +54,20 @@ class HallTest {
     @Test
     @DisplayName("Adding TicketOffice when Position is taken. Should throw exception")
     void testAddTicketOfficeToHallFailsWhenAddingOnTakenPosition() {
-        ArrayList<Position> entrances = new ArrayList<>();
+        ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
         Hall hall =
-                new Hall(
-                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(0, 0), new Point(2, 1));
-        Position ticketOfficePosition2 = new Position(new Point(0, 0), new Point(2, 1));
+        Segment ticketOfficeSegment1 = new Segment(new Point(0, 0), new Point(2, 1));
+        Segment ticketOfficeSegment2 = new Segment(new Point(0, 0), new Point(2, 1));
 
         int timeToServeTicket = 5;
         TicketOffice ticketOffice1 =
-                new TicketOffice(ticketOfficePosition1, Direction.Down, timeToServeTicket);
+                new TicketOffice(ticketOfficeSegment1, Direction.Down, timeToServeTicket);
         TicketOffice ticketOffice2 =
-                new TicketOffice(ticketOfficePosition2, Direction.Down, timeToServeTicket);
+                new TicketOffice(ticketOfficeSegment2, Direction.Down, timeToServeTicket);
 
         hall.addTicketOffice(ticketOffice1);
 
@@ -79,15 +77,14 @@ class HallTest {
     @Test
     @DisplayName("Adding client to single ticket office in up")
     void testAddClientToSingleUpTicketOffice() {
-        ArrayList<Position> entrances = new ArrayList<>();
+        ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
         Hall hall =
-                new Hall(
-                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up, 5);
+        Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, 5);
 
         hall.addTicketOffice(ticketOffice1);
 
@@ -100,15 +97,14 @@ class HallTest {
     @Test
     @DisplayName("Adding client to single ticket office in down")
     void testAddClientToSingleDownTicketOffice() {
-        ArrayList<Position> entrances = new ArrayList<>();
+        ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
         Hall hall =
-                new Hall(
-                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Down, 5);
+        Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Down, 5);
 
         hall.addTicketOffice(ticketOffice1);
 
@@ -122,15 +118,14 @@ class HallTest {
     @Test
     @DisplayName("Adding client to single ticket office in left")
     void testAddClientToSingleLeftTicketOffice() {
-        ArrayList<Position> entrances = new ArrayList<>();
+        ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
         Hall hall =
-                new Hall(
-                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(10, 8), new Point(11, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Left, 5);
+        Segment ticketOfficeSegment1 = new Segment(new Point(10, 8), new Point(11, 10));
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Left, 5);
 
         hall.addTicketOffice(ticketOffice1);
 
@@ -144,15 +139,14 @@ class HallTest {
     @Test
     @DisplayName("Adding client to single ticket office in right")
     void testAddClientToSingleRightTicketOffice() {
-        ArrayList<Position> entrances = new ArrayList<>();
+        ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
         Hall hall =
-                new Hall(
-                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(10, 8), new Point(11, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Right, 5);
+        Segment ticketOfficeSegment1 = new Segment(new Point(10, 8), new Point(11, 10));
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Right, 5);
 
         hall.addTicketOffice(ticketOffice1);
 
@@ -168,25 +162,24 @@ class HallTest {
             "Adding clients to multiple ticket offices. Should be added to the closest with the"
                     + " least number of clients")
     void testAddClientsToMultipleTicketsOffices() {
-        ArrayList<Position> entrances = new ArrayList<>();
+        ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
         Hall hall =
-                new Hall(
-                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(9, 0), new Point(11, 1));
-        Position ticketOfficePosition2 = new Position(new Point(9, 19), new Point(11, 20));
-        Position ticketOfficePosition3 = new Position(new Point(19, 8), new Point(20, 10));
+        Segment ticketOfficeSegment1 = new Segment(new Point(9, 0), new Point(11, 1));
+        Segment ticketOfficeSegment2 = new Segment(new Point(9, 19), new Point(11, 20));
+        Segment ticketOfficeSegment3 = new Segment(new Point(19, 8), new Point(20, 10));
 
         int timeToServeTicket = 5;
 
         TicketOffice ticketOffice1 =
-                new TicketOffice(ticketOfficePosition1, Direction.Up, timeToServeTicket);
+                new TicketOffice(ticketOfficeSegment1, Direction.Up, timeToServeTicket);
         TicketOffice ticketOffice2 =
-                new TicketOffice(ticketOfficePosition2, Direction.Down, timeToServeTicket);
+                new TicketOffice(ticketOfficeSegment2, Direction.Down, timeToServeTicket);
         TicketOffice ticketOffice3 =
-                new TicketOffice(ticketOfficePosition3, Direction.Right, timeToServeTicket);
+                new TicketOffice(ticketOfficeSegment3, Direction.Right, timeToServeTicket);
 
         hall.addTicketOffice(ticketOffice1);
         hall.addTicketOffice(ticketOffice2);
@@ -220,15 +213,14 @@ class HallTest {
             "Adding clients to multiple ticket offices. Should be added to the closest with the"
                     + " least number of clients")
     void testRemoveClientFromTicketOfficeQueue() {
-        ArrayList<Position> entrances = new ArrayList<>();
+        ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
         Hall hall =
-                new Hall(
-                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition = new Position(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice = new TicketOffice(ticketOfficePosition, Direction.Up, 5);
+        Segment ticketOfficeSegment = new Segment(new Point(10, 9), new Point(12, 10));
+        TicketOffice ticketOffice = new TicketOffice(ticketOfficeSegment, Direction.Up, 5);
 
         hall.addTicketOffice(ticketOffice);
 
@@ -256,15 +248,14 @@ class HallTest {
     @Test
     @DisplayName("Adding privileged client to single ticket office in up")
     void testAddPrivilegedClientToSingleUpTicketOffice() {
-        ArrayList<Position> entrances = new ArrayList<>();
+        ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
         Hall hall =
-                new Hall(
-                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up, 5);
+        Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, 5);
 
         hall.addTicketOffice(ticketOffice1);
         Client client1 = getClient(1, new Privilegy("ordinary", 0), new Point(3, 4));
@@ -285,15 +276,14 @@ class HallTest {
     @Test
     @DisplayName("Adding privileged clients to single ticket office in up")
     void testAddPrivilegedClientsToSingleUpTicketOffice() {
-        ArrayList<Position> entrances = new ArrayList<>();
+        ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
         Hall hall =
-                new Hall(
-                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up, 5);
+        Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, 5);
 
         hall.addTicketOffice(ticketOffice1);
 
@@ -321,15 +311,14 @@ class HallTest {
             "Adding privileged clients with the same privilege type and significance to"
                     + " single ticket office in up")
     void testAddPrivilegedClientsWithDifferentSignificanceToSingleUpTicketOffice() {
-        ArrayList<Position> entrances = new ArrayList<>();
+        ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
         Hall hall =
-                new Hall(
-                        new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
-        Position ticketOfficePosition1 = new Position(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up, 5);
+        Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, 5);
 
         hall.addTicketOffice(ticketOffice1);
 

@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class Hall {
-    private ArrayList<Position> entrances;
+    private ArrayList<Segment> entrances;
     private ArrayList<TicketOffice> ticketOffices;
-    private Position size;
+    private Segment size;
     private MapManager mapManager;
 
     // public Iterable<IEvent> events;
 
-    Hall(Position size, ArrayList<Position> entrances, ArrayList<TicketOffice> ticketOffices) {
+    Hall(Segment size, ArrayList<Segment> entrances, ArrayList<TicketOffice> ticketOffices) {
         this.size = size;
         this.ticketOffices = ticketOffices;
         this.entrances = entrances;
@@ -60,11 +60,11 @@ public class Hall {
         return lowestSizeTicketOffice.getQueue().size();
     }
 
-    public Boolean isCellFree(Position position) {
-        return mapManager.positionIsFree(position);
+    public Boolean isCellFree(Segment segment) {
+        return mapManager.positionIsFree(segment);
     }
 
-    public ArrayList<Position> getEntrances() {
+    public ArrayList<Segment> getEntrances() {
         return entrances;
     }
 

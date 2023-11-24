@@ -1,6 +1,6 @@
 package com.StationManager.app.domain.train_station;
 
-import com.StationManager.app.domain.Transaction;
+import com.StationManager.app.domain.ServeRecord;
 import com.StationManager.app.domain.client.Client;
 
 import java.awt.Point;
@@ -8,18 +8,18 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class TicketOffice {
-    private Position position;
+    private Segment segment;
     private LinkedList<Client> queue;
     private Integer timeToServeTicket;
     private Boolean isClosed;
     private Boolean isReserved;
     private Direction direction;
-    private Iterable<Transaction> transactions;
+    private Iterable<ServeRecord> transactions;
 
     // public Iterable<IEvent> events;
 
-    public TicketOffice(Position position, Direction direction, Integer timeToServeTicket) {
-        this.position = position;
+    public TicketOffice(Segment segment, Direction direction, Integer timeToServeTicket) {
+        this.segment = segment;
         this.queue = new LinkedList<>();
         this.timeToServeTicket = timeToServeTicket;
         this.isClosed = false;
@@ -40,12 +40,12 @@ public class TicketOffice {
         this.direction = direction;
     }
 
-    public Position getPosition() {
-        return this.position;
+    public Segment getPosition() {
+        return this.segment;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
+    public void setPosition(Segment segment) {
+        this.segment = segment;
     }
 
     public void setClosed(Boolean bool) {

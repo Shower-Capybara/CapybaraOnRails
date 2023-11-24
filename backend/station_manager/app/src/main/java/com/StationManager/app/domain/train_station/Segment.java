@@ -1,12 +1,12 @@
 package com.StationManager.app.domain.train_station;
 
-import java.awt.*;
+import java.awt.Point;
 
-public class Position {
+public class Segment {
     private Point start;
     private Point end;
 
-    public Position(Point start, Point end) {
+    public Segment(Point start, Point end) {
         this.start = start;
         this.end = end;
     }

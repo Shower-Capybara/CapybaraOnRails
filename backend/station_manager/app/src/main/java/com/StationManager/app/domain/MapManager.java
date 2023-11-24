@@ -3,7 +3,7 @@ package com.StationManager.app.domain;
 import com.StationManager.app.domain.client.Client;
 import com.StationManager.app.domain.train_station.Direction;
 import com.StationManager.app.domain.train_station.Hall;
-import com.StationManager.app.domain.train_station.Position;
+import com.StationManager.app.domain.train_station.Segment;
 import com.StationManager.app.domain.train_station.TicketOffice;
 
 import java.awt.*;
@@ -12,10 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MapManager {
-    private Position size;
+    private Segment size;
     private Hall hall;
 
-    public MapManager(Position size, Hall hall) {
+    public MapManager(Segment size, Hall hall) {
         this.size = size;
         this.hall = hall;
     }
@@ -87,7 +87,7 @@ public class MapManager {
                 calculatedPoint = new Point(midX + 1, midY);
             }
 
-            if (positionIsFree(new Position(calculatedPoint, calculatedPoint))) {
+            if (positionIsFree(new Segment(calculatedPoint, calculatedPoint))) {
                 return calculatedPoint;
             }
         } else {
@@ -121,7 +121,7 @@ public class MapManager {
                 calculatedPoint = new Point(newX, newY);
             }
 
-            if (positionIsFree(new Position(calculatedPoint, calculatedPoint))) {
+            if (positionIsFree(new Segment(calculatedPoint, calculatedPoint))) {
                 return calculatedPoint;
             }
         }
@@ -130,12 +130,12 @@ public class MapManager {
     }
 
     // Check if position is free
-    public Boolean positionIsFree(Position position) {
+    public Boolean positionIsFree(Segment segment) {
         // Check if position is not out of bounds
-        if (position.getStart().x < size.getStart().x
-                || position.getStart().y < size.getStart().y
-                || position.getEnd().x > size.getEnd().x
-                || position.getEnd().y > size.getEnd().y) {
+        if (segment.getStart().x < size.getStart().x
+                || segment.getStart().y < size.getStart().y
+                || segment.getEnd().x > size.getEnd().x
+                || segment.getEnd().y > size.getEnd().y) {
             return false;
         }
 
@@ -143,12 +143,11 @@ public class MapManager {
         var ticketOffices = hall.getTicketOffices();
 
         // Check if position is free
-        if (entrances.stream().anyMatch(pos -> posiotionsOverlap(pos, position))) {
+        if (entrances.stream().anyMatch(pos -> posiotionsOverlap(pos, segment))) {
             return false;
         }
         if (ticketOffices.stream()
-                .anyMatch(
-                        ticketOffice -> posiotionsOverlap(ticketOffice.getPosition(), position))) {
+                .anyMatch(ticketOffice -> posiotionsOverlap(ticketOffice.getPosition(), segment))) {
             return false;
         }
         if (ticketOffices.stream()
@@ -158,38 +157,38 @@ public class MapManager {
                                         .anyMatch(
                                                 client ->
                                                         positionContainsPoint(
-                                                                position, client.getPosition())))) {
+                                                                segment, client.getPosition())))) {
             return false;
         }
         return true;
     }
 
     // Check if position contains point
-    public static Boolean positionContainsPoint(Position position, Point point) {
+    public static Boolean positionContainsPoint(Segment segment, Point point) {
         int pointX = point.x;
         int pointY = point.y;
 
-        int startX = position.getStart().x;
-        int startY = position.getStart().y;
-        int endX = position.getEnd().x;
-        int endY = position.getEnd().y;
+        int startX = segment.getStart().x;
+        int startY = segment.getStart().y;
+        int endX = segment.getEnd().x;
+        int endY = segment.getEnd().y;
 
         return pointX >= startX && pointX <= endX && pointY >= startY && pointY <= endY;
     }
 
     // Check if two postiotions overlap each other
-    public static Boolean posiotionsOverlap(Position position1, Position position2) {
+    public static Boolean posiotionsOverlap(Segment segment1, Segment segment2) {
         ArrayList<Point> points1 = new ArrayList<>();
         ArrayList<Point> points2 = new ArrayList<>();
 
-        for (int x = position1.getStart().x; x <= position1.getEnd().x; x++) {
-            for (int y = position1.getStart().y; y <= position1.getEnd().y; y++) {
+        for (int x = segment1.getStart().x; x <= segment1.getEnd().x; x++) {
+            for (int y = segment1.getStart().y; y <= segment1.getEnd().y; y++) {
                 points1.add(new Point(x, y));
             }
         }
 
-        for (int x = position2.getStart().x; x <= position2.getEnd().x; x++) {
-            for (int y = position2.getStart().y; y <= position2.getEnd().y; y++) {
+        for (int x = segment2.getStart().x; x <= segment2.getEnd().x; x++) {
+            for (int y = segment2.getStart().y; y <= segment2.getEnd().y; y++) {
                 points2.add(new Point(x, y));
             }
         }
