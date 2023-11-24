@@ -5,6 +5,7 @@ import com.StationManager.app.domain.Transaction;
 import com.StationManager.app.domain.client.Client;
 
 import java.awt.Point;
+import java.util.ArrayList;
 
 public class TicketOffice {
     private Position position;
@@ -17,10 +18,14 @@ public class TicketOffice {
 
     // public Iterable<IEvent> events;
 
-    public TicketOffice(Position position, Direction direction) {
+    public TicketOffice(Position position, Direction direction, Integer timeToServeTicket) {
         this.position = position;
         this.queue = new Queue();
+        this.timeToServeTicket = timeToServeTicket;
+        this.isClosed = false;
+        this.isReserved = false;
         this.direction = direction;
+        this.transactions = new ArrayList<>();
     }
 
     public Queue getQueue() {

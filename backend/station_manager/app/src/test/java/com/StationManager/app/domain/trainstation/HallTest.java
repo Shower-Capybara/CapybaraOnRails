@@ -24,9 +24,14 @@ class HallTest {
         Position ticketOfficePosition2 = new Position(new Point(0, 5), new Point(1, 7));
         Position ticketOfficePosition3 = new Position(new Point(10, 4), new Point(11, 6));
 
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Down);
-        TicketOffice ticketOffice2 = new TicketOffice(ticketOfficePosition2, Direction.Left);
-        TicketOffice ticketOffice3 = new TicketOffice(ticketOfficePosition3, Direction.Right);
+        int timeToServeTicket = 5;
+
+        TicketOffice ticketOffice1 =
+                new TicketOffice(ticketOfficePosition1, Direction.Down, timeToServeTicket);
+        TicketOffice ticketOffice2 =
+                new TicketOffice(ticketOfficePosition2, Direction.Left, timeToServeTicket);
+        TicketOffice ticketOffice3 =
+                new TicketOffice(ticketOfficePosition3, Direction.Right, timeToServeTicket);
 
         Hall hall =
                 new Hall(
@@ -52,8 +57,11 @@ class HallTest {
         Position ticketOfficePosition1 = new Position(new Point(0, 0), new Point(2, 1));
         Position ticketOfficePosition2 = new Position(new Point(0, 0), new Point(2, 1));
 
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Down);
-        TicketOffice ticketOffice2 = new TicketOffice(ticketOfficePosition2, Direction.Down);
+        int timeToServeTicket = 5;
+        TicketOffice ticketOffice1 =
+                new TicketOffice(ticketOfficePosition1, Direction.Down, timeToServeTicket);
+        TicketOffice ticketOffice2 =
+                new TicketOffice(ticketOfficePosition2, Direction.Down, timeToServeTicket);
 
         hall.addTicketOffice(ticketOffice1);
 
@@ -71,10 +79,9 @@ class HallTest {
                         new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Position ticketOfficePosition1 = new Position(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up);
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up, 5);
 
         hall.addTicketOffice(ticketOffice1);
-        ticketOffice1.setClosed(false);
 
         Client client1 =
                 new Client(
@@ -109,10 +116,9 @@ class HallTest {
                         new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Position ticketOfficePosition1 = new Position(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Down);
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Down, 5);
 
         hall.addTicketOffice(ticketOffice1);
-        ticketOffice1.setClosed(false);
 
         Client client1 =
                 new Client(
@@ -147,10 +153,9 @@ class HallTest {
                         new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Position ticketOfficePosition1 = new Position(new Point(10, 8), new Point(11, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Left);
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Left, 5);
 
         hall.addTicketOffice(ticketOffice1);
-        ticketOffice1.setClosed(false);
 
         Client client1 =
                 new Client(
@@ -185,10 +190,9 @@ class HallTest {
                         new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Position ticketOfficePosition1 = new Position(new Point(10, 8), new Point(11, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Right);
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Right, 5);
 
         hall.addTicketOffice(ticketOffice1);
-        ticketOffice1.setClosed(false);
 
         Client client1 =
                 new Client(
@@ -228,13 +232,14 @@ class HallTest {
         Position ticketOfficePosition2 = new Position(new Point(9, 19), new Point(11, 20));
         Position ticketOfficePosition3 = new Position(new Point(19, 8), new Point(20, 10));
 
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up);
-        TicketOffice ticketOffice2 = new TicketOffice(ticketOfficePosition2, Direction.Down);
-        TicketOffice ticketOffice3 = new TicketOffice(ticketOfficePosition3, Direction.Right);
+        int timeToServeTicket = 5;
 
-        ticketOffice1.setClosed(false);
-        ticketOffice2.setClosed(false);
-        ticketOffice3.setClosed(false);
+        TicketOffice ticketOffice1 =
+                new TicketOffice(ticketOfficePosition1, Direction.Up, timeToServeTicket);
+        TicketOffice ticketOffice2 =
+                new TicketOffice(ticketOfficePosition2, Direction.Down, timeToServeTicket);
+        TicketOffice ticketOffice3 =
+                new TicketOffice(ticketOfficePosition3, Direction.Right, timeToServeTicket);
 
         hall.addTicketOffice(ticketOffice1);
         hall.addTicketOffice(ticketOffice2);
@@ -350,10 +355,9 @@ class HallTest {
                         new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Position ticketOfficePosition = new Position(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice = new TicketOffice(ticketOfficePosition, Direction.Up);
+        TicketOffice ticketOffice = new TicketOffice(ticketOfficePosition, Direction.Up, 5);
 
         hall.addTicketOffice(ticketOffice);
-        ticketOffice.setClosed(false);
 
         Client client1 =
                 new Client(
@@ -431,10 +435,9 @@ class HallTest {
                         new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Position ticketOfficePosition1 = new Position(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up);
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up, 5);
 
         hall.addTicketOffice(ticketOffice1);
-        ticketOffice1.setClosed(false);
 
         Client client1 =
                 new Client(
@@ -506,10 +509,9 @@ class HallTest {
                         new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Position ticketOfficePosition1 = new Position(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up);
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up, 5);
 
         hall.addTicketOffice(ticketOffice1);
-        ticketOffice1.setClosed(false);
 
         Client client1 =
                 new Client(
@@ -599,10 +601,9 @@ class HallTest {
                         new Position(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Position ticketOfficePosition1 = new Position(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up);
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficePosition1, Direction.Up, 5);
 
         hall.addTicketOffice(ticketOffice1);
-        ticketOffice1.setClosed(false);
 
         Client client1 =
                 new Client(
