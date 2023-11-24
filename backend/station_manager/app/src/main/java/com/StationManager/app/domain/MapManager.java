@@ -6,9 +6,7 @@ import com.StationManager.app.domain.train_station.Segment;
 import com.StationManager.app.domain.train_station.TicketOffice;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MapManager {
     private static Segment size;
@@ -135,10 +133,7 @@ public class MapManager {
     public static Boolean IsFree(
             Segment segment, ArrayList<Segment> entrances, ArrayList<TicketOffice> ticketOffices) {
         // Check if position is not out of bounds
-        if (segment.getStart().x < size.getStart().x
-                || segment.getStart().y < size.getStart().y
-                || segment.getEnd().x > size.getEnd().x
-                || segment.getEnd().y > size.getEnd().y) {
+        if (isOutOfBounds(segment)) {
             return false;
         }
 
@@ -146,10 +141,12 @@ public class MapManager {
         if (entrances.stream().anyMatch(pos -> posiotionsOverlap(pos, segment))) {
             return false;
         }
+
         if (ticketOffices.stream()
                 .anyMatch(ticketOffice -> posiotionsOverlap(ticketOffice.getPosition(), segment))) {
             return false;
         }
+
         if (ticketOffices.stream()
                 .anyMatch(
                         ticketOffice ->
@@ -160,7 +157,15 @@ public class MapManager {
                                                                 segment, client.getPosition())))) {
             return false;
         }
+
         return true;
+    }
+
+    private static boolean isOutOfBounds(Segment segment) {
+        return segment.getStart().x < size.getStart().x
+                || segment.getStart().y < size.getStart().y
+                || segment.getEnd().x > size.getEnd().x
+                || segment.getEnd().y > size.getEnd().y;
     }
 
     // Check if position contains point
@@ -178,22 +183,21 @@ public class MapManager {
 
     // Check if two postiotions overlap each other
     public static Boolean posiotionsOverlap(Segment segment1, Segment segment2) {
-        ArrayList<Point> points1 = new ArrayList<>();
-        ArrayList<Point> points2 = new ArrayList<>();
+        Set<Point> points1 = generatePoints(segment1);
+        Set<Point> points2 = generatePoints(segment2);
 
-        for (int x = segment1.getStart().x; x <= segment1.getEnd().x; x++) {
-            for (int y = segment1.getStart().y; y <= segment1.getEnd().y; y++) {
-                points1.add(new Point(x, y));
+        return points1.stream().anyMatch(points2::contains);
+    }
+
+    private static Set<Point> generatePoints(Segment segment) {
+        Set<Point> points = new HashSet<>();
+
+        for (int x = segment.getStart().x; x <= segment.getEnd().x; x++) {
+            for (int y = segment.getStart().y; y <= segment.getEnd().y; y++) {
+                points.add(new Point(x, y));
             }
         }
 
-        for (int x = segment2.getStart().x; x <= segment2.getEnd().x; x++) {
-            for (int y = segment2.getStart().y; y <= segment2.getEnd().y; y++) {
-                points2.add(new Point(x, y));
-            }
-        }
-
-        return points1.stream()
-                .anyMatch(point1 -> points2.stream().anyMatch(point2 -> point1.equals(point2)));
+        return points;
     }
 }
