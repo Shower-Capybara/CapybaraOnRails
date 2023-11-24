@@ -34,15 +34,11 @@ class HallTest {
 
         int timeToServeTicket = 5;
 
-        TicketOffice ticketOffice1 =
-                new TicketOffice(ticketOfficeSegment1, Direction.Down, timeToServeTicket);
-        TicketOffice ticketOffice2 =
-                new TicketOffice(ticketOfficeSegment2, Direction.Left, timeToServeTicket);
-        TicketOffice ticketOffice3 =
-                new TicketOffice(ticketOfficeSegment3, Direction.Right, timeToServeTicket);
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Down, timeToServeTicket);
+        TicketOffice ticketOffice2 = new TicketOffice(ticketOfficeSegment2, Direction.Left, timeToServeTicket);
+        TicketOffice ticketOffice3 = new TicketOffice(ticketOfficeSegment3, Direction.Right, timeToServeTicket);
 
-        Hall hall =
-                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+        Hall hall = new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         hall.addTicketOffice(ticketOffice1);
         hall.addTicketOffice(ticketOffice2);
@@ -57,17 +53,14 @@ class HallTest {
         ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall =
-                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+        Hall hall = new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Segment ticketOfficeSegment1 = new Segment(new Point(0, 0), new Point(2, 1));
         Segment ticketOfficeSegment2 = new Segment(new Point(0, 0), new Point(2, 1));
 
         int timeToServeTicket = 5;
-        TicketOffice ticketOffice1 =
-                new TicketOffice(ticketOfficeSegment1, Direction.Down, timeToServeTicket);
-        TicketOffice ticketOffice2 =
-                new TicketOffice(ticketOfficeSegment2, Direction.Down, timeToServeTicket);
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Down, timeToServeTicket);
+        TicketOffice ticketOffice2 = new TicketOffice(ticketOfficeSegment2, Direction.Down, timeToServeTicket);
 
         hall.addTicketOffice(ticketOffice1);
 
@@ -80,8 +73,7 @@ class HallTest {
         ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall =
-                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+        Hall hall = new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, 5);
@@ -100,8 +92,7 @@ class HallTest {
         ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall =
-                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+        Hall hall = new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Down, 5);
@@ -121,8 +112,7 @@ class HallTest {
         ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall =
-                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+        Hall hall = new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Segment ticketOfficeSegment1 = new Segment(new Point(10, 8), new Point(11, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Left, 5);
@@ -142,8 +132,7 @@ class HallTest {
         ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall =
-                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+        Hall hall = new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Segment ticketOfficeSegment1 = new Segment(new Point(10, 8), new Point(11, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Right, 5);
@@ -165,8 +154,7 @@ class HallTest {
         ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall =
-                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+        Hall hall = new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Segment ticketOfficeSegment1 = new Segment(new Point(9, 0), new Point(11, 1));
         Segment ticketOfficeSegment2 = new Segment(new Point(9, 19), new Point(11, 20));
@@ -174,12 +162,9 @@ class HallTest {
 
         int timeToServeTicket = 5;
 
-        TicketOffice ticketOffice1 =
-                new TicketOffice(ticketOfficeSegment1, Direction.Up, timeToServeTicket);
-        TicketOffice ticketOffice2 =
-                new TicketOffice(ticketOfficeSegment2, Direction.Down, timeToServeTicket);
-        TicketOffice ticketOffice3 =
-                new TicketOffice(ticketOfficeSegment3, Direction.Right, timeToServeTicket);
+        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, timeToServeTicket);
+        TicketOffice ticketOffice2 = new TicketOffice(ticketOfficeSegment2, Direction.Down, timeToServeTicket);
+        TicketOffice ticketOffice3 = new TicketOffice(ticketOfficeSegment3, Direction.Right, timeToServeTicket);
 
         hall.addTicketOffice(ticketOffice1);
         hall.addTicketOffice(ticketOffice2);
@@ -216,8 +201,7 @@ class HallTest {
         ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall =
-                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+        Hall hall = new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Segment ticketOfficeSegment = new Segment(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice = new TicketOffice(ticketOfficeSegment, Direction.Up, 5);
@@ -251,8 +235,7 @@ class HallTest {
         ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall =
-                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+        Hall hall = new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, 5);
@@ -279,8 +262,7 @@ class HallTest {
         ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall =
-                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+        Hall hall = new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, 5);
@@ -314,8 +296,7 @@ class HallTest {
         ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall =
-                new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+        Hall hall = new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
 
         Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, 5);
