@@ -1,15 +1,15 @@
 package com.StationManager.app.domain.trainstation;
 
-import com.StationManager.app.domain.Queue;
 import com.StationManager.app.domain.Transaction;
 import com.StationManager.app.domain.client.Client;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class TicketOffice {
     private Position position;
-    private Queue queue;
+    private LinkedList<Client> queue;
     private Integer timeToServeTicket;
     private Boolean isClosed;
     private Boolean isReserved;
@@ -20,7 +20,7 @@ public class TicketOffice {
 
     public TicketOffice(Position position, Direction direction, Integer timeToServeTicket) {
         this.position = position;
-        this.queue = new Queue();
+        this.queue = new LinkedList<>();
         this.timeToServeTicket = timeToServeTicket;
         this.isClosed = false;
         this.isReserved = false;
@@ -28,7 +28,7 @@ public class TicketOffice {
         this.transactions = new ArrayList<>();
     }
 
-    public Queue getQueue() {
+    public LinkedList<Client> getQueue() {
         return this.queue;
     }
 
@@ -66,9 +66,9 @@ public class TicketOffice {
             throw new IllegalStateException(
                     "Client queue is empty: There are no clients to delete");
         }
-        Client removedClient = queue.pop();
+        var removedClient = queue.pop();
         Point previousClientPosition = removedClient.getPosition();
-        for (Client client : queue.getClients()) {
+        for (Client client : queue) {
             Point currentClientPosition = client.getPosition();
             client.setPosition(previousClientPosition);
             previousClientPosition = currentClientPosition;
@@ -86,20 +86,19 @@ public class TicketOffice {
 
         // Take into account the change in customer positions during queue changes
         Point insertedClientPosition = new Point(client.getPosition());
-        for (int i = insertIndex; i < queue.getClients().size() - 1; i++) {
-            var currentClient = queue.getClients().get(i);
-            var nextClient = queue.getClients().get(i + 1);
+        for (int i = insertIndex; i < queue.size() - 1; i++) {
+            var currentClient = queue.get(i);
+            var nextClient = queue.get(i + 1);
             currentClient.setPosition(nextClient.getPosition());
         }
         // Change the position for the last client
-        queue.getClients().getLast().setPosition(insertedClientPosition);
+        queue.getLast().setPosition(insertedClientPosition);
     }
 
     private int findInsertIndex(Client newClient) {
         // Check if there are only ordinary clients in the queue
         boolean hasOnlyOrdinaryClients =
-                queue.getClients().stream()
-                        .allMatch(c -> c.getPrivilegy().getType().equals("ordinary"));
+                queue.stream().allMatch(c -> c.getPrivilegy().getType().equals("ordinary"));
 
         if (hasOnlyOrdinaryClients && (!newClient.getPrivilegy().getType().equals("ordinary"))) {
             // Insert new client at position 1
@@ -107,8 +106,8 @@ public class TicketOffice {
         } else {
             // Iterate through the queue to find the appropriate position based on privilege type
             // and priority
-            for (int i = 1; i < queue.getClients().size(); i++) {
-                Client existingClient = queue.getClients().get(i);
+            for (int i = 1; i < queue.size(); i++) {
+                Client existingClient = queue.get(i);
 
                 // Compare privilege types
                 int significanceComparison =
@@ -125,6 +124,6 @@ public class TicketOffice {
         }
 
         // If no specific position is found, insert at the end
-        return queue.getClients().size();
+        return queue.size();
     }
 }

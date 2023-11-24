@@ -2,7 +2,6 @@ package com.StationManager.app.domain.trainstation;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.StationManager.app.domain.Queue;
 import com.StationManager.app.domain.client.Client;
 import com.StationManager.app.domain.client.Privilegy;
 
@@ -40,7 +39,7 @@ class TicketOfficeTest {
 
         ticketOffice.removeClient();
 
-        Queue expectedResult = new Queue();
+        LinkedList<Client> expectedResult = new LinkedList<>();
         expectedResult.add(
                 new Client(
                         2,
@@ -50,7 +49,7 @@ class TicketOfficeTest {
                         new Privilegy("ordinary", 0),
                         new Point(3, 3)));
 
-        assertIterableEquals(expectedResult.getClients(), ticketOffice.getQueue().getClients());
+        assertIterableEquals(expectedResult, ticketOffice.getQueue());
     }
 
     @Test
@@ -121,7 +120,7 @@ class TicketOfficeTest {
                         new Privilegy("ordinary", 0),
                         new Point(3, 4)));
 
-        assertIterableEquals(expectedClientsQueue, ticketOffice.getQueue().getClients());
+        assertIterableEquals(expectedClientsQueue, ticketOffice.getQueue());
     }
 
     @Test
@@ -205,6 +204,6 @@ class TicketOfficeTest {
                         new Privilegy("ordinary", 0),
                         new Point(3, 5)));
 
-        assertIterableEquals(expectedClientsQueue, ticketOffice.getQueue().getClients());
+        assertIterableEquals(expectedClientsQueue, ticketOffice.getQueue());
     }
 }

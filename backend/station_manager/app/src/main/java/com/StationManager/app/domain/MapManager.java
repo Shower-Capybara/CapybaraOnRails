@@ -93,7 +93,7 @@ public class MapManager {
         } else {
             // Calculation of further clients' positions in queue
 
-            Point lastClientPoint = ticketOffice.getQueue().getLastClientPoint();
+            Point lastClientPoint = ticketOffice.getQueue().getLast().getPosition();
             // TicketBox Is In Top
             if (ticketOffice.getDirection() == Direction.Up) {
                 int newX = lastClientPoint.x;
@@ -154,7 +154,7 @@ public class MapManager {
         if (ticketOffices.stream()
                 .anyMatch(
                         ticketOffice ->
-                                ticketOffice.getQueue().getClients().stream()
+                                ticketOffice.getQueue().stream()
                                         .anyMatch(
                                                 client ->
                                                         positionContainsPoint(

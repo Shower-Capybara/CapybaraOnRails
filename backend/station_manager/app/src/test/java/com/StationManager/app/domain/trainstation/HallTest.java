@@ -95,7 +95,7 @@ class HallTest {
         hall.addClient(client1);
 
         assertEquals(
-                ticketOffice1.getQueue().getClients().get(0),
+                ticketOffice1.getQueue().get(0),
                 new Client(
                         2,
                         "Fname",
@@ -132,7 +132,7 @@ class HallTest {
         hall.addClient(client1);
 
         assertEquals(
-                ticketOffice1.getQueue().getClients().get(0),
+                ticketOffice1.getQueue().get(0),
                 new Client(
                         2,
                         "Fname",
@@ -169,7 +169,7 @@ class HallTest {
         hall.addClient(client1);
 
         assertEquals(
-                ticketOffice1.getQueue().getClients().get(0),
+                ticketOffice1.getQueue().get(0),
                 new Client(
                         2,
                         "Fname",
@@ -206,7 +206,7 @@ class HallTest {
         hall.addClient(client1);
 
         assertEquals(
-                ticketOffice1.getQueue().getClients().get(0),
+                ticketOffice1.getQueue().get(0),
                 new Client(
                         2,
                         "Fname",
@@ -288,7 +288,7 @@ class HallTest {
 
         hall.addClient(clientRight1);
         assertEquals(
-                ticketOffice3.getQueue().getClients().get(0),
+                ticketOffice3.getQueue().get(0),
                 new Client(
                         1,
                         "Fname",
@@ -299,7 +299,7 @@ class HallTest {
 
         hall.addClient(clientUp1);
         assertEquals(
-                ticketOffice1.getQueue().getClients().get(0),
+                ticketOffice1.getQueue().get(0),
                 new Client(
                         3,
                         "Fname",
@@ -310,7 +310,7 @@ class HallTest {
 
         hall.addClient(clientDown1);
         assertEquals(
-                ticketOffice2.getQueue().getClients().get(0),
+                ticketOffice2.getQueue().get(0),
                 new Client(
                         4,
                         "Fname",
@@ -321,7 +321,7 @@ class HallTest {
 
         hall.addClient(clientRight2);
         assertEquals(
-                ticketOffice3.getQueue().getClients().get(1),
+                ticketOffice3.getQueue().get(1),
                 new Client(
                         2,
                         "Fname",
@@ -332,7 +332,7 @@ class HallTest {
 
         hall.addClient(clientDown2);
         assertEquals(
-                ticketOffice2.getQueue().getClients().get(1),
+                ticketOffice2.getQueue().get(1),
                 new Client(
                         5,
                         "Fname",
@@ -390,7 +390,7 @@ class HallTest {
 
         hall.getTicketOffices().get(0).removeClient();
 
-        LinkedList<Client> expectedClientsQueue = new LinkedList<Client>();
+        var expectedClientsQueue = new LinkedList<Client>();
         expectedClientsQueue.add(
                 new Client(
                         2,
@@ -407,8 +407,7 @@ class HallTest {
                         (short) 2,
                         new Privilegy("ordinary", 0),
                         new Point(11, 12)));
-        assertIterableEquals(
-                hall.getTicketOffices().get(0).getQueue().getClients(), expectedClientsQueue);
+        assertIterableEquals(hall.getTicketOffices().get(0).getQueue(), expectedClientsQueue);
 
         hall.getTicketOffices().get(0).removeClient();
         expectedClientsQueue = new LinkedList<Client>();
@@ -420,8 +419,7 @@ class HallTest {
                         (short) 2,
                         new Privilegy("ordinary", 0),
                         new Point(11, 11)));
-        assertIterableEquals(
-                expectedClientsQueue, hall.getTicketOffices().get(0).getQueue().getClients());
+        assertIterableEquals(expectedClientsQueue, hall.getTicketOffices().get(0).getQueue());
     }
 
     @Test
@@ -494,8 +492,7 @@ class HallTest {
                         new Privilegy("ordinary", 0),
                         new Point(11, 13)));
 
-        assertIterableEquals(
-                expectedClientsQueue, hall.getTicketOffices().get(0).getQueue().getClients());
+        assertIterableEquals(expectedClientsQueue, hall.getTicketOffices().get(0).getQueue());
     }
 
     @Test
@@ -584,8 +581,7 @@ class HallTest {
                         (short) 2,
                         new Privilegy("ordinary", 0),
                         new Point(11, 14)));
-        assertIterableEquals(
-                expectedClientsQueue, hall.getTicketOffices().get(0).getQueue().getClients());
+        assertIterableEquals(expectedClientsQueue, hall.getTicketOffices().get(0).getQueue());
     }
 
     @Test
@@ -693,7 +689,6 @@ class HallTest {
                         (short) 2,
                         new Privilegy("ordinary", 0),
                         new Point(11, 15)));
-        assertIterableEquals(
-                expectedClientsQueue, hall.getTicketOffices().get(0).getQueue().getClients());
+        assertIterableEquals(expectedClientsQueue, hall.getTicketOffices().get(0).getQueue());
     }
 }

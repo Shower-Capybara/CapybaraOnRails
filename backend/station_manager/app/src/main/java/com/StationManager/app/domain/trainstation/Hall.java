@@ -39,7 +39,7 @@ public class Hall {
 
         ArrayList<TicketOffice> smallestTicketOffices =
                 WorkingTicketOffices.stream()
-                        .filter(ticketOffice -> ticketOffice.getQueue().getClients().size() == size)
+                        .filter(ticketOffice -> ticketOffice.getQueue().size() == size)
                         .collect(Collectors.toCollection(ArrayList::new));
 
         mapManager.assignClientToClosestTicketOffice(client, smallestTicketOffices);
@@ -52,13 +52,12 @@ public class Hall {
 
         TicketOffice lowestSizeTicketOffice = WorkingTicketOffices.get(0);
         for (TicketOffice ticketOffice : WorkingTicketOffices) {
-            if (ticketOffice.getQueue().getClients().size()
-                    < lowestSizeTicketOffice.getQueue().getClients().size()) {
+            if (ticketOffice.getQueue().size() < lowestSizeTicketOffice.getQueue().size()) {
                 lowestSizeTicketOffice = ticketOffice;
             }
         }
 
-        return lowestSizeTicketOffice.getQueue().getClients().size();
+        return lowestSizeTicketOffice.getQueue().size();
     }
 
     public Boolean isCellFree(Position position) {
