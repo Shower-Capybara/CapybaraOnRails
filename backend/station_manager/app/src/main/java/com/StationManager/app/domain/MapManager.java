@@ -87,7 +87,7 @@ public class MapManager {
                 calculatedPoint = new Point(midX + 1, midY);
             }
 
-            if (positionIsFree(new Segment(calculatedPoint, calculatedPoint))) {
+            if (IsFree(new Segment(calculatedPoint, calculatedPoint))) {
                 return calculatedPoint;
             }
         } else {
@@ -121,7 +121,7 @@ public class MapManager {
                 calculatedPoint = new Point(newX, newY);
             }
 
-            if (positionIsFree(new Segment(calculatedPoint, calculatedPoint))) {
+            if (IsFree(new Segment(calculatedPoint, calculatedPoint))) {
                 return calculatedPoint;
             }
         }
@@ -130,7 +130,7 @@ public class MapManager {
     }
 
     // Check if position is free
-    public Boolean positionIsFree(Segment segment) {
+    public Boolean IsFree(Segment segment) {
         // Check if position is not out of bounds
         if (segment.getStart().x < size.getStart().x
                 || segment.getStart().y < size.getStart().y

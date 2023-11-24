@@ -22,7 +22,7 @@ public class Hall {
     }
 
     public void addTicketOffice(TicketOffice ticketOffice) {
-        if (mapManager.positionIsFree(ticketOffice.getPosition())) {
+        if (mapManager.IsFree(ticketOffice.getPosition())) {
             ticketOffices.add(ticketOffice);
         } else {
             throw new IllegalStateException("Position is taken");
@@ -35,17 +35,17 @@ public class Hall {
                         .filter(ticketOffice -> !ticketOffice.getClosed())
                         .collect(Collectors.toCollection(ArrayList::new));
 
-        int size = getSizeOfSmallestQueue(WorkingTicketOffices);
+        int size = getSizeOfShortestQueue(WorkingTicketOffices);
 
-        ArrayList<TicketOffice> smallestTicketOffices =
+        ArrayList<TicketOffice> shortestQueueTicketOffices =
                 WorkingTicketOffices.stream()
                         .filter(ticketOffice -> ticketOffice.getQueue().size() == size)
                         .collect(Collectors.toCollection(ArrayList::new));
 
-        mapManager.assignClientToClosestTicketOffice(client, smallestTicketOffices);
+        mapManager.assignClientToClosestTicketOffice(client, shortestQueueTicketOffices);
     }
 
-    private static int getSizeOfSmallestQueue(ArrayList<TicketOffice> WorkingTicketOffices) {
+    private static int getSizeOfShortestQueue(ArrayList<TicketOffice> WorkingTicketOffices) {
         if (WorkingTicketOffices.isEmpty()) {
             throw new IllegalStateException("No ticket offices available");
         }
@@ -61,7 +61,7 @@ public class Hall {
     }
 
     public Boolean isCellFree(Segment segment) {
-        return mapManager.positionIsFree(segment);
+        return mapManager.IsFree(segment);
     }
 
     public ArrayList<Segment> getEntrances() {
