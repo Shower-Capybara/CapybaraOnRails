@@ -7,6 +7,7 @@ import com.StationManager.app.domain.train_station.TicketOffice;
 
 import java.awt.*;
 import java.util.*;
+import java.util.function.Function;
 
 public class MapManager {
     private static Segment size;
@@ -31,14 +32,13 @@ public class MapManager {
     public static void assignClientToClosestTicketOffice(
             Client client, ArrayList<Segment> entrances, ArrayList<TicketOffice> ticketOffices) {
         if (ticketOffices.size() == 1) {
-            client.setPosition(
-                    calculatePositionForNewClient(ticketOffices.get(0), entrances, ticketOffices));
+            client.setPosition(calculatePositionForNewClient(ticketOffices.get(0)));
             ticketOffices.get(0).addClient(client);
         } else {
             Map<TicketOffice, Point> points = new HashMap<>();
 
             for (TicketOffice t : ticketOffices) {
-                points.put(t, calculatePositionForNewClient(t, entrances, ticketOffices));
+                points.put(t, calculatePositionForNewClient(t));
             }
 
             TicketOffice closestTicketOffice = null;
@@ -55,8 +55,7 @@ public class MapManager {
                 }
             }
 
-            client.setPosition(
-                    calculatePositionForNewClient(closestTicketOffice, entrances, ticketOffices));
+            client.setPosition(calculatePositionForNewClient(closestTicketOffice));
             closestTicketOffice.addClient(client);
         }
     }
@@ -71,88 +70,30 @@ public class MapManager {
      * relative to the last client in the queue.
      *
      * @param ticketOffice The ticket office for which to calculate the new client's position.
-     * @param entrances The list of entrance segments.
-     * @param ticketOffices The list of ticket offices.
      * @return The calculated position for the new client or {@code null} if a suitable position is
      *     not found.
      */
-    public static Point calculatePositionForNewClient(
-            TicketOffice ticketOffice,
-            ArrayList<Segment> entrances,
-            ArrayList<TicketOffice> ticketOffices) {
-        Point calculatedPoint = null;
+    public static Point calculatePositionForNewClient(TicketOffice ticketOffice) {
+        var initialTransformation = new HashMap<Direction, Function<Segment, Point>>() {{
+            put(Direction.Up, (segment) -> new Point(segment.getStart().x + 1, segment.getEnd().y + 1));
+            put(Direction.Down, (segment) -> new Point(segment.getStart().x + 1, segment.getStart().y - 1));
+            put(Direction.Left, (segment) -> new Point(segment.getEnd().x - 1, segment.getEnd().y - 1));
+            put(Direction.Right, (segment) -> new Point(segment.getStart().x - 1, segment.getStart().y + 1));
+        }};
 
-        if (ticketOffice.getQueue().isEmpty()) {
-            // Calculation of first client's position in queue
+        var initialPoint = initialTransformation
+                .get(ticketOffice.getDirection())
+                .apply(ticketOffice.getSegment());
 
-            // TicketBox Is In Top
-            if (ticketOffice.getDirection() == Direction.Up) {
-                int midX = ticketOffice.getPosition().getStart().x + 1;
-                int midY = ticketOffice.getPosition().getEnd().y;
-                calculatedPoint = new Point(midX, midY + 1);
-            }
+        var step = new HashMap<Direction, Point>() {{
+            put(Direction.Up, new Point(0, 1));
+            put(Direction.Down, new Point(0, -1));
+            put(Direction.Left, new Point(1, 0));
+            put(Direction.Right, new Point(-1, 0));
+        }}.get(ticketOffice.getDirection());
 
-            // TicketBox Is In Bottom
-            if (ticketOffice.getDirection() == Direction.Down) {
-                int midX = ticketOffice.getPosition().getStart().x + 1;
-                int midY = ticketOffice.getPosition().getStart().y;
-                calculatedPoint = new Point(midX, midY - 1);
-            }
-
-            // TicketBox is to the right
-            if (ticketOffice.getDirection() == Direction.Right) {
-                int midX = ticketOffice.getPosition().getStart().x;
-                int midY = ticketOffice.getPosition().getStart().y + 1;
-                calculatedPoint = new Point(midX - 1, midY);
-            }
-
-            // TicketBox is to the left
-            if (ticketOffice.getDirection() == Direction.Left) {
-                int midX = ticketOffice.getPosition().getEnd().x;
-                int midY = ticketOffice.getPosition().getStart().y + 1;
-                calculatedPoint = new Point(midX + 1, midY);
-            }
-
-            if (IsFree(new Segment(calculatedPoint, calculatedPoint), entrances, ticketOffices)) {
-                return calculatedPoint;
-            }
-        } else {
-            // Calculation of further clients' positions in queue
-
-            Point lastClientPoint = ticketOffice.getQueue().getLast().getPosition();
-            // TicketBox Is In Top
-            if (ticketOffice.getDirection() == Direction.Up) {
-                int newX = lastClientPoint.x;
-                int newY = lastClientPoint.y + 1;
-                calculatedPoint = new Point(newX, newY);
-            }
-
-            // TicketBox Is In Bottom
-            if (ticketOffice.getDirection() == Direction.Down) {
-                int newX = lastClientPoint.x;
-                int newY = lastClientPoint.y - 1;
-                calculatedPoint = new Point(newX, newY);
-            }
-
-            // TicketBox Is In the Right
-            if (ticketOffice.getDirection() == Direction.Right) {
-                int newX = lastClientPoint.x - 1;
-                int newY = lastClientPoint.y;
-                calculatedPoint = new Point(newX, newY);
-            }
-
-            if (ticketOffice.getDirection() == Direction.Left) {
-                int newX = lastClientPoint.x + 1;
-                int newY = lastClientPoint.y;
-                calculatedPoint = new Point(newX, newY);
-            }
-
-            if (IsFree(new Segment(calculatedPoint, calculatedPoint), entrances, ticketOffices)) {
-                return calculatedPoint;
-            }
-        }
-
-        return calculatedPoint;
+        for (var unused: ticketOffice.getQueue()) initialPoint.move(step.x, step.y);
+        return initialPoint;
     }
 
     /**
@@ -184,7 +125,7 @@ public class MapManager {
         }
 
         if (ticketOffices.stream()
-                .anyMatch(ticketOffice -> posiotionsOverlap(ticketOffice.getPosition(), segment))) {
+                .anyMatch(ticketOffice -> posiotionsOverlap(ticketOffice.getSegment(), segment))) {
             return false;
         }
 

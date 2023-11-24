@@ -40,7 +40,7 @@ public class TicketOffice {
         this.direction = direction;
     }
 
-    public Segment getPosition() {
+    public Segment getSegment() {
         return this.segment;
     }
 

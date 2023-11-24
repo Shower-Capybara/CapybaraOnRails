@@ -22,7 +22,7 @@ public class Hall {
     }
 
     public void addTicketOffice(TicketOffice ticketOffice) {
-        if (mapManager.IsFree(ticketOffice.getPosition(), entrances, ticketOffices)) {
+        if (mapManager.IsFree(ticketOffice.getSegment(), entrances, ticketOffices)) {
             ticketOffices.add(ticketOffice);
         } else {
             throw new IllegalStateException("Position is taken");
