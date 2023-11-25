@@ -226,8 +226,8 @@ class HallTest {
 
     @Test
     @DisplayName(
-            "Adding clients to multiple ticket offices. Should be added to the closest with the"
-                    + " least number of clients")
+            "Adding client to single ticket office, then removing first client and checking if " +
+                "next clients changed their positions correctly")
     void testRemoveClientFromTicketOfficeQueue() {
 
         Hall hall = getHall();
