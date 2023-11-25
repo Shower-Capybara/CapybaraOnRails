@@ -21,12 +21,21 @@ class HallTest {
     Client getClient(int id, Privilegy privilegy, Point position) {
         return new Client(id, "Fname", "Sname", privilegy, position);
     }
+    Hall getHall(){
+        ArrayList<Segment> entrances = new ArrayList<>();
+        ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
+        return new Hall(
+            new Segment(new Point(0, 0), new Point(20, 20)),
+            entrances,
+            ticketOffices
+        );
+    }
 
     @Test
     @DisplayName("Adding TicketOffice when Position is Free should update the list")
     void testAddTicketOfficeToHall() {
-        ArrayList<Segment> entrances = new ArrayList<>();
-        ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
+
+        Hall hall = getHall();
 
         Segment ticketOfficeSegment1 = new Segment(new Point(0, 0), new Point(2, 1));
         Segment ticketOfficeSegment2 = new Segment(new Point(0, 5), new Point(1, 7));
@@ -50,12 +59,6 @@ class HallTest {
             timeToServeTicket
         );
 
-        Hall hall = new Hall(
-            new Segment(new Point(0, 0), new Point(20, 20)),
-            entrances,
-            ticketOffices
-        );
-
         hall.addTicketOffice(ticketOffice1);
         hall.addTicketOffice(ticketOffice2);
         hall.addTicketOffice(ticketOffice3);
@@ -66,14 +69,8 @@ class HallTest {
     @Test
     @DisplayName("Adding TicketOffice when Position is taken. Should throw exception")
     void testAddTicketOfficeToHallFailsWhenAddingOnTakenPosition() {
-        ArrayList<Segment> entrances = new ArrayList<>();
-        ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall = new Hall(
-            new Segment(new Point(0, 0), new Point(20, 20)),
-            entrances,
-            ticketOffices
-        );
+        Hall hall = getHall();
 
         Segment ticketOfficeSegment1 = new Segment(new Point(0, 0), new Point(2, 1));
         Segment ticketOfficeSegment2 = new Segment(new Point(0, 0), new Point(2, 1));
@@ -98,14 +95,8 @@ class HallTest {
     @Test
     @DisplayName("Adding client to single ticket office in up")
     void testAddClientToSingleUpTicketOffice() {
-        ArrayList<Segment> entrances = new ArrayList<>();
-        ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall = new Hall(
-            new Segment(new Point(0, 0), new Point(20, 20)),
-            entrances,
-            ticketOffices
-        );
+        Hall hall = getHall();
 
         Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, 5);
@@ -118,14 +109,8 @@ class HallTest {
     @Test
     @DisplayName("Adding client to single ticket office in down")
         void testAddClientToSingleDownTicketOffice() {
-        ArrayList<Segment> entrances = new ArrayList<>();
-        ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall = new Hall(
-            new Segment(new Point(0, 0), new Point(20, 20)),
-            entrances,
-            ticketOffices
-        );
+        Hall hall = getHall();
 
         Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Down, 5);
@@ -142,14 +127,8 @@ class HallTest {
     @Test
     @DisplayName("Adding client to single ticket office in left")
     void testAddClientToSingleLeftTicketOffice() {
-        ArrayList<Segment> entrances = new ArrayList<>();
-        ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall = new Hall(
-            new Segment(new Point(0, 0), new Point(20, 20)),
-            entrances,
-            ticketOffices
-        );
+        Hall hall = getHall();
 
         Segment ticketOfficeSegment1 = new Segment(new Point(10, 8), new Point(11, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Left, 5);
@@ -166,14 +145,8 @@ class HallTest {
     @Test
     @DisplayName("Adding client to single ticket office in right")
     void testAddClientToSingleRightTicketOffice() {
-        ArrayList<Segment> entrances = new ArrayList<>();
-        ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall = new Hall(
-            new Segment(new Point(0, 0), new Point(20, 20)),
-            entrances,
-            ticketOffices
-        );
+        Hall hall = getHall();
 
         Segment ticketOfficeSegment1 = new Segment(new Point(10, 8), new Point(11, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Right, 5);
@@ -192,11 +165,9 @@ class HallTest {
         "Adding clients to multiple ticket offices. Should be added to the closest with the " +
         "least number of clients"
     )
-    void testAddClientsToMultipleTicketsOffices() {
-        ArrayList<Segment> entrances = new ArrayList<>();
-        ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
+    void testAddClientToClosestTicketOffice() {
 
-        Hall hall = new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+        Hall hall = getHall();
 
         Segment ticketOfficeSegment1 = new Segment(new Point(9, 0), new Point(11, 1));
         Segment ticketOfficeSegment2 = new Segment(new Point(9, 19), new Point(11, 20));
@@ -252,14 +223,8 @@ class HallTest {
             "Adding clients to multiple ticket offices. Should be added to the closest with the"
                     + " least number of clients")
     void testRemoveClientFromTicketOfficeQueue() {
-        ArrayList<Segment> entrances = new ArrayList<>();
-        ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall = new Hall(
-            new Segment(new Point(0, 0), new Point(20, 20)),
-            entrances,
-            ticketOffices
-        );
+        Hall hall = getHall();
 
         Segment ticketOfficeSegment = new Segment(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice = new TicketOffice(ticketOfficeSegment, Direction.Up, 5);
@@ -290,10 +255,8 @@ class HallTest {
     @Test
     @DisplayName("Adding privileged client to single ticket office in up")
     void testAddPrivilegedClientToSingleUpTicketOffice() {
-        ArrayList<Segment> entrances = new ArrayList<>();
-        ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall = new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+        Hall hall = getHall();
 
         Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, 5);
@@ -317,10 +280,8 @@ class HallTest {
     @Test
     @DisplayName("Adding privileged clients to single ticket office in up")
     void testAddPrivilegedClientsToSingleUpTicketOffice() {
-        ArrayList<Segment> entrances = new ArrayList<>();
-        ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall = new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+        Hall hall = getHall();
 
         Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, 5);
@@ -351,10 +312,8 @@ class HallTest {
             "Adding privileged clients with the same privilege type and significance to"
                     + " single ticket office in up")
     void testAddPrivilegedClientsWithDifferentSignificanceToSingleUpTicketOffice() {
-        ArrayList<Segment> entrances = new ArrayList<>();
-        ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
 
-        Hall hall = new Hall(new Segment(new Point(0, 0), new Point(20, 20)), entrances, ticketOffices);
+        Hall hall = getHall();
 
         Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
         TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, 5);
