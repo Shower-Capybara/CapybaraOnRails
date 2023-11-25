@@ -14,6 +14,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Stream;
 
 class HallTest {
@@ -97,7 +98,7 @@ class HallTest {
     }
 
     @ParameterizedTest
-    @MethodSource("ticketOfficeTestData")
+    @MethodSource("clientTicketOfficeTestData")
     @DisplayName("Adding client to single ticket office")
     void testAddClientToTicketOffice(Direction direction, Segment ticketOfficeSegment, Point clientPosition, Client expectedClient) {
         Hall hall = getHall();
@@ -110,7 +111,7 @@ class HallTest {
         assertEquals(expectedClient, ticketOffice.getQueue().get(0));
     }
 
-    private static Stream<Arguments> ticketOfficeTestData() {
+    private static Stream<Arguments> clientTicketOfficeTestData() {
         return Stream.of(
             Arguments.of(Direction.Up, new Segment(new Point(10, 9), new Point(12, 10)),
                 new Point(3, 4), getClient(1, new Point(11, 11))),
@@ -120,6 +121,48 @@ class HallTest {
                 new Point(3, 4), getClient(1, new Point(12, 9))),
             Arguments.of(Direction.Right, new Segment(new Point(10, 8), new Point(11, 10)),
                 new Point(3, 4), getClient(1, new Point(9, 9)))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("clientsTicketOfficeTestData")
+    @DisplayName("Adding clients to single ticket office to check the coordinates of clients in " +
+        "the queue")
+    void testAddClientsToTicketOffice(Direction direction, Segment ticketOfficeSegment, Point clientPosition, ArrayList<Client> expectedQueue) {
+        Hall hall = getHall();
+        TicketOffice ticketOffice = new TicketOffice(ticketOfficeSegment, direction, 5);
+        hall.addTicketOffice(ticketOffice);
+
+        Client client1 = getClient(1, clientPosition);
+        Client client2 = getClient(2, new Point(clientPosition.x+1, clientPosition.y));
+        hall.addClient(client1);
+        hall.addClient(client2);
+
+        assertIterableEquals(expectedQueue, ticketOffice.getQueue());
+    }
+
+    private static Stream<Arguments> clientsTicketOfficeTestData() {
+        return Stream.of(
+            Arguments.of(Direction.Up, new Segment(new Point(10, 9), new Point(12, 10)),
+                new Point(3, 4), new ArrayList<>(List.of(
+                    getClient(1, new Point(11, 11)),
+                    getClient(2, new Point(11, 12))
+                ))),
+            Arguments.of(Direction.Down, new Segment(new Point(10, 9), new Point(12, 10)),
+                new Point(3, 4), new ArrayList<>(List.of(
+                    getClient(1, new Point(11, 8)),
+                    getClient(2, new Point(11, 7))
+                ))),
+            Arguments.of(Direction.Left, new Segment(new Point(10, 8), new Point(11, 10)),
+                new Point(3, 4), new ArrayList<>(List.of(
+                    getClient(1, new Point(12, 9)),
+                    getClient(2, new Point(13, 9))
+                ))),
+            Arguments.of(Direction.Right, new Segment(new Point(10, 8), new Point(11, 10)),
+                new Point(3, 4), new ArrayList<>(List.of(
+                    getClient(1, new Point(9, 9)),
+                    getClient(2, new Point(8, 9))
+                )))
         );
     }
 
