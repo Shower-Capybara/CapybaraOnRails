@@ -259,33 +259,8 @@ class HallTest {
     }
 
     @Test
-    @DisplayName("Adding privileged client to single ticket office in up")
-    void testAddPrivilegedClientToSingleUpTicketOffice() {
-
-        Hall hall = getHall();
-
-        Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, 5);
-
-        hall.addTicketOffice(ticketOffice1);
-        Client client1 = getClient(1, new Privilegy("ordinary", 0), new Point(3, 4));
-        Client client2 = getClient(2, new Privilegy("ordinary", 0), new Point(3, 5));
-        Client client3 = getClient(3, new Privilegy("withChild", 1), new Point(3, 6));
-
-        hall.addClient(client1);
-        hall.addClient(client2);
-        hall.addClient(client3);
-
-        var expectedClientsQueue = new LinkedList<Client>();
-        expectedClientsQueue.add(getClient(1, new Privilegy("ordinary", 0), new Point(11, 11)));
-        expectedClientsQueue.add(getClient(3, new Privilegy("withChild", 1), new Point(11, 12)));
-        expectedClientsQueue.add(getClient(2, new Privilegy("ordinary", 0), new Point(11, 13)));
-        assertIterableEquals(expectedClientsQueue, hall.getTicketOffices().get(0).getQueue());
-    }
-
-    @Test
-    @DisplayName("Adding privileged clients to single ticket office in up")
-    void testAddPrivilegedClientsToSingleUpTicketOffice() {
+    @DisplayName("Adding privileged clients with different significance to single ticket office")
+    void testAddPrivilegedClientsWithDifferentSignificanceToSingleTicketOffice() {
 
         Hall hall = getHall();
 
@@ -316,8 +291,8 @@ class HallTest {
     @Test
     @DisplayName(
             "Adding privileged clients with the same privilege type and significance to"
-                    + " single ticket office in up")
-    void testAddPrivilegedClientsWithDifferentSignificanceToSingleUpTicketOffice() {
+                    + " single ticket office")
+    void testAddPrivilegedClientsWithSameSignificanceToSingleTicketOffice() {
 
         Hall hall = getHall();
 
