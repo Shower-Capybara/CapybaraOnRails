@@ -1,5 +1,7 @@
 package com.StationManager.app.domain;
 
+import com.StationManager.app.domain.client.Client;
+import com.StationManager.app.domain.client.Privilegy;
 import com.StationManager.app.domain.train_station.Direction;
 import com.StationManager.app.domain.train_station.Hall;
 import com.StationManager.app.domain.train_station.Segment;
@@ -57,6 +59,10 @@ class MapManagerTest {
             timeToServeTicket
         );
         return new ArrayList<>(List.of(ticketOffice1, ticketOffice2, ticketOffice3, ticketOffice4));
+    }
+
+    static Client getClient(int id, Point position) {
+        return new Client(id, "Fname", "Sname", new Privilegy("ordinary", 0), position);
     }
 
     @Test
@@ -134,6 +140,42 @@ class MapManagerTest {
             Arguments.of(getTicketOffices().get(1), new Point(5, 17)),
             Arguments.of(getTicketOffices().get(2), new Point(2, 6)),
             Arguments.of(getTicketOffices().get(3), new Point(17, 5))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("newClientPositionInNotEmptyQueueTestData")
+    @DisplayName("Creating a few ticket Offices with some queue and checking if calculation of" +
+        " position client should take is correct")
+    void testCalculatePositionForNewClientInNotEmptyQueue(TicketOffice ticketOffice, Point expectedPoint){
+        assertEquals(expectedPoint, MapManager.calculatePositionForNewClient(ticketOffice));
+    }
+
+    private static Stream<Arguments> newClientPositionInNotEmptyQueueTestData(){
+        var ticketOfficeUp = getTicketOffices().get(0);
+        var ticketOfficeDown = getTicketOffices().get(1);
+        var ticketOfficeLeft = getTicketOffices().get(2);
+        var ticketOfficeRight = getTicketOffices().get(3);
+
+        ticketOfficeUp.addClient(getClient(1, new Point(1, 2)));
+
+        ticketOfficeDown.addClient(getClient(2, new Point(5, 17)));
+        ticketOfficeDown.addClient(getClient(3, new Point(5, 16)));
+
+        ticketOfficeLeft.addClient(getClient(4, new Point(2, 6)));
+        ticketOfficeLeft.addClient(getClient(5, new Point(3, 6)));
+        ticketOfficeLeft.addClient(getClient(6, new Point(4, 6)));
+
+        ticketOfficeRight.addClient(getClient(7, new Point(17, 5)));
+        ticketOfficeRight.addClient(getClient(8, new Point(16, 5)));
+        ticketOfficeRight.addClient(getClient(9, new Point(15, 5)));
+        ticketOfficeRight.addClient(getClient(10, new Point(14, 5)));
+
+        return Stream.of(
+            Arguments.of(ticketOfficeUp, new Point(1, 3)),
+            Arguments.of(ticketOfficeDown, new Point(5, 15)),
+            Arguments.of(ticketOfficeLeft, new Point(5, 6)),
+            Arguments.of(ticketOfficeRight, new Point(13, 5))
         );
     }
 }
