@@ -57,7 +57,7 @@ public class MapManager {
         var initialTransformation = new HashMap<Direction, Function<Segment, Point>>() {{
             put(Direction.Up, (segment) -> new Point(segment.start().x + 1, segment.end().y + 1));
             put(Direction.Down, (segment) -> new Point(segment.start().x + 1, segment.start().y - 1));
-            put(Direction.Left, (segment) -> new Point(segment.end().x - 1, segment.end().y - 1));
+            put(Direction.Left, (segment) -> new Point(segment.end().x + 1, segment.end().y - 1));
             put(Direction.Right, (segment) -> new Point(segment.start().x - 1, segment.start().y + 1));
         }};
 
