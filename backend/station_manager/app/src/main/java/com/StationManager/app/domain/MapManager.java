@@ -1,6 +1,5 @@
 package com.StationManager.app.domain;
 
-import com.StationManager.app.domain.client.Client;
 import com.StationManager.app.domain.train_station.Direction;
 import com.StationManager.app.domain.train_station.Segment;
 import com.StationManager.app.domain.train_station.TicketOffice;
@@ -17,7 +16,7 @@ public class MapManager {
     }
 
     /**
-     * Assigns a client to ticket office based on their current position and ticket offices'
+     * Returns the closest to client ticket office
      * locations.
      *
      * <p>This method determines the ticket office which is the most suitable for client to be
@@ -25,12 +24,12 @@ public class MapManager {
      * are more than one ticket offices, client is assigned to the one, whose next free queue
      * position is closer to client
      *
-     * @param client The client to be assigned to a ticket office.
-     * @param entrances The list of entrance segments.
+     * @param point The client point
      * @param ticketOffices The list of ticket offices.
      */
-    public static void assignClientToClosestTicketOffice(
-            Client client, ArrayList<Segment> entrances, ArrayList<TicketOffice> ticketOffices
+    public static TicketOffice getClosestTicketOffice(
+        Point point,
+        ArrayList<TicketOffice> ticketOffices
     ) {
         var newPoints = new HashMap<TicketOffice, Point>();
         for (TicketOffice ticketOffice : ticketOffices) {
@@ -38,16 +37,13 @@ public class MapManager {
         }
 
         var closestTicketOfficeResult = newPoints
-                .entrySet()
-                .stream()
-                .min(Map.Entry.comparingByValue(
-                        Comparator.comparingDouble((point) -> client.getPosition().distance(point)))
-                );
+            .entrySet()
+            .stream()
+            .min(Map.Entry.comparingByValue(
+                    Comparator.comparingDouble((p) -> p.distance(point)))
+            );
 
-        if (closestTicketOfficeResult.isPresent()) {  // is always true
-            var closestTicketOffice = closestTicketOfficeResult.get().getKey();
-            closestTicketOffice.addClient(client);
-        }
+        return closestTicketOfficeResult.map(Map.Entry::getKey).orElse(null);
     }
 
     /**

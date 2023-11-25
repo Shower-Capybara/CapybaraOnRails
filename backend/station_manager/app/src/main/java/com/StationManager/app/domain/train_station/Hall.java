@@ -41,7 +41,8 @@ public class Hall {
                         .filter(ticketOffice -> ticketOffice.getQueue().size() == size)
                         .collect(Collectors.toCollection(ArrayList::new));
 
-        MapManager.assignClientToClosestTicketOffice(client, entrances, shortestQueueTicketOffices);
+        var closestTicketOffice = MapManager.getClosestTicketOffice(client.getPosition(), shortestQueueTicketOffices);
+        if (closestTicketOffice != null) closestTicketOffice.addClient(client);
     }
 
     private static int getSizeOfShortestQueue(ArrayList<TicketOffice> WorkingTicketOffices) {
