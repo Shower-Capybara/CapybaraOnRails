@@ -63,19 +63,21 @@ class TicketOfficeTest {
         Client client3 = getClient(3, new Privilegy("disabled", 2), new Point(3, 4));
         ticketOffice.addClient(client3);
 
-        var expectedClientsQueue =
-                new LinkedList<>(
-                        List.of(
-                                getClient(1, new Privilegy("ordinary", 0), new Point(3, 2)),
-                                getClient(3, new Privilegy("disabled", 2), new Point(3, 3)),
-                                getClient(2, new Privilegy("ordinary", 0), new Point(3, 4))));
+        var expectedClientsQueue = new LinkedList<>(
+            List.of(
+                getClient(1, new Privilegy("ordinary", 0), new Point(3, 2)),
+                getClient(3, new Privilegy("disabled", 2), new Point(3, 3)),
+                getClient(2, new Privilegy("ordinary", 0), new Point(3, 4))
+            )
+        );
         assertIterableEquals(expectedClientsQueue, ticketOffice.getQueue());
     }
 
     @Test
     @DisplayName(
-            "Adding client with privilegy.significance == 1 to queue with ordinary clients and"
-                    + " client with privilegy.significance == 2")
+        "Adding client with privilegy.significance == 1 to queue with ordinary clients and"
+        + " client with privilegy.significance == 2"
+    )
     void testAddClientWithLessPrivilegyToQueueWithHigherPrivilegyClient() {
         Segment ticketOfficeSegment = new Segment(new Point(2, 1), new Point(4, 0));
         TicketOffice ticketOffice = new TicketOffice(ticketOfficeSegment, Direction.Down, 5);

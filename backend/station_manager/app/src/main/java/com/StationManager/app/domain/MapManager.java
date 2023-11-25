@@ -1,6 +1,7 @@
 package com.StationManager.app.domain;
 
 import com.StationManager.app.domain.train_station.Direction;
+import com.StationManager.app.domain.train_station.Hall;
 import com.StationManager.app.domain.train_station.Segment;
 import com.StationManager.app.domain.train_station.TicketOffice;
 
@@ -9,12 +10,6 @@ import java.util.*;
 import java.util.function.Function;
 
 public class MapManager {
-    private static Segment size;
-
-    public static void setSize(Segment newSize) {
-        size = newSize;
-    }
-
     /**
      * Returns the closest to client ticket office
      * locations.
@@ -31,19 +26,18 @@ public class MapManager {
         Point point,
         ArrayList<TicketOffice> ticketOffices
     ) {
-        var newPoints = new HashMap<TicketOffice, Point>();
-        for (TicketOffice ticketOffice : ticketOffices) {
-            newPoints.put(ticketOffice, calculatePositionForNewClient(ticketOffice));
+        if (ticketOffices.isEmpty()) {
+            throw new IllegalStateException("Ticket offices can't be empty");
         }
 
-        var closestTicketOfficeResult = newPoints
-            .entrySet()
+        return ticketOffices
             .stream()
-            .min(Map.Entry.comparingByValue(
-                    Comparator.comparingDouble((p) -> p.distance(point)))
-            );
-
-        return closestTicketOfficeResult.map(Map.Entry::getKey).orElse(null);
+            .min(
+                Comparator.comparingDouble(
+                    (ticketOffice) -> point.distance(calculatePositionForNewClient(ticketOffice))
+                )
+            )
+            .get();
     }
 
     /**
@@ -61,15 +55,15 @@ public class MapManager {
      */
     public static Point calculatePositionForNewClient(TicketOffice ticketOffice) {
         var initialTransformation = new HashMap<Direction, Function<Segment, Point>>() {{
-            put(Direction.Up, (segment) -> new Point(segment.getStart().x + 1, segment.getEnd().y + 1));
-            put(Direction.Down, (segment) -> new Point(segment.getStart().x + 1, segment.getStart().y - 1));
-            put(Direction.Left, (segment) -> new Point(segment.getEnd().x - 1, segment.getEnd().y - 1));
-            put(Direction.Right, (segment) -> new Point(segment.getStart().x - 1, segment.getStart().y + 1));
+            put(Direction.Up, (segment) -> new Point(segment.start().x + 1, segment.end().y + 1));
+            put(Direction.Down, (segment) -> new Point(segment.start().x + 1, segment.start().y - 1));
+            put(Direction.Left, (segment) -> new Point(segment.end().x - 1, segment.end().y - 1));
+            put(Direction.Right, (segment) -> new Point(segment.start().x - 1, segment.start().y + 1));
         }};
 
         var initialPoint = initialTransformation
-                .get(ticketOffice.getDirection())
-                .apply(ticketOffice.getSegment());
+            .get(ticketOffice.getDirection())
+            .apply(ticketOffice.getSegment());
 
         var step = new HashMap<Direction, Point>() {{
             put(Direction.Up, new Point(0, 1));
@@ -93,39 +87,38 @@ public class MapManager {
      * the queues of the ticket offices.
      *
      * @param segment The segment to check for availability.
-     * @param entrances The list of entrance segments to check for overlapping positions.
-     * @param ticketOffices The list of ticket offices to check for overlapping positions and
+     * @param hall The hall where to check for availability.
      *     queues.
      * @return {@code true} if the segment is free, {@code false} otherwise.
      */
-    public static Boolean IsFree(
-            Segment segment, ArrayList<Segment> entrances, ArrayList<TicketOffice> ticketOffices) {
-        // Check if position is not out of bounds
-        if (isOutOfBounds(segment)) {
+    public static Boolean IsSegmentFree(Segment segment, Hall hall) {
+        if (isOutOfBounds(segment, hall.getSegment())) return false;
+
+        if (hall.getEntrances().stream().anyMatch(pos -> segmentsOverlap(pos, segment))) {
             return false;
         }
 
-        // Check if position is free
-        if (entrances.stream().anyMatch(pos -> posiotionsOverlap(pos, segment))) {
+        if (
+            hall.getTicketOffices()
+                .stream()
+                .anyMatch(ticketOffice -> segmentsOverlap(ticketOffice.getSegment(), segment))
+        ) {
             return false;
         }
 
-        if (ticketOffices.stream()
-                .anyMatch(ticketOffice -> posiotionsOverlap(ticketOffice.getSegment(), segment))) {
-            return false;
-        }
-
-        if (ticketOffices.stream()
-                .anyMatch(
-                        ticketOffice ->
-                                ticketOffice.getQueue().stream()
-                                        .anyMatch(
-                                                client ->
-                                                        positionContainsPoint(
-                                                                segment, client.getPosition())))) {
-            return false;
-        }
-        return true;
+        return hall.getTicketOffices()
+            .stream()
+            .noneMatch(
+                ticketOffice -> ticketOffice
+                    .getQueue()
+                    .stream()
+                    .anyMatch(
+                        client -> segmentContainsPoint(
+                            segment,
+                            client.getPosition()
+                        )
+                    )
+            );
     }
 
     /**
@@ -135,14 +128,15 @@ public class MapManager {
      * specified size. It compares the coordinates of the segment's start and end points with the
      * start and end points of the size, checking if the segment is outside in any dimension.
      *
-     * @param segment The segment to check for being out of bounds.
+     * @param childSegment The segment to check for being out of bounds.
+     * @param parentSegment The parent possibly containing the child segment
      * @return {@code true} if the segment is completely out of bounds, {@code false} otherwise.
      */
-    private static boolean isOutOfBounds(Segment segment) {
-        return segment.getStart().x < size.getStart().x
-                || segment.getStart().y < size.getStart().y
-                || segment.getEnd().x > size.getEnd().x
-                || segment.getEnd().y > size.getEnd().y;
+    private static boolean isOutOfBounds(Segment childSegment, Segment parentSegment) {
+        return childSegment.start().x < parentSegment.start().x
+            || childSegment.start().y < parentSegment.start().y
+            || childSegment.end().x > parentSegment.end().x
+            || childSegment.end().y > parentSegment.end().y;
     }
 
     /**
@@ -155,14 +149,10 @@ public class MapManager {
      * @param point The point to check for containment.
      * @return {@code true} if the segment contains the point, {@code false} otherwise.
      */
-    public static Boolean positionContainsPoint(Segment segment, Point point) {
-        int pointX = point.x;
-        int pointY = point.y;
-
-        int startX = segment.getStart().x;
-        int startY = segment.getStart().y;
-        int endX = segment.getEnd().x;
-        int endY = segment.getEnd().y;
+    public static Boolean segmentContainsPoint(Segment segment, Point point) {
+        int pointX = point.x, pointY = point.y;
+        int startX = segment.start().x, startY = segment.start().y;
+        int endX = segment.end().x, endY = segment.end().y;
 
         return pointX >= startX && pointX <= endX && pointY >= startY && pointY <= endY;
     }
@@ -178,9 +168,9 @@ public class MapManager {
      * @param segment2 The second segment to check for overlapping positions.
      * @return {@code true} if there is an overlap, {@code false} otherwise.
      */
-    public static Boolean posiotionsOverlap(Segment segment1, Segment segment2) {
-        Set<Point> points1 = generatePoints(segment1);
-        Set<Point> points2 = generatePoints(segment2);
+    public static Boolean segmentsOverlap(Segment segment1, Segment segment2) {
+        Set<Point> points1 = getAllPoints(segment1);
+        Set<Point> points2 = getAllPoints(segment2);
 
         return points1.stream().anyMatch(points2::contains);
     }
@@ -194,11 +184,11 @@ public class MapManager {
      * @param segment The segment for which to generate the set of points.
      * @return A set of points within the bounds of the segment.
      */
-    private static Set<Point> generatePoints(Segment segment) {
+    private static Set<Point> getAllPoints(Segment segment) {
         Set<Point> points = new HashSet<>();
 
-        for (int x = segment.getStart().x; x <= segment.getEnd().x; x++) {
-            for (int y = segment.getStart().y; y <= segment.getEnd().y; y++) {
+        for (int x = segment.start().x; x <= segment.end().x; x++) {
+            for (int y = segment.start().y; y <= segment.end().y; y++) {
                 points.add(new Point(x, y));
             }
         }

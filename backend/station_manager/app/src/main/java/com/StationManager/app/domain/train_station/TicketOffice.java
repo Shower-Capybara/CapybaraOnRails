@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 public class TicketOffice {
     private Segment segment;
-    private LinkedList<Client> queue;
+    private final LinkedList<Client> queue;
     private Integer timeToServeTicket;
     private Boolean isClosed;
     private Boolean isReserved;
@@ -64,7 +64,8 @@ public class TicketOffice {
     public void removeClient() {
         if (queue.isEmpty()) {
             throw new IllegalStateException(
-                    "Client queue is empty: There are no clients to delete");
+                "Client queue is empty: There are no clients to delete"
+            );
         }
         var removedClient = queue.pop();
         Point previousClientPosition = removedClient.getPosition();
@@ -98,14 +99,38 @@ public class TicketOffice {
 
     private int findInsertIndex(Client newClient) {
         int index = 0;
-        for (var client : queue) {
-            if ((newClient.getPrivilegy().getSignificance()
-                            > client.getPrivilegy().getSignificance())
-                    && (index != 0)) {
-                break;
-            }
+        for (var client: queue) {
+            if (
+                newClient.getPrivilegy().getSignificance() > client.getPrivilegy().getSignificance()
+                && index != 0
+            ) break;
+
             index += 1;
         }
         return index;
+    }
+
+    public Integer getTimeToServeTicket() {
+        return timeToServeTicket;
+    }
+
+    public void setTimeToServeTicket(Integer timeToServeTicket) {
+        this.timeToServeTicket = timeToServeTicket;
+    }
+
+    public Boolean getReserved() {
+        return isReserved;
+    }
+
+    public void setReserved(Boolean reserved) {
+        isReserved = reserved;
+    }
+
+    public Iterable<ServeRecord> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Iterable<ServeRecord> transactions) {
+        this.transactions = transactions;
     }
 }
