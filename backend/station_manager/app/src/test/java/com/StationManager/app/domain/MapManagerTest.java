@@ -4,6 +4,7 @@ import com.StationManager.app.domain.train_station.Direction;
 import com.StationManager.app.domain.train_station.Hall;
 import com.StationManager.app.domain.train_station.Segment;
 import com.StationManager.app.domain.train_station.TicketOffice;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -59,6 +60,8 @@ class MapManagerTest {
     }
 
     @Test
+    @DisplayName("Creating three different segments, two of which overlap and two doesn't, and " +
+        "checking if they overlap")
     void testSegmentsOverlap(){
         Segment segment1 = new Segment(new Point(0, 0), new Point(2, 1));
         assertFalse(MapManager.segmentsOverlap(
@@ -72,6 +75,7 @@ class MapManagerTest {
     }
 
     @Test
+    @DisplayName("Creating segment and a few points, then checks if segment contains the points")
     void testSegmentContainsPoint(){
         Segment segment1 = new Segment(new Point(0, 0), new Point(2, 1));
         assertTrue(MapManager.segmentContainsPoint(segment1, new Point(1, 1)));
@@ -81,6 +85,8 @@ class MapManagerTest {
     }
 
     @Test
+    @DisplayName("Creating ticket office, adding it to hall, than checking if segment in hall " +
+        "of created ticket office and two more segments is free")
     void testIsSegmentFree() {
         Hall hall = getHall();
         Segment ticketOfficeSegment1 = new Segment(new Point(0, 0), new Point(2, 1));
@@ -97,6 +103,8 @@ class MapManagerTest {
 
     @ParameterizedTest
     @MethodSource("closestTicketOfficeTestData")
+    @DisplayName("Creating a few different points and ticket offices, then testing if calculation " +
+        "of the closest ticket office to given point is correct")
     void testGetClosestTicketOffice(Point point,
                                     ArrayList<TicketOffice> ticketOffices,
                                     TicketOffice expectedTicketOffice){
@@ -114,6 +122,8 @@ class MapManagerTest {
 
     @ParameterizedTest
     @MethodSource("newClientPositionTestData")
+    @DisplayName("Creating a few empty ticket Offices and checking if calculation of position" +
+        "client should take is correct")
     void testCalculatePositionForNewClient(TicketOffice ticketOffice, Point expectedPoint){
         assertEquals(expectedPoint, MapManager.calculatePositionForNewClient(ticketOffice));
     }
