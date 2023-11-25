@@ -6,6 +6,7 @@ import com.StationManager.app.domain.client.Client;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class TicketOffice {
     private Segment segment;
@@ -132,5 +133,22 @@ public class TicketOffice {
 
     public void setTransactions(Iterable<ServeRecord> transactions) {
         this.transactions = transactions;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TicketOffice that)) return false;
+        return Objects.equals(segment, that.segment)
+            && Objects.equals(queue, that.queue)
+            && Objects.equals(timeToServeTicket, that.timeToServeTicket)
+            && Objects.equals(isClosed, that.isClosed)
+            && Objects.equals(isReserved, that.isReserved)
+            && direction == that.direction
+            && Objects.equals(transactions, that.transactions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(segment, queue, timeToServeTicket, isClosed, isReserved, direction, transactions);
     }
 }

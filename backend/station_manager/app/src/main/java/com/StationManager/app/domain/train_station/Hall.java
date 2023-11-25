@@ -14,7 +14,7 @@ public class Hall {
 
     // public Iterable<IEvent> events;
 
-    Hall(Segment segment, ArrayList<Segment> entrances, ArrayList<TicketOffice> ticketOffices) {
+    public Hall(Segment segment, ArrayList<Segment> entrances, ArrayList<TicketOffice> ticketOffices) {
         this.segment = segment;
         this.ticketOffices = ticketOffices;
         this.entrances = entrances;
