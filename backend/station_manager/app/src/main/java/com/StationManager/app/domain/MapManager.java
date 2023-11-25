@@ -30,32 +30,22 @@ public class MapManager {
      * @param ticketOffices The list of ticket offices.
      */
     public static void assignClientToClosestTicketOffice(
-            Client client, ArrayList<Segment> entrances, ArrayList<TicketOffice> ticketOffices) {
-        if (ticketOffices.size() == 1) {
-            client.setPosition(calculatePositionForNewClient(ticketOffices.get(0)));
-            ticketOffices.get(0).addClient(client);
-        } else {
-            Map<TicketOffice, Point> points = new HashMap<>();
+            Client client, ArrayList<Segment> entrances, ArrayList<TicketOffice> ticketOffices
+    ) {
+        var newPoints = new HashMap<TicketOffice, Point>();
+        for (TicketOffice ticketOffice : ticketOffices) {
+            newPoints.put(ticketOffice, calculatePositionForNewClient(ticketOffice));
+        }
 
-            for (TicketOffice t : ticketOffices) {
-                points.put(t, calculatePositionForNewClient(t));
-            }
+        var closestTicketOfficeResult = newPoints
+                .entrySet()
+                .stream()
+                .min(Map.Entry.comparingByValue(
+                        Comparator.comparingDouble((point) -> client.getPosition().distance(point)))
+                );
 
-            TicketOffice closestTicketOffice = null;
-            Point closestPoint = null;
-
-            for (Map.Entry<TicketOffice, Point> entry : points.entrySet()) {
-                Point currentPoint = entry.getValue();
-
-                if (closestPoint == null
-                        || currentPoint.distance(client.getPosition())
-                                < closestPoint.distance(client.getPosition())) {
-                    closestPoint = currentPoint;
-                    closestTicketOffice = entry.getKey();
-                }
-            }
-
-            client.setPosition(calculatePositionForNewClient(closestTicketOffice));
+        if (closestTicketOfficeResult.isPresent()) {  // is always true
+            var closestTicketOffice = closestTicketOfficeResult.get().getKey();
             closestTicketOffice.addClient(client);
         }
     }
