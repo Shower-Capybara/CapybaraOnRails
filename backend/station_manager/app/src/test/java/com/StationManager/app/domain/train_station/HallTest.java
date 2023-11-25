@@ -7,21 +7,25 @@ import com.StationManager.app.domain.client.Privilegy;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.stream.Stream;
 
 class HallTest {
 
-    Client getClient(int id, Point position) {
+    static Client getClient(int id, Point position) {
         return new Client(id, "Fname", "Sname", new Privilegy("ordinary", 0), position);
     }
 
-    Client getClient(int id, Privilegy privilegy, Point position) {
+    static Client getClient(int id, Privilegy privilegy, Point position) {
         return new Client(id, "Fname", "Sname", privilegy, position);
     }
-    Hall getHall(){
+    static Hall getHall(){
         ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
         return new Hall(
@@ -92,72 +96,31 @@ class HallTest {
         assertThrows(IllegalStateException.class, () -> hall.addTicketOffice(ticketOffice2));
     }
 
-    @Test
-    @DisplayName("Adding client to single ticket office in up")
-    void testAddClientToSingleUpTicketOffice() {
-
+    @ParameterizedTest
+    @MethodSource("ticketOfficeTestData")
+    @DisplayName("Adding client to single ticket office")
+    void testAddClientToTicketOffice(Direction direction, Segment ticketOfficeSegment, Point clientPosition, Client expectedClient) {
         Hall hall = getHall();
+        TicketOffice ticketOffice = new TicketOffice(ticketOfficeSegment, direction, 5);
+        hall.addTicketOffice(ticketOffice);
 
-        Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, 5);
-        hall.addTicketOffice(ticketOffice1);
-        hall.addClient(getClient(1, new Point(3, 4)));
+        Client client = getClient(1, clientPosition);
+        hall.addClient(client);
 
-        assertEquals(ticketOffice1.getQueue().get(0), getClient(1, new Point(11, 11)));
+        assertEquals(expectedClient, ticketOffice.getQueue().get(0));
     }
 
-    @Test
-    @DisplayName("Adding client to single ticket office in down")
-        void testAddClientToSingleDownTicketOffice() {
-
-        Hall hall = getHall();
-
-        Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Down, 5);
-
-        hall.addTicketOffice(ticketOffice1);
-
-        Client client1 = getClient(1, new Point(3, 4));
-
-        hall.addClient(client1);
-
-        assertEquals(ticketOffice1.getQueue().get(0), getClient(1, new Point(11, 8)));
-    }
-
-    @Test
-    @DisplayName("Adding client to single ticket office in left")
-    void testAddClientToSingleLeftTicketOffice() {
-
-        Hall hall = getHall();
-
-        Segment ticketOfficeSegment1 = new Segment(new Point(10, 8), new Point(11, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Left, 5);
-
-        hall.addTicketOffice(ticketOffice1);
-
-        Client client1 = getClient(1, new Point(3, 4));
-
-        hall.addClient(client1);
-
-        assertEquals(ticketOffice1.getQueue().get(0), getClient(1, new Point(12, 9)));
-    }
-
-    @Test
-    @DisplayName("Adding client to single ticket office in right")
-    void testAddClientToSingleRightTicketOffice() {
-
-        Hall hall = getHall();
-
-        Segment ticketOfficeSegment1 = new Segment(new Point(10, 8), new Point(11, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Right, 5);
-
-        hall.addTicketOffice(ticketOffice1);
-
-        Client client1 = getClient(1, new Point(3, 4));
-
-        hall.addClient(client1);
-
-        assertEquals(ticketOffice1.getQueue().get(0), getClient(1, new Point(9, 9)));
+    private static Stream<Arguments> ticketOfficeTestData() {
+        return Stream.of(
+            Arguments.of(Direction.Up, new Segment(new Point(10, 9), new Point(12, 10)),
+                new Point(3, 4), getClient(1, new Point(11, 11))),
+            Arguments.of(Direction.Down, new Segment(new Point(10, 9), new Point(12, 10)),
+                new Point(3, 4), getClient(1, new Point(11, 8))),
+            Arguments.of(Direction.Left, new Segment(new Point(10, 8), new Point(11, 10)),
+                new Point(3, 4), getClient(1, new Point(12, 9))),
+            Arguments.of(Direction.Right, new Segment(new Point(10, 8), new Point(11, 10)),
+                new Point(3, 4), getClient(1, new Point(9, 9)))
+        );
     }
 
     @Test
