@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(item, index) in itemList" :key="index">
-      <TicketItem :itemText="item.text" :removeItem="() => removeItem(index)" />
+      <TicketItem :itemText="item.itemText" :removeItem="() => removeItem(index)" />
     </div>
     <div class="add-button" @click="addItem">+</div>
   </div>
@@ -14,7 +14,7 @@ import TicketItem from './TicketItem.vue'
 const itemList = ref([])
 
 const addItem = () => {
-  itemList.value.push({ text: `Item ${itemList.value.length + 1}` })
+  itemList.value.push({ itemText: `Item ${itemList.value.length + 1}` })
 }
 
 const removeItem = (index) => {
