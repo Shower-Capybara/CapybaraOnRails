@@ -1,7 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import SideList from '../components/SideList.vue'
+</script>
 
 <template>
   <main>
-    <div>Hello World!</div>
+    <div>Hello my word</div>
+    <SideList></SideList>
   </main>
 </template>
