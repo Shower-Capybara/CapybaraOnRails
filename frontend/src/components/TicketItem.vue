@@ -45,8 +45,14 @@ interface TicketItemProps {
 }
 
 const props = defineProps<TicketItemProps>()
-const formattedCashierTimeBegin = new Date(props.cashierTimeBegin).toLocaleTimeString()
-const formattedCashierTimeEnd = new Date(props.cashierTimeEnd).toLocaleTimeString()
+const formattedCashierTimeBegin = new Date(props.cashierTimeBegin).toLocaleTimeString([], {
+  hour: '2-digit',
+  minute: '2-digit'
+})
+const formattedCashierTimeEnd = new Date(props.cashierTimeEnd).toLocaleTimeString([], {
+  hour: '2-digit',
+  minute: '2-digit'
+})
 </script>
 
 <style scoped>

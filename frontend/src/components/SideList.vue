@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(item, index) in itemList" :key="index">
+    <div class="list" v-for="(item, index) in itemList" :key="index">
       <TicketItem
         :itemText="item.itemText"
         :removeItem="() => removeItem(index)"
@@ -39,5 +39,8 @@ const removeItem = (index) => {
   padding: 5px;
   border: 1px solid #ccc;
   display: inline-block;
+}
+.list {
+  width: 50%;
 }
 </style>
