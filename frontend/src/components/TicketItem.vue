@@ -4,20 +4,20 @@
   <div class="ticket-item">
     <!-- Info about ticket on the cashier side -->
     <div class="cashier-info">
+      <div>Каса #{{ props.cashierNumber }}</div>
       <div class="time-info">
         <img src="../assets/clock.svg" alt="Clock Icon" />
         <span>{{ formattedCashierTimeBegin }} - {{ formattedCashierTimeEnd }}</span>
       </div>
-      <div>Каса #{{ props.cashierNumber }}</div>
     </div>
 
     <!-- Info about ticket amount -->
     <div class="amount-info">
-      <div>
+      <div class="amount-text">
         {{ props.ticketAmount }} квитки
         <img src="../assets/ticket.svg" alt="Ticket Icon" />
-        <img src="../assets/arrow.svg" alt="Arrow" />
       </div>
+      <img src="../assets/arrow.svg" alt="Arrow" />
     </div>
 
     <!-- Info about passenger -->
@@ -60,7 +60,8 @@ const formattedCashierTimeEnd = new Date(props.cashierTimeEnd).toLocaleTimeStrin
 }
 
 .cashier-info {
-  background-color: #b3b3b3;
+  background-color: #e7e6e6;
+  width: 200px;
   border-radius: 10px;
   padding: 10px;
   display: flex;
@@ -75,10 +76,11 @@ const formattedCashierTimeEnd = new Date(props.cashierTimeEnd).toLocaleTimeStrin
 
 .time-info img {
   margin-bottom: 5px;
+  display: inline;
 }
 /* Add your styles for TicketItem */
 .passenger-info {
-  background-color: #b3b3b3;
+  background-color: #efefef;
   border-radius: 10px;
   padding: 10px;
   display: flex;
@@ -95,5 +97,14 @@ const formattedCashierTimeEnd = new Date(props.cashierTimeEnd).toLocaleTimeStrin
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.amount-info {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.amount-text {
+  display: inline-flex;
 }
 </style>

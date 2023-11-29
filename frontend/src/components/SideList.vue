@@ -1,7 +1,16 @@
 <template>
   <div>
     <div v-for="(item, index) in itemList" :key="index">
-      <TicketItem :itemText="item.itemText" :removeItem="() => removeItem(index)" />
+      <TicketItem
+        :itemText="item.itemText"
+        :removeItem="() => removeItem(index)"
+        :passengerName="Tim"
+        :ticketId="10"
+        :cashierNumber="10"
+        :cashierTimeBegin="new Date('2023-07-01T12:30:00.000Z')"
+        :cashierTimeEnd="new Date('2023-07-01T12:40:00.000Z')"
+        :ticketAmount="2"
+      />
     </div>
     <div class="add-button" @click="addItem">+</div>
   </div>
