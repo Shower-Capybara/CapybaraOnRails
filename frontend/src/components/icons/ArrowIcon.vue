@@ -1,0 +1,22 @@
+<template>
+  <svg
+    class="w-full"
+    height="31"
+    viewBox="0 0 146 31"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M123.613 2L143.52 15.5L123.613 29"
+      class="stroke-primary"
+      stroke-width="3"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      opacity="0.5"
+      d="M6.50334 14C3.01496 14 0.187012 14.6716 0.187012 15.5C0.187012 16.3284 3.01496 17 6.50334 17V14ZM6.50334 17H141.252V14H6.50334V17Z"
+      class="fill-primary"
+    />
+  </svg>
+</template>
