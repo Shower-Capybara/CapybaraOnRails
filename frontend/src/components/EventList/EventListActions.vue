@@ -3,7 +3,7 @@ import AppButton from '@/components/atoms/AppButton.vue'
 import SettingsIcons from '@/components/icons/SettingsIcon.vue'
 
 import { ref } from 'vue'
-import Settings from '@/components/Settings/Settings.vue'
+import Settings from '@/components/Settings/AppSettings.vue'
 
 const showSettings = ref(false)
 
@@ -22,6 +22,8 @@ const openSettings = () => {
     <div class="cursor-pointer" @click="openSettings">
       <SettingsIcons />
     </div>
-    <Settings v-if="showSettings" />
   </div>
+  <Teleport to="#app">
+    <Settings v-if="showSettings" />
+  </Teleport>
 </template>
