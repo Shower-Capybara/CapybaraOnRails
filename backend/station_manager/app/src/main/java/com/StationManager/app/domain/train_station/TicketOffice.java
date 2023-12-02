@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.Objects;
 
 public class TicketOffice {
+    private Integer id;
     private Segment segment;
     private final LinkedList<Client> queue;
     private Integer timeToServeTicket;
@@ -27,6 +28,14 @@ public class TicketOffice {
         this.isReserved = false;
         this.direction = direction;
         this.transactions = new ArrayList<>();
+    }
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public LinkedList<Client> getQueue() {

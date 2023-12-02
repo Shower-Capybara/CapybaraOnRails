@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class Hall {
+    private Integer id;
     private final ArrayList<Segment> entrances;
     private final ArrayList<TicketOffice> ticketOffices;
     private final Segment segment;
@@ -18,6 +19,14 @@ public class Hall {
         this.segment = segment;
         this.ticketOffices = ticketOffices;
         this.entrances = entrances;
+    }
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void addTicketOffice(TicketOffice ticketOffice) {

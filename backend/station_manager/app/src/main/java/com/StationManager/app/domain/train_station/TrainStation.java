@@ -13,4 +13,12 @@ public class TrainStation {
     public Hall getHall() {
         return this.hall;
     }
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
