@@ -63,8 +63,7 @@ public class InMemoryRepositoryTest {
         repository.remove(entityToRemove);
 
         var actual = repository.getAll();
-        assertEquals(entities.size(), actual.size() - 1);
-        assertTrue(actual.containsAll(entities));
+        assertEquals(entities.size() - 1, actual.size());
         assertTrue(actual.containsAll(List.of(entities.get(0), entities.get(2))));
     }
 
