@@ -8,14 +8,15 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class Hall {
-    private Integer id;
+    private final Integer id;
     private final ArrayList<Segment> entrances;
     private final ArrayList<TicketOffice> ticketOffices;
     private final Segment segment;
 
     // public Iterable<IEvent> events;
 
-    public Hall(Segment segment, ArrayList<Segment> entrances, ArrayList<TicketOffice> ticketOffices) {
+    public Hall(Integer id, Segment segment, ArrayList<Segment> entrances, ArrayList<TicketOffice> ticketOffices) {
+        this.id = id;
         this.segment = segment;
         this.ticketOffices = ticketOffices;
         this.entrances = entrances;
@@ -23,10 +24,6 @@ public class Hall {
 
     public Integer getId() {
         return this.id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public void addTicketOffice(TicketOffice ticketOffice) {

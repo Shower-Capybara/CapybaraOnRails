@@ -30,6 +30,7 @@ class HallTest {
         ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
         return new Hall(
+            1,
             new Segment(new Point(0, 0), new Point(20, 20)),
             entrances,
             ticketOffices
@@ -49,18 +50,21 @@ class HallTest {
         int timeToServeTicket = 5;
 
         TicketOffice ticketOffice1 = new TicketOffice(
+            1,
             ticketOfficeSegment1,
-            Direction.Down,
+            Direction.Up,
             timeToServeTicket
         );
         TicketOffice ticketOffice2 = new TicketOffice(
+            2,
             ticketOfficeSegment2,
-            Direction.Left,
+            Direction.Down,
             timeToServeTicket
         );
         TicketOffice ticketOffice3 = new TicketOffice(
+            3,
             ticketOfficeSegment3,
-            Direction.Right,
+            Direction.Left,
             timeToServeTicket
         );
 
@@ -82,11 +86,13 @@ class HallTest {
 
         int timeToServeTicket = 5;
         TicketOffice ticketOffice1 = new TicketOffice(
+            1,
             ticketOfficeSegment1,
             Direction.Down,
             timeToServeTicket
         );
         TicketOffice ticketOffice2 = new TicketOffice(
+            2,
             ticketOfficeSegment2,
             Direction.Down,
             timeToServeTicket
@@ -102,7 +108,7 @@ class HallTest {
     @DisplayName("Adding client to single ticket office")
     void testAddClientToTicketOffice(Direction direction, Segment ticketOfficeSegment, Point clientPosition, Client expectedClient) {
         Hall hall = getHall();
-        TicketOffice ticketOffice = new TicketOffice(ticketOfficeSegment, direction, 5);
+        TicketOffice ticketOffice = new TicketOffice(1, ticketOfficeSegment, direction, 5);
         hall.addTicketOffice(ticketOffice);
 
         Client client = getClient(1, clientPosition);
@@ -130,7 +136,7 @@ class HallTest {
         "the queue")
     void testAddClientsToTicketOffice(Direction direction, Segment ticketOfficeSegment, Point clientPosition, ArrayList<Client> expectedQueue) {
         Hall hall = getHall();
-        TicketOffice ticketOffice = new TicketOffice(ticketOfficeSegment, direction, 5);
+        TicketOffice ticketOffice = new TicketOffice(1, ticketOfficeSegment, direction, 5);
         hall.addTicketOffice(ticketOffice);
 
         Client client1 = getClient(1, clientPosition);
@@ -182,16 +188,19 @@ class HallTest {
         int timeToServeTicket = 5;
 
         TicketOffice ticketOffice1 = new TicketOffice(
+            1,
             ticketOfficeSegment1,
             Direction.Up,
             timeToServeTicket
         );
         TicketOffice ticketOffice2 = new TicketOffice(
+            2,
             ticketOfficeSegment2,
             Direction.Down,
             timeToServeTicket
         );
         TicketOffice ticketOffice3 = new TicketOffice(
+            3,
             ticketOfficeSegment3,
             Direction.Right,
             timeToServeTicket
@@ -233,7 +242,7 @@ class HallTest {
         Hall hall = getHall();
 
         Segment ticketOfficeSegment = new Segment(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice = new TicketOffice(ticketOfficeSegment, Direction.Up, 5);
+        TicketOffice ticketOffice = new TicketOffice(1, ticketOfficeSegment, Direction.Up, 5);
 
         hall.addTicketOffice(ticketOffice);
 
@@ -265,7 +274,7 @@ class HallTest {
         Hall hall = getHall();
 
         Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, 5);
+        TicketOffice ticketOffice1 = new TicketOffice(1, ticketOfficeSegment1, Direction.Up, 5);
 
         hall.addTicketOffice(ticketOffice1);
 
@@ -297,7 +306,7 @@ class HallTest {
         Hall hall = getHall();
 
         Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
-        TicketOffice ticketOffice1 = new TicketOffice(ticketOfficeSegment1, Direction.Up, 5);
+        TicketOffice ticketOffice1 = new TicketOffice(1, ticketOfficeSegment1, Direction.Up, 5);
 
         hall.addTicketOffice(ticketOffice1);
 

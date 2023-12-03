@@ -26,7 +26,7 @@ class TicketOfficeTest {
     @DisplayName("Removing client from queue when there are clients")
     void testTicketOfficeRemovesClientFromQueue() {
         Segment ticketOfficeSegment = new Segment(new Point(0, 1), new Point(2, 0));
-        TicketOffice ticketOffice = new TicketOffice(ticketOfficeSegment, Direction.Down, 5);
+        TicketOffice ticketOffice = new TicketOffice(1, ticketOfficeSegment, Direction.Down, 5);
         Client client1 = getClient(1, new Point(3, 3));
         Client client2 = getClient(2, new Point(3, 4));
 
@@ -45,7 +45,7 @@ class TicketOfficeTest {
     @DisplayName("Removing client from queue when there are no clients. Should throw exception")
     void testTicketOfficeRemovesClientFromQueueFailsOnEmptyQueue() {
         Segment ticketOfficeSegment = new Segment(new Point(0, 1), new Point(2, 0));
-        TicketOffice ticketOffice = new TicketOffice(ticketOfficeSegment, Direction.Down, 5);
+        TicketOffice ticketOffice = new TicketOffice(1, ticketOfficeSegment, Direction.Down, 5);
         assertThrows(IllegalStateException.class, ticketOffice::removeClient);
     }
 
@@ -53,7 +53,7 @@ class TicketOfficeTest {
     @DisplayName("Adding client with privilegy.significance == 2 to queue with ordinary clients")
     void testAddClientWithPrivilegyToOrdinaryClientsQueue() {
         Segment ticketOfficeSegment = new Segment(new Point(2, 1), new Point(4, 0));
-        TicketOffice ticketOffice = new TicketOffice(ticketOfficeSegment, Direction.Down, 5);
+        TicketOffice ticketOffice = new TicketOffice(1, ticketOfficeSegment, Direction.Down, 5);
         Client client1 = getClient(1, new Privilegy("ordinary", 0), new Point(3, 2));
         Client client2 = getClient(2, new Privilegy("ordinary", 0), new Point(3, 3));
 
@@ -80,7 +80,7 @@ class TicketOfficeTest {
     )
     void testAddClientWithLessPrivilegyToQueueWithHigherPrivilegyClient() {
         Segment ticketOfficeSegment = new Segment(new Point(2, 1), new Point(4, 0));
-        TicketOffice ticketOffice = new TicketOffice(ticketOfficeSegment, Direction.Down, 5);
+        TicketOffice ticketOffice = new TicketOffice(1, ticketOfficeSegment, Direction.Down, 5);
         Client client1 = getClient(1, new Privilegy("ordinary", 0), new Point(3, 2));
         Client client2 = getClient(2, new Privilegy("ordinary", 0), new Point(3, 3));
         Client client3 = getClient(3, new Privilegy("disabled", 2), new Point(3, 4));
