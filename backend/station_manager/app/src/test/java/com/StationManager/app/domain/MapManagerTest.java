@@ -24,6 +24,7 @@ class MapManagerTest {
         ArrayList<Segment> entrances = new ArrayList<>();
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
         return new Hall(
+            1,
             new Segment(new Point(0, 0), new Point(20, 20)),
             entrances,
             ticketOffices
@@ -39,21 +40,25 @@ class MapManagerTest {
         int timeToServeTicket = 5;
 
         TicketOffice ticketOffice1 = new TicketOffice(
+            1,
             ticketOfficeSegment1,
             Direction.Up,
             timeToServeTicket
         );
         TicketOffice ticketOffice2 = new TicketOffice(
+            2,
             ticketOfficeSegment2,
             Direction.Down,
             timeToServeTicket
         );
         TicketOffice ticketOffice3 = new TicketOffice(
+            3,
             ticketOfficeSegment3,
             Direction.Left,
             timeToServeTicket
         );
         TicketOffice ticketOffice4 = new TicketOffice(
+            4,
             ticketOfficeSegment4,
             Direction.Right,
             timeToServeTicket
@@ -97,6 +102,7 @@ class MapManagerTest {
         Hall hall = getHall();
         Segment ticketOfficeSegment1 = new Segment(new Point(0, 0), new Point(2, 1));
         TicketOffice ticketOffice1 = new TicketOffice(
+            1,
             ticketOfficeSegment1,
             Direction.Up,
             5
