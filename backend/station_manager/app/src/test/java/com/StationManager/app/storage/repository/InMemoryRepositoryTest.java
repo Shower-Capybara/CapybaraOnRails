@@ -27,17 +27,6 @@ public class InMemoryRepositoryTest {
     }
 
     static class FakeRepository extends InMemoryRepository<FakeEntity> {
-        @Override
-        public void update(FakeEntity entity) {
-            // replace the entity with the same id with the new one
-            entities.removeIf(e -> Objects.equals(e.id(), entity.id()));
-            entities.add(entity);
-        }
-
-        @Override
-        public Optional<FakeEntity> getById(int id) {
-            return entities.stream().filter(client -> client.id() == id).findFirst();
-        }
     }
 
     @Test

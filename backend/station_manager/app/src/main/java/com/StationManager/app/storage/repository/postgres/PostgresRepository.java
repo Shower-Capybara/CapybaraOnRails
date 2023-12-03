@@ -25,17 +25,7 @@ public class PostgresRepository<T> implements IRepository<T> {
     }
 
     @Override
-    public void update(T entity) {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    @Override
     public void remove(T entity) {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    @Override
-    public Optional<T> getById(int id) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
