@@ -10,12 +10,12 @@ import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
 
 public class PostgresUnitOfWork extends UnitOfWork {
-    private Session session;
-    private IRepository<Client> clientRepository;
-    private IRepository<Hall> hallRepository;
-    private IRepository<Privilegy> privilegyRepository;
-    private IRepository<TicketOffice> ticketOfficeRepository;
-    private IRepository<TrainStation> trainStationRepository;
+    public Session session;
+    public IRepository<Client> clientRepository;
+    public IRepository<Hall> hallRepository;
+    public IRepository<Privilegy> privilegyRepository;
+    public IRepository<TicketOffice> ticketOfficeRepository;
+    public IRepository<TrainStation> trainStationRepository;
 
     public PostgresUnitOfWork() {
         // this.session = PgSessionFactory.openSession();  // TODO: replace with real session factory

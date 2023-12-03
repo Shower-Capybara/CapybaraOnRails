@@ -5,11 +5,11 @@ import com.StationManager.app.storage.repository.inmemory.*;
 
 public class InMemoryUnitOfWork extends UnitOfWork {
 
-    private IClientRepository clientRepository;
-    private IHallRepository hallRepository;
-    private IPrivilegyRepository privilegyRepository;
-    private ITicketOfficeRepository ticketOfficeRepository;
-    private ITrainStationRepository trainStationRepository;
+    public IClientRepository clientRepository;
+    public IHallRepository hallRepository;
+    public IPrivilegyRepository privilegyRepository;
+    public ITicketOfficeRepository ticketOfficeRepository;
+    public ITrainStationRepository trainStationRepository;
 
     public InMemoryUnitOfWork() {
         clientRepository = new InMemoryClientRepository();
