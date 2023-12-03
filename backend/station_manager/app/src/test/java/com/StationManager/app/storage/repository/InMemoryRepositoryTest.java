@@ -1,27 +1,12 @@
 package com.StationManager.app.storage.repository;
 
-import com.StationManager.app.domain.client.Client;
-import com.StationManager.app.domain.client.Privilegy;
-import com.StationManager.app.domain.train_station.Direction;
-import com.StationManager.app.domain.train_station.Hall;
-import com.StationManager.app.domain.train_station.Segment;
-import com.StationManager.app.domain.train_station.TicketOffice;
 import com.StationManager.app.storage.repository.inmemory.*;
-import org.checkerframework.checker.units.qual.A;
-import org.eclipse.jetty.util.DateCache;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import java.awt.*;
-import java.util.*;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class InMemoryRepositoryTest {
+class InMemoryRepositoryTest {
 
     record FakeEntity(int id) {
     }
