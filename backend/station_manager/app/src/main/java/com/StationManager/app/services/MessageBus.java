@@ -13,40 +13,49 @@ import java.util.function.BiFunction;
 public class MessageBus {
     protected static final Logger logger = LoggerFactory.getLogger(MessageBus.class);
 
-    public final UnitOfWork uow;
-    private final Map<Class<? extends Event>, List<BiFunction<Event, UnitOfWork, Void>>> eventHandlers;
-    private final Map<Class<? extends Command>, BiFunction<Command, UnitOfWork, Void>> commandHandlers;
-    private final Queue<Message> messageQueue = new LinkedList<>();
+    private static final Map<
+        Class<? extends Event>,
+        List<BiFunction<Event, UnitOfWork, Void>>
+    > eventHandlers = new HashMap<>();
+    private static final Map<
+        Class<? extends Command>,
+        BiFunction<Command, UnitOfWork, Void>
+    > commandHandlers = new HashMap<>();
 
-    public MessageBus(
-        UnitOfWork uow,
-        Map<Class<? extends Event>, List<BiFunction<Event, UnitOfWork, Void>>> eventHandlers,
-        Map<Class<? extends Command>, BiFunction<Command, UnitOfWork, Void>> commandHandlers
+    public static void addEventHandlers(
+        Class<? extends Event> event,
+        List<BiFunction<Event, UnitOfWork, Void>> handlers
     ) {
-        this.uow = uow;
-        this.eventHandlers = eventHandlers;
-        this.commandHandlers = commandHandlers;
+        eventHandlers.put(event, handlers);
     }
 
-    public void handle(Message message) {
-        this.messageQueue.add(message);
+    public static void addCommandHandler(
+        Class<? extends Command> command,
+        BiFunction<Command, UnitOfWork, Void> handler
+    ) {
+        commandHandlers.put(command, handler);
+    }
 
-        while (!this.messageQueue.isEmpty()) {
-            message = this.messageQueue.poll();
+    public static void handle(Message message, UnitOfWork uow) {
+        var messageQueue = new LinkedList<Message>();
+        messageQueue.add(message);
 
-            if (message instanceof Event) {
-                this.handleEvent((Event) message);
-            } else if (message instanceof Command) {
-                this.handleCommand((Command) message);
+        while (!messageQueue.isEmpty()) {
+            message = messageQueue.poll();
+
+            if (message instanceof Event event) {
+                handleEvent(event, uow, messageQueue);
+            } else if (message instanceof Command command) {
+                handleCommand(command, uow, messageQueue);
             }
         }
     }
 
-    public void handleEvent(Event event) {
-        logger.debug(String.format("Handling event %s", event.getClass()));
-        for (var handler: this.eventHandlers.get(event.getClass())) {
+    public static void handleEvent(Event event, UnitOfWork uow, List<Message> queue) {
+        logger.debug("Handling event " + event.getClass());
+        for (var handler: eventHandlers.get(event.getClass())) {
             try {
-                handler.apply(event, this.uow);
+                handler.apply(event, uow);
                 // TODO: extend queue with uow.events
             } catch (Exception e) {
                 logger.error(String.format("Exception when handling event: %s", e));
@@ -54,10 +63,10 @@ public class MessageBus {
         }
     }
 
-    public void handleCommand(Command command) {
-        logger.debug(String.format("Handling command %s", command.getClass()));
+    public static void handleCommand(Command command, UnitOfWork uow, List<Message> queue) {
+        logger.debug("Handling command " + command.getClass());
         try {
-            var handler = this.commandHandlers.get(command.getClass());
+            var handler = commandHandlers.get(command.getClass());
             handler.apply(command, uow);
             // TODO: extend queue with uow.events
         } catch (Exception e) {
