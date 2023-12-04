@@ -7,6 +7,7 @@ import com.StationManager.app.domain.train_station.TicketOffice;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.function.Function;
 
 public class MapManager {
@@ -24,7 +25,7 @@ public class MapManager {
      */
     public static TicketOffice getClosestTicketOffice(
         Point point,
-        ArrayList<TicketOffice> ticketOffices
+        List<TicketOffice> ticketOffices
     ) {
         if (ticketOffices.isEmpty()) {
             throw new IllegalStateException("Ticket offices can't be empty");
@@ -34,7 +35,7 @@ public class MapManager {
             .stream()
             .min(
                 Comparator.comparingDouble(
-                    (ticketOffice) -> point.distance(calculatePositionForNewClient(ticketOffice))
+                    ticketOffice -> point.distance(calculatePositionForNewClient(ticketOffice))
                 )
             )
             .get();

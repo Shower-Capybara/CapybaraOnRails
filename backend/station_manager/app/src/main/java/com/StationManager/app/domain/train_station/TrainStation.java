@@ -9,16 +9,8 @@ public class TrainStation {
         this.hall = hall;
     }
 
-    public void setHall(Hall hall) {
-        this.hall = hall;
-    }
+    public Integer getId() { return this.id; }
+    public Hall getHall() { return this.hall; }
 
-    public Hall getHall() {
-        return this.hall;
-    }
-
-    public Integer getId() {
-        return this.id;
-    }
-
+    public void setHall(Hall hall) { this.hall = hall; }
 }

@@ -28,10 +28,6 @@ public class Hall {
         this.entrances = entrances;
     }
 
-    public Integer getId() {
-        return this.id;
-    }
-
     public void addTicketOffice(TicketOffice ticketOffice) {
         if (MapManager.IsSegmentFree(ticketOffice.getSegment(), this)) {
             ticketOffices.add(ticketOffice);
@@ -73,14 +69,15 @@ public class Hall {
         return ticketOfficeWithShortestQueue.getQueue().size();
     }
 
+    public Integer getId() {
+        return this.id;
+    }
     public Segment getSegment() {
         return segment;
     }
-
     public List<Segment> getEntrances() {
         return entrances;
     }
-
     public List<TicketOffice> getTicketOffices() {
         return ticketOffices;
     }

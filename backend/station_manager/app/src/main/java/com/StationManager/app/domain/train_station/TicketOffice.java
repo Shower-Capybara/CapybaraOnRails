@@ -37,42 +37,6 @@ public class TicketOffice {
         this.transactions = new ArrayList<>();
     }
 
-    public Integer getId() {
-        return this.id;
-    }
-
-    public Queue<Client> getQueue() {
-        return this.queue;
-    }
-
-    public Direction getDirection() {
-        return this.direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
-    public Segment getSegment() {
-        return this.segment;
-    }
-
-    public void setPosition(Segment segment) {
-        this.segment = segment;
-    }
-
-    public void setClosed(Boolean bool) {
-        this.isClosed = bool;
-    }
-
-    public Boolean getClosed() {
-        return this.isClosed;
-    }
-
-    public void serveClient() {
-        throw new UnsupportedOperationException("This method is not yet implemented");
-    }
-
     public void removeClient() {
         if (queue.isEmpty()) {
             throw new IllegalStateException(
@@ -133,29 +97,21 @@ public class TicketOffice {
         return index;
     }
 
-    public Integer getTimeToServeTicket() {
-        return timeToServeTicket;
-    }
+    public Integer getId() { return this.id;}
+    public Queue<Client> getQueue() { return this.queue; }
+    public Direction getDirection() { return this.direction; }
+    public Segment getSegment() { return this.segment; }
+    public Boolean getClosed() { return this.isClosed; }
+    public Boolean getReserved() { return isReserved; }
+    public Integer getTimeToServeTicket() { return timeToServeTicket; }
+    public Iterable<ServeRecord> getTransactions() { return transactions; }
 
-    public void setTimeToServeTicket(Integer timeToServeTicket) {
-        this.timeToServeTicket = timeToServeTicket;
-    }
-
-    public Boolean getReserved() {
-        return isReserved;
-    }
-
-    public void setReserved(Boolean reserved) {
-        isReserved = reserved;
-    }
-
-    public Iterable<ServeRecord> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(Iterable<ServeRecord> transactions) {
-        this.transactions = transactions;
-    }
+    public void setDirection(Direction direction) { this.direction = direction; }
+    public void setSegment(Segment segment) { this.segment = segment; }
+    public void setClosed(Boolean bool) { this.isClosed = bool; }
+    public void setReserved(Boolean reserved) { isReserved = reserved; }
+    public void setTimeToServeTicket(Integer timeToServeTicket) { this.timeToServeTicket = timeToServeTicket; }
+    public void setTransactions(Iterable<ServeRecord> transactions) { this.transactions = transactions; }
 
     @Override
     public boolean equals(Object o) {
