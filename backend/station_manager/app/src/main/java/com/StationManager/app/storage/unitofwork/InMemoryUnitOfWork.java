@@ -1,22 +1,37 @@
 package com.StationManager.app.storage.unitofwork;
 
+import com.StationManager.app.domain.events.Event;
 import com.StationManager.app.storage.repository.*;
 import com.StationManager.app.storage.repository.inmemory.*;
 
-public class InMemoryUnitOfWork extends UnitOfWork {
+import java.util.ArrayList;
+import java.util.List;
 
-    public IClientRepository clientRepository;
-    public IHallRepository hallRepository;
-    public IPrivilegyRepository privilegyRepository;
-    public ITicketOfficeRepository ticketOfficeRepository;
-    public ITrainStationRepository trainStationRepository;
+public class InMemoryUnitOfWork extends UnitOfWork {
+    public final IClientRepository clientRepository;
+    public final IHallRepository hallRepository;
+    public final IPrivilegyRepository privilegyRepository;
+    public final ITicketOfficeRepository ticketOfficeRepository;
+    public final ITrainStationRepository trainStationRepository;
 
     public InMemoryUnitOfWork() {
-        clientRepository = new InMemoryClientRepository();
-        hallRepository = new InMemoryHallRepository();
-        privilegyRepository = new InMemoryPrivilegyRepository();
-        ticketOfficeRepository = new InMemoryTicketOfficeRepository();
-        trainStationRepository = new InMemoryTrainStationRepository();
+        this.clientRepository = new InMemoryClientRepository();
+        this.hallRepository = new InMemoryHallRepository();
+        this.privilegyRepository = new InMemoryPrivilegyRepository();
+        this.ticketOfficeRepository = new InMemoryTicketOfficeRepository();
+        this.trainStationRepository = new InMemoryTrainStationRepository();
+    }
+
+    @Override
+    public List<Event> collectNewEvents() {
+        var events = new ArrayList<Event>();
+        for (var hall: hallRepository.getSeen()) {
+            events.addAll(hall.events);
+        }
+        for (var ticketOffice: ticketOfficeRepository.getSeen()) {
+            events.addAll(ticketOffice.events);
+        }
+        return events.stream().sorted().toList();
     }
 
     @Override

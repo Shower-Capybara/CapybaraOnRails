@@ -81,4 +81,16 @@ public class Hall {
     public List<TicketOffice> getTicketOffices() {
         return ticketOffices;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Hall hall)) return false;
+        return Objects.equals(id, hall.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

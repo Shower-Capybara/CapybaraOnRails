@@ -1,5 +1,7 @@
 package com.StationManager.app.domain.train_station;
 
+import java.util.Objects;
+
 public class TrainStation {
     private final Integer id;
     private Hall hall;
@@ -13,4 +15,16 @@ public class TrainStation {
     public Hall getHall() { return this.hall; }
 
     public void setHall(Hall hall) { this.hall = hall; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TrainStation that)) return false;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

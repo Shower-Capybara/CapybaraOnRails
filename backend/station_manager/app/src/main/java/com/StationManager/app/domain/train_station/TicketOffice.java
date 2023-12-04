@@ -117,17 +117,11 @@ public class TicketOffice {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof TicketOffice that)) return false;
-        return Objects.equals(segment, that.segment)
-            && Objects.equals(queue, that.queue)
-            && Objects.equals(timeToServeTicket, that.timeToServeTicket)
-            && Objects.equals(isClosed, that.isClosed)
-            && Objects.equals(isReserved, that.isReserved)
-            && direction == that.direction
-            && Objects.equals(transactions, that.transactions);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(segment, queue, timeToServeTicket, isClosed, isReserved, direction, transactions);
+        return Objects.hash(id);
     }
 }

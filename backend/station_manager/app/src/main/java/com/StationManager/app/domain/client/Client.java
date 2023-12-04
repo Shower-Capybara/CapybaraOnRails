@@ -45,6 +45,6 @@ public class Client {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, privilegy, position);
+        return Objects.hash(id);
     }
 }
