@@ -2,11 +2,12 @@ package com.StationManager.app.domain.train_station;
 
 import com.StationManager.app.domain.ServeRecord;
 import com.StationManager.app.domain.client.Client;
+import com.StationManager.app.domain.events.ClientLeftEvent;
+import com.StationManager.app.domain.events.ClientMovedEvent;
+import com.StationManager.app.domain.events.Event;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Objects;
+import java.util.*;
 
 public class TicketOffice {
     private final Integer id;
@@ -18,9 +19,14 @@ public class TicketOffice {
     private Direction direction;
     private Iterable<ServeRecord> transactions;
 
-    // public Iterable<IEvent> events;
+    public final Queue<Event> events = new LinkedList<>();
 
-    public TicketOffice(Integer id, Segment segment, Direction direction, Integer timeToServeTicket) {
+    public TicketOffice(
+        Integer id,
+        Segment segment,
+        Direction direction,
+        Integer timeToServeTicket
+    ) {
         this.id = id;
         this.segment = segment;
         this.queue = new LinkedList<>();
@@ -35,7 +41,7 @@ public class TicketOffice {
         return this.id;
     }
 
-    public LinkedList<Client> getQueue() {
+    public Queue<Client> getQueue() {
         return this.queue;
     }
 
@@ -67,20 +73,25 @@ public class TicketOffice {
         throw new UnsupportedOperationException("This method is not yet implemented");
     }
 
-    // public Iterable<IEvent> RemoveClient(){
     public void removeClient() {
         if (queue.isEmpty()) {
             throw new IllegalStateException(
                 "Client queue is empty: There are no clients to delete"
             );
         }
+        var newEvents = new ArrayList<Event>();
         var removedClient = queue.pop();
+        newEvents.add(new ClientLeftEvent(removedClient));
+
         Point previousClientPosition = removedClient.getPosition();
         for (Client client : queue) {
             Point currentClientPosition = client.getPosition();
             client.setPosition(previousClientPosition);
+            newEvents.add(new ClientMovedEvent(client, previousClientPosition));
             previousClientPosition = currentClientPosition;
         }
+
+        this.events.addAll(newEvents);
     }
 
     public void addClient(Client client) {
@@ -88,6 +99,7 @@ public class TicketOffice {
             queue.add(client);
             return;
         }
+        var newEvents = new ArrayList<Event>();
         // Find the position to insert the new client
         int insertIndex = findInsertIndex(client);
         queue.add(insertIndex, client);
@@ -99,9 +111,13 @@ public class TicketOffice {
             var currentClient = queue.get(i);
             nextClient = queue.get(i + 1);
             currentClient.setPosition(nextClient.getPosition());
+            newEvents.add(new ClientMovedEvent(currentClient, currentClient.getPosition()));
         }
         // Change the position for the last client
         nextClient.setPosition(insertedClientPosition);
+        newEvents.add(new ClientMovedEvent(nextClient, insertedClientPosition));
+        Collections.reverse(newEvents);
+        this.events.addAll(newEvents);
     }
 
     private int findInsertIndex(Client newClient) {
@@ -140,6 +156,7 @@ public class TicketOffice {
     public void setTransactions(Iterable<ServeRecord> transactions) {
         this.transactions = transactions;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

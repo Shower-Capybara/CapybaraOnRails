@@ -2,20 +2,26 @@ package com.StationManager.app.domain.train_station;
 
 import com.StationManager.app.domain.MapManager;
 import com.StationManager.app.domain.client.Client;
+import com.StationManager.app.domain.events.Event;
+import com.StationManager.app.domain.events.TicketOfficeAddedEvent;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Hall {
     private final Integer id;
-    private final ArrayList<Segment> entrances;
-    private final ArrayList<TicketOffice> ticketOffices;
+    private final List<Segment> entrances;
+    private final List<TicketOffice> ticketOffices;
     private final Segment segment;
 
-    // public Iterable<IEvent> events;
+    public final Queue<Event> events = new LinkedList<>();
 
-    public Hall(Integer id, Segment segment, ArrayList<Segment> entrances, ArrayList<TicketOffice> ticketOffices) {
+    public Hall(
+        Integer id,
+        Segment segment,
+        List<Segment> entrances,
+        List<TicketOffice> ticketOffices
+    ) {
         this.id = id;
         this.segment = segment;
         this.ticketOffices = ticketOffices;
@@ -32,16 +38,18 @@ public class Hall {
         } else {
             throw new IllegalStateException("Position is taken");
         }
+        this.events.add(new TicketOfficeAddedEvent(ticketOffice));
     }
 
     public void addClient(Client client) {
-        var WorkingTicketOffices = ticketOffices.stream()
+        // split into adding to the hall and adding to the ticket office
+        var workingTicketOffices = ticketOffices.stream()
             .filter(ticketOffice -> !ticketOffice.getClosed())
             .collect(Collectors.toCollection(ArrayList::new));
 
-        int size = getSizeOfShortestQueue(WorkingTicketOffices);
+        int size = getSizeOfShortestQueue(workingTicketOffices);
 
-        var shortestQueueTicketOffices = WorkingTicketOffices.stream()
+        var shortestQueueTicketOffices = workingTicketOffices.stream()
             .filter(ticketOffice -> ticketOffice.getQueue().size() == size)
             .collect(Collectors.toCollection(ArrayList::new));
 
@@ -59,7 +67,7 @@ public class Hall {
 
         var ticketOfficeWithShortestQueue = ticketOffices
             .stream()
-            .min(Comparator.comparingInt((ticketOffice) -> ticketOffice.getQueue().size()))
+            .min(Comparator.comparingInt(ticketOffice -> ticketOffice.getQueue().size()))
             .get();
 
         return ticketOfficeWithShortestQueue.getQueue().size();
@@ -69,11 +77,11 @@ public class Hall {
         return segment;
     }
 
-    public ArrayList<Segment> getEntrances() {
+    public List<Segment> getEntrances() {
         return entrances;
     }
 
-    public ArrayList<TicketOffice> getTicketOffices() {
+    public List<TicketOffice> getTicketOffices() {
         return ticketOffices;
     }
 }

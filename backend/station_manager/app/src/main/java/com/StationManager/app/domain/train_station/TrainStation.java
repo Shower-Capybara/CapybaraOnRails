@@ -4,8 +4,6 @@ public class TrainStation {
     private final Integer id;
     private Hall hall;
 
-    // public Queue<IEvent> events;
-
     public TrainStation(Integer id, Hall hall) {
         this.id = id;
         this.hall = hall;
