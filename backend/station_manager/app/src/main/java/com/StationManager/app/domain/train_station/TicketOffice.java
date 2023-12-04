@@ -12,7 +12,7 @@ import java.util.*;
 public class TicketOffice {
     private final Integer id;
     private Segment segment;
-    private final LinkedList<Client> queue;
+    private final List<Client> queue;
     private Integer timeToServeTicket;
     private Boolean isClosed;
     private Boolean isReserved;
@@ -44,7 +44,7 @@ public class TicketOffice {
             );
         }
         var newEvents = new ArrayList<Event>();
-        var removedClient = queue.pop();
+        var removedClient = queue.remove(0);
         newEvents.add(new ClientLeftEvent(removedClient));
 
         Point previousClientPosition = removedClient.getPosition();
@@ -98,7 +98,7 @@ public class TicketOffice {
     }
 
     public Integer getId() { return this.id;}
-    public Queue<Client> getQueue() { return this.queue; }
+    public List<Client> getQueue() { return this.queue; }
     public Direction getDirection() { return this.direction; }
     public Segment getSegment() { return this.segment; }
     public Boolean getClosed() { return this.isClosed; }
