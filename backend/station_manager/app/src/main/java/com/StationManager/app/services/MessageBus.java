@@ -13,10 +13,10 @@ import java.util.function.BiFunction;
 public class MessageBus {
     protected static final Logger logger = LoggerFactory.getLogger(MessageBus.class);
 
-    public UnitOfWork uow;
-    private Map<Class<? extends Event>, List<BiFunction<Event, UnitOfWork, Void>>> eventHandlers;
-    private Map<Class<? extends Command>, BiFunction<Command, UnitOfWork, Void>> commandHandlers;
-    private Queue<Message> messageQueue = new LinkedList<>();
+    public final UnitOfWork uow;
+    private final Map<Class<? extends Event>, List<BiFunction<Event, UnitOfWork, Void>>> eventHandlers;
+    private final Map<Class<? extends Command>, BiFunction<Command, UnitOfWork, Void>> commandHandlers;
+    private final Queue<Message> messageQueue = new LinkedList<>();
 
     public MessageBus(
         UnitOfWork uow,
