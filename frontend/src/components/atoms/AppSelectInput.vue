@@ -6,37 +6,35 @@ const props = withDefaults(
   defineProps<{
     id: string
     value: string
+    options: string[] // Масив опцій для вибору
     required?: boolean
-    pattern?: string
     title?: string
   }>(),
-  { required: false, pattern: '', title: '' }
+  { required: false, title: '' }
 )
 
 function updateValue(event: Event): void {
-  emit('input', (event.target as HTMLInputElement).value)
+  emit('input', (event.target as HTMLSelectElement).value)
 }
 </script>
 
 <template>
   <div class="flex flex-col gap-3">
-    <input
+    <select
       :id="props.id"
-      type="text"
       :value="props.value"
       :required="props.required"
-      :pattern="props.pattern"
       :title="props.title"
-      @input="updateValue"
+      @change="updateValue"
       class="mb-3 px-1 py-2 border border-solid border-stroke_grey-25 rounded bg-background_grey text-sm"
-    />
+    >
+      <option v-for="(option, index) in props.options" :key="index" :value="option">
+        {{ option }}
+      </option>
+    </select>
   </div>
 </template>
 
 <style scoped>
-input {
-  margin: 0%;
-  width: 60px;
-  height: 20px;
-}
+/* стилі */
 </style>

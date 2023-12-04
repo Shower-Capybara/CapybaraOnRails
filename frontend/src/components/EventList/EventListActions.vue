@@ -10,6 +10,10 @@ const showSettings = ref(false)
 const openSettings = () => {
   showSettings.value = true
 }
+
+const closeSettings = () => {
+  showSettings.value = false
+}
 </script>
 <template>
   <div class="flex flex-row justify-between items-center w-full">
@@ -24,6 +28,6 @@ const openSettings = () => {
     </div>
   </div>
   <Teleport to="#app">
-    <Settings v-if="showSettings" />
+    <Settings v-if="showSettings" @close="closeSettings" />
   </Teleport>
 </template>
