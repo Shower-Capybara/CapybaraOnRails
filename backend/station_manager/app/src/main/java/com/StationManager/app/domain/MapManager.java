@@ -170,8 +170,8 @@ public class MapManager {
      * @return {@code true} if there is an overlap, {@code false} otherwise.
      */
     public static Boolean segmentsOverlap(Segment segment1, Segment segment2) {
-        Set<Point> points1 = getAllPoints(segment1);
-        Set<Point> points2 = getAllPoints(segment2);
+        Set<Point> points1 = segment1.getAllPoints();
+        Set<Point> points2 = segment2.getAllPoints();
 
         return points1.stream().anyMatch(points2::contains);
     }
@@ -185,15 +185,4 @@ public class MapManager {
      * @param segment The segment for which to generate the set of points.
      * @return A set of points within the bounds of the segment.
      */
-    private static Set<Point> getAllPoints(Segment segment) {
-        Set<Point> points = new HashSet<>();
-
-        for (int x = segment.start().x; x <= segment.end().x; x++) {
-            for (int y = segment.start().y; y <= segment.end().y; y++) {
-                points.add(new Point(x, y));
-            }
-        }
-
-        return points;
-    }
 }

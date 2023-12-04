@@ -2,10 +2,14 @@ package com.StationManager.app.domain.train_station;
 
 import com.StationManager.app.domain.MapManager;
 import com.StationManager.app.domain.client.Client;
+import com.StationManager.app.domain.events.ClientAddedEvent;
+import com.StationManager.app.domain.events.ClientMovedEvent;
 import com.StationManager.app.domain.events.Event;
 import com.StationManager.app.domain.events.TicketOfficeAddedEvent;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Hall {
@@ -39,6 +43,21 @@ public class Hall {
 
     public void addClient(Client client) {
         // split into adding to the hall and adding to the ticket office
+        var entrancesPoints = this.entrances
+            .stream()
+            .map(Segment::getAllPoints)
+            .flatMap(Collection::stream)
+            .toList();
+
+        this.addClient(client, entrancesPoints.get(new Random().nextInt(entrancesPoints.size())));
+    }
+
+    public void addClient(Client client, Point point) {
+        client.setPosition(point);
+        this.events.add(new ClientAddedEvent(client));
+    }
+
+    public void assignToTicketOffice(Client client) {
         var workingTicketOffices = ticketOffices.stream()
             .filter(ticketOffice -> !ticketOffice.getClosed())
             .collect(Collectors.toCollection(ArrayList::new));
@@ -54,6 +73,7 @@ public class Hall {
             shortestQueueTicketOffices
         );
         closestTicketOffice.addClient(client);
+        this.events.add(new ClientMovedEvent(client, client.getPosition()));
     }
 
     private static int getSizeOfShortestQueue(ArrayList<TicketOffice> ticketOffices) {
