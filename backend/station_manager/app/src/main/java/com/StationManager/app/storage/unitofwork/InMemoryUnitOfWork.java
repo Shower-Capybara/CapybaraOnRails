@@ -26,10 +26,14 @@ public class InMemoryUnitOfWork extends UnitOfWork {
     public List<Event> collectNewEvents() {
         var events = new ArrayList<Event>();
         for (var hall: hallRepository.getSeen()) {
-            events.addAll(hall.events);
+            while (!hall.events.isEmpty()) {
+                events.add(hall.events.poll());
+            }
         }
         for (var ticketOffice: ticketOfficeRepository.getSeen()) {
-            events.addAll(ticketOffice.events);
+            while (!ticketOffice.events.isEmpty()) {
+                events.add(ticketOffice.events.poll());
+            }
         }
         return events.stream().sorted().toList();
     }

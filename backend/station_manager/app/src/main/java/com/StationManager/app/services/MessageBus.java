@@ -56,7 +56,7 @@ public class MessageBus {
         for (var handler: eventHandlers.get(event.getClass())) {
             try {
                 handler.apply(event, uow);
-                // TODO: extend queue with uow.events
+                queue.addAll(uow.collectNewEvents());
             } catch (Exception e) {
                 logger.error(String.format("Exception when handling event: %s", e));
             }
@@ -68,7 +68,7 @@ public class MessageBus {
         try {
             var handler = commandHandlers.get(command.getClass());
             handler.apply(command, uow);
-            // TODO: extend queue with uow.events
+            queue.addAll(uow.collectNewEvents());
         } catch (Exception e) {
             logger.error(String.format("Exception when handling event: %s", e));
             throw e;
