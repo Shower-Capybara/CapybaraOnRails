@@ -3,7 +3,7 @@ package com.StationManager.app.services;
 import com.StationManager.app.domain.Message;
 import com.StationManager.app.domain.commands.Command;
 import com.StationManager.app.domain.events.Event;
-import com.StationManager.app.storage.unitofwork.UnitOfWork;
+import com.StationManager.app.services.unitofwork.UnitOfWork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

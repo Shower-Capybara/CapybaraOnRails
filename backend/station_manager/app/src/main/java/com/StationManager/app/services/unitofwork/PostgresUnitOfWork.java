@@ -1,20 +1,29 @@
-package com.StationManager.app.storage.unitofwork;
+package com.StationManager.app.services.unitofwork;
 
 import com.StationManager.app.domain.events.Event;
 import com.StationManager.app.storage.repository.*;
 import com.StationManager.app.storage.repository.inmemory.*;
+import org.hibernate.Session;
+import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InMemoryUnitOfWork extends UnitOfWork {
+public class PostgresUnitOfWork extends UnitOfWork {
+    public Session session;
+//
     public final IClientRepository clientRepository;
     public final IHallRepository hallRepository;
     public final IPrivilegyRepository privilegyRepository;
     public final ITicketOfficeRepository ticketOfficeRepository;
     public final ITrainStationRepository trainStationRepository;
 
-    public InMemoryUnitOfWork() {
+    public PostgresUnitOfWork() {
+        // this.session = PgSessionFactory.openSession();  // TODO: replace with real session factory
+        //noinspection resource - session is closed in close() method
+        this.session = new Configuration().configure().buildSessionFactory().openSession();
+
+        // replace wiht correct repos
         this.clientRepository = new InMemoryClientRepository();
         this.hallRepository = new InMemoryHallRepository();
         this.privilegyRepository = new InMemoryPrivilegyRepository();
@@ -40,18 +49,19 @@ public class InMemoryUnitOfWork extends UnitOfWork {
 
     @Override
     public void commit() {
-        // not required for in memory storage
+        session.getTransaction().commit();
         logger.info("Changes committed.");
     }
 
     @Override
     public void rollback() {
-        // not required for in memory storage
+        session.getTransaction().rollback();
         logger.info("Changes rollback.");
     }
 
     @Override
     public void close() throws Exception {
         this.rollback();
+        this.session.close();
     }
 }

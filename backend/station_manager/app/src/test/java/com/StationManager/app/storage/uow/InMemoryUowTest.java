@@ -1,6 +1,6 @@
 package com.StationManager.app.storage.uow;
 
-import com.StationManager.app.storage.unitofwork.InMemoryUnitOfWork;
+import com.StationManager.app.services.unitofwork.InMemoryUnitOfWork;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
