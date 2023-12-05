@@ -26,6 +26,10 @@ public class Hall {
         List<Segment> entrances,
         List<TicketOffice> ticketOffices
     ) {
+        if (entrances.isEmpty()) {
+            throw new IllegalArgumentException("Entrances list can not be empty");
+        }
+
         this.id = id;
         this.segment = segment;
         this.ticketOffices = ticketOffices;
@@ -54,7 +58,7 @@ public class Hall {
 
     public void addClient(Client client, Point point) {
         client.setPosition(point);
-        this.events.add(new ClientAddedEvent(client));
+        this.events.add(new ClientAddedEvent(this, client));
     }
 
     public void assignToTicketOffice(Client client) {
