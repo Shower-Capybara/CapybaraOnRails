@@ -33,7 +33,8 @@ public class MessageBus {
         commandHandlers.put(command, handler);
     }
 
-    public static void handle(Message message, UnitOfWork uow) {
+    public static List<Event> handle(Message message, UnitOfWork uow) {
+        var eventsList = new ArrayList<Event>();
         var messageQueue = new LinkedList<Message>();
         messageQueue.add(message);
 
@@ -41,11 +42,13 @@ public class MessageBus {
             message = messageQueue.poll();
 
             if (message instanceof Event event) {
+                eventsList.add(event);
                 handleEvent(event, uow, messageQueue);
             } else if (message instanceof Command command) {
                 handleCommand(command, uow, messageQueue);
             }
         }
+        return eventsList;
     }
 
     public static <T extends Event> void handleEvent(T event, UnitOfWork uow, List<Message> queue) {

@@ -55,8 +55,9 @@ public class MessageBusTest {
 
         try (var uow = new InMemoryUnitOfWork()) {
             uow.getClientRepository().add(client);
-            MessageBus.handle(event, uow);
+            var events = MessageBus.handle(event, uow);
             assertNotEquals(initialPosition, client.getPosition());
+            assertEquals(1, events.size());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
