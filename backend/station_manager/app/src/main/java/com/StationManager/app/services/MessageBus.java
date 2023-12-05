@@ -3,35 +3,32 @@ package com.StationManager.app.services;
 import com.StationManager.app.domain.Message;
 import com.StationManager.app.domain.commands.Command;
 import com.StationManager.app.domain.events.Event;
+import com.StationManager.app.services.handlers.commands.CommandHandler;
+import com.StationManager.app.services.handlers.commands.CommandHandlersMap;
+import com.StationManager.app.services.handlers.events.EventHandler;
+import com.StationManager.app.services.handlers.events.EventHandlersMap;
 import com.StationManager.app.services.unitofwork.UnitOfWork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.function.BiFunction;
 
 public class MessageBus {
     protected static final Logger logger = LoggerFactory.getLogger(MessageBus.class);
 
-    private static final Map<
-        Class<? extends Event>,
-        List<BiFunction<Event, UnitOfWork, Void>>
-    > eventHandlers = new HashMap<>();
-    private static final Map<
-        Class<? extends Command>,
-        BiFunction<Command, UnitOfWork, Void>
-    > commandHandlers = new HashMap<>();
+    private static final EventHandlersMap eventHandlers = new EventHandlersMap();
+    private static final CommandHandlersMap commandHandlers = new CommandHandlersMap();
 
-    public static void addEventHandlers(
-        Class<? extends Event> event,
-        List<BiFunction<Event, UnitOfWork, Void>> handlers
+    public static <T extends Event> void addEventHandlers(
+        Class<T> event,
+        List<EventHandler<T>> handlers
     ) {
         eventHandlers.put(event, handlers);
     }
 
-    public static void addCommandHandler(
-        Class<? extends Command> command,
-        BiFunction<Command, UnitOfWork, Void> handler
+    public static <T extends Command> void addCommandHandler(
+        Class<T> command,
+        CommandHandler<T> handler
     ) {
         commandHandlers.put(command, handler);
     }
@@ -51,11 +48,17 @@ public class MessageBus {
         }
     }
 
-    public static void handleEvent(Event event, UnitOfWork uow, List<Message> queue) {
+    public static <T extends Event> void handleEvent(T event, UnitOfWork uow, List<Message> queue) {
         logger.debug("Handling event " + event.getClass());
-        for (var handler: eventHandlers.get(event.getClass())) {
+        var handlers = eventHandlers.get(event);
+        if (handlers == null) {
+            logger.info("Handlers list is empty for event " + event.getClass());
+            return;
+        }
+
+        for (var handler: handlers) {
             try {
-                handler.apply(event, uow);
+                handler.handle(event, uow);
                 queue.addAll(uow.collectNewEvents());
             } catch (Exception e) {
                 logger.error(String.format("Exception when handling event: %s", e));
@@ -66,8 +69,13 @@ public class MessageBus {
     public static void handleCommand(Command command, UnitOfWork uow, List<Message> queue) {
         logger.debug("Handling command " + command.getClass());
         try {
-            var handler = commandHandlers.get(command.getClass());
-            handler.apply(command, uow);
+            var handler = commandHandlers.get(command);
+            if (handler == null) {
+                logger.info("Handler is null for command " + command.getClass());
+                return;
+            }
+
+            handler.handle(command, uow);
             queue.addAll(uow.collectNewEvents());
         } catch (Exception e) {
             logger.error(String.format("Exception when handling event: %s", e));
