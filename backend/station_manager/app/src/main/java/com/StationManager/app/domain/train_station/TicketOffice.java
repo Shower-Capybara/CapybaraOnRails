@@ -1,5 +1,6 @@
 package com.StationManager.app.domain.train_station;
 
+import com.StationManager.app.domain.MapManager;
 import com.StationManager.app.domain.ServeRecord;
 import com.StationManager.app.domain.client.Client;
 import com.StationManager.app.domain.events.ClientLeftEvent;
@@ -61,6 +62,7 @@ public class TicketOffice {
     public void addClient(Client client) {
         if (queue.isEmpty() || client.getPrivilegy() == null) {
             queue.add(client);
+            client.setPosition(MapManager.calculatePositionForNewClient(this));
             return;
         }
         var newEvents = new ArrayList<Event>();
@@ -73,6 +75,7 @@ public class TicketOffice {
         Point insertedClientPosition = new Point(client.getPosition());
         for (int i = insertIndex; i < queue.size() - 1; i++) {
             var currentClient = queue.get(i);
+
             nextClient = queue.get(i + 1);
             currentClient.setPosition(nextClient.getPosition());
             newEvents.add(new ClientMovedEvent(currentClient, currentClient.getPosition()));
