@@ -63,4 +63,29 @@ public class MessageBusTest {
         }
     }
 
+    @Test
+    void testHandleClientAddedEventMultipleClients() {
+        var hall = this.createHall();
+        var client1 = new Client(1, "name", "surname", new Privilegy("a", 1), new Point(10, 10));
+        var client2 = new Client(1, "name", "surname", new Privilegy("a", 2), new Point(10, 10));
+        var client3 = new Client(1, "name", "surname", new Privilegy("a", 3), new Point(10, 10));
+        hall.assignToTicketOffice(client1);
+        hall.assignToTicketOffice(client2);
+
+        var event = new ClientAddedEvent(hall, client3);
+        MessageBus.addEventHandlers(ClientAddedEvent.class, List.of(new ClientAddedEventHandler()));
+
+        try (var uow = new InMemoryUnitOfWork()) {
+            uow.getTicketOfficeRepository().add(hall.getTicketOffices().get(0));
+            uow.getClientRepository().add(client1);
+            uow.getClientRepository().add(client2);
+            uow.getClientRepository().add(client3);
+
+            var events = MessageBus.handle(event, uow);
+            assertEquals(4, events.size()); // 1 ClientAddedEvent + 3 ClientMovedEvents
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
