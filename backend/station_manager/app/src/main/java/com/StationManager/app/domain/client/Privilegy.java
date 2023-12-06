@@ -11,21 +11,11 @@ public class Privilegy {
         this.significance = significance;
     }
 
-    public String getType() {
-        return type;
-    }
+    public String getType() { return type; }
+    public Integer getSignificance() { return significance; }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Integer getSignificance() {
-        return significance;
-    }
-
-    public void setSignificance(Integer significance) {
-        this.significance = significance;
-    }
+    public void setType(String type) { this.type = type; }
+    public void setSignificance(Integer significance) { this.significance = significance; }
 
     @Override
     public boolean equals(Object o) {

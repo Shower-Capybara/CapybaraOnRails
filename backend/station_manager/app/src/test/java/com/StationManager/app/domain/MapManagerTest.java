@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MapManagerTest {
     static Hall getHall(){
-        ArrayList<Segment> entrances = new ArrayList<>();
+        List<Segment> entrances = List.of(new Segment(new Point(0, 5), new Point(0, 7)));
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
         return new Hall(
             1,

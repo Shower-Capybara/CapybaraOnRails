@@ -12,7 +12,9 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -27,7 +29,9 @@ class HallTest {
         return new Client(id, "Fname", "Sname", privilegy, position);
     }
     static Hall getHall(){
-        ArrayList<Segment> entrances = new ArrayList<>();
+        List<Segment> entrances = List.of(
+            new Segment(new Point(20, 11), new Point(20, 13))
+        );
         ArrayList<TicketOffice> ticketOffices = new ArrayList<>();
         return new Hall(
             1,
@@ -113,6 +117,7 @@ class HallTest {
 
         Client client = getClient(1, clientPosition);
         hall.addClient(client);
+        hall.assignToTicketOffice(client);
 
         assertEquals(expectedClient, ticketOffice.getQueue().get(0));
     }
@@ -142,7 +147,9 @@ class HallTest {
         Client client1 = getClient(1, clientPosition);
         Client client2 = getClient(2, new Point(clientPosition.x+1, clientPosition.y));
         hall.addClient(client1);
+        hall.assignToTicketOffice(client1);
         hall.addClient(client2);
+        hall.assignToTicketOffice(client2);
 
         assertIterableEquals(expectedQueue, ticketOffice.getQueue());
     }
@@ -217,19 +224,24 @@ class HallTest {
         Client clientDown1 = getClient(4, new Point(7, 19));
         Client clientDown2 = getClient(5, new Point(20, 20));
 
-        hall.addClient(clientRight1);
+        hall.addClient(clientRight1, clientRight1.getPosition());
+        hall.assignToTicketOffice(clientRight1);
         assertEquals(ticketOffice3.getQueue().get(0), getClient(1, new Point(18, 9)));
 
-        hall.addClient(clientUp1);
+        hall.addClient(clientUp1, clientUp1.getPosition());
+        hall.assignToTicketOffice(clientUp1);
         assertEquals(ticketOffice1.getQueue().get(0), getClient(3, new Point(10, 2)));
 
-        hall.addClient(clientDown1);
+        hall.addClient(clientDown1, clientDown1.getPosition());
+        hall.assignToTicketOffice(clientDown1);
         assertEquals(ticketOffice2.getQueue().get(0), getClient(4, new Point(10, 18)));
 
-        hall.addClient(clientRight2);
+        hall.addClient(clientRight2, clientRight2.getPosition());
+        hall.assignToTicketOffice(clientRight2);
         assertEquals(ticketOffice3.getQueue().get(1), getClient(2, new Point(17, 9)));
 
-        hall.addClient(clientDown2);
+        hall.addClient(clientDown2, clientDown2.getPosition());
+        hall.assignToTicketOffice(clientDown2);
         assertEquals(ticketOffice2.getQueue().get(1), getClient(5, new Point(10, 17)));
     }
 
@@ -251,8 +263,11 @@ class HallTest {
         Client client3 = getClient(3, new Point(5, 7));
 
         hall.addClient(client1);
+        hall.assignToTicketOffice(client1);
         hall.addClient(client2);
+        hall.assignToTicketOffice(client2);
         hall.addClient(client3);
+        hall.assignToTicketOffice(client3);
 
         hall.getTicketOffices().get(0).removeClient();
 
@@ -284,9 +299,13 @@ class HallTest {
         Client client4 = getClient(4, new Privilegy("disabled", 2), new Point(3, 7));
 
         hall.addClient(client1);
+        hall.assignToTicketOffice(client1);
         hall.addClient(client2);
+        hall.assignToTicketOffice(client2);
         hall.addClient(client3);
+        hall.assignToTicketOffice(client3);
         hall.addClient(client4);
+        hall.assignToTicketOffice(client4);
 
         var expectedClientsQueue = new LinkedList<Client>();
         expectedClientsQueue.add(getClient(1, new Privilegy("ordinary", 0), new Point(11, 11)));
@@ -317,10 +336,15 @@ class HallTest {
         Client client5 = getClient(5, new Privilegy("withChild", 1), new Point(3, 8));
 
         hall.addClient(client1);
+        hall.assignToTicketOffice(client1);
         hall.addClient(client2);
+        hall.assignToTicketOffice(client2);
         hall.addClient(client3);
+        hall.assignToTicketOffice(client3);
         hall.addClient(client4);
+        hall.assignToTicketOffice(client4);
         hall.addClient(client5);
+        hall.assignToTicketOffice(client5);
 
         var expectedClientsQueue = new LinkedList<Client>();
         expectedClientsQueue.add(getClient(1, new Privilegy("ordinary", 0), new Point(11, 11)));

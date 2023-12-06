@@ -1,26 +1,33 @@
 package com.StationManager.app.domain.train_station;
 
+import com.StationManager.app.domain.MapManager;
 import com.StationManager.app.domain.ServeRecord;
 import com.StationManager.app.domain.client.Client;
+import com.StationManager.app.domain.events.ClientLeftEvent;
+import com.StationManager.app.domain.events.ClientMovedEvent;
+import com.StationManager.app.domain.events.Event;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Objects;
+import java.util.*;
 
 public class TicketOffice {
     private final Integer id;
     private Segment segment;
-    private final LinkedList<Client> queue;
+    private final List<Client> queue;
     private Integer timeToServeTicket;
     private Boolean isClosed;
     private Boolean isReserved;
     private Direction direction;
     private Iterable<ServeRecord> transactions;
 
-    // public Iterable<IEvent> events;
+    public final Queue<Event> events = new LinkedList<>();
 
-    public TicketOffice(Integer id, Segment segment, Direction direction, Integer timeToServeTicket) {
+    public TicketOffice(
+        Integer id,
+        Segment segment,
+        Direction direction,
+        Integer timeToServeTicket
+    ) {
         this.id = id;
         this.segment = segment;
         this.queue = new LinkedList<>();
@@ -31,63 +38,34 @@ public class TicketOffice {
         this.transactions = new ArrayList<>();
     }
 
-    public Integer getId() {
-        return this.id;
-    }
-
-    public LinkedList<Client> getQueue() {
-        return this.queue;
-    }
-
-    public Direction getDirection() {
-        return this.direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
-    public Segment getSegment() {
-        return this.segment;
-    }
-
-    public void setPosition(Segment segment) {
-        this.segment = segment;
-    }
-
-    public void setClosed(Boolean bool) {
-        this.isClosed = bool;
-    }
-
-    public Boolean getClosed() {
-        return this.isClosed;
-    }
-
-    public void serveClient() {
-        throw new UnsupportedOperationException("This method is not yet implemented");
-    }
-
-    // public Iterable<IEvent> RemoveClient(){
     public void removeClient() {
         if (queue.isEmpty()) {
             throw new IllegalStateException(
                 "Client queue is empty: There are no clients to delete"
             );
         }
-        var removedClient = queue.pop();
+        var newEvents = new ArrayList<Event>();
+        var removedClient = queue.remove(0);
+        newEvents.add(new ClientLeftEvent(removedClient));
+
         Point previousClientPosition = removedClient.getPosition();
         for (Client client : queue) {
             Point currentClientPosition = client.getPosition();
             client.setPosition(previousClientPosition);
+            newEvents.add(new ClientMovedEvent(client, previousClientPosition));
             previousClientPosition = currentClientPosition;
         }
+
+        this.events.addAll(newEvents);
     }
 
     public void addClient(Client client) {
         if (queue.isEmpty() || client.getPrivilegy() == null) {
             queue.add(client);
+            client.setPosition(MapManager.calculatePositionForNewClient(this));
             return;
         }
+        var newEvents = new ArrayList<Event>();
         // Find the position to insert the new client
         int insertIndex = findInsertIndex(client);
         queue.add(insertIndex, client);
@@ -97,11 +75,16 @@ public class TicketOffice {
         Point insertedClientPosition = new Point(client.getPosition());
         for (int i = insertIndex; i < queue.size() - 1; i++) {
             var currentClient = queue.get(i);
+
             nextClient = queue.get(i + 1);
             currentClient.setPosition(nextClient.getPosition());
+            newEvents.add(new ClientMovedEvent(currentClient, currentClient.getPosition()));
         }
         // Change the position for the last client
         nextClient.setPosition(insertedClientPosition);
+        newEvents.add(new ClientMovedEvent(nextClient, insertedClientPosition));
+        Collections.reverse(newEvents);
+        this.events.addAll(newEvents);
     }
 
     private int findInsertIndex(Client newClient) {
@@ -117,44 +100,31 @@ public class TicketOffice {
         return index;
     }
 
-    public Integer getTimeToServeTicket() {
-        return timeToServeTicket;
-    }
+    public Integer getId() { return this.id;}
+    public List<Client> getQueue() { return this.queue; }
+    public Direction getDirection() { return this.direction; }
+    public Segment getSegment() { return this.segment; }
+    public Boolean getClosed() { return this.isClosed; }
+    public Boolean getReserved() { return isReserved; }
+    public Integer getTimeToServeTicket() { return timeToServeTicket; }
+    public Iterable<ServeRecord> getTransactions() { return transactions; }
 
-    public void setTimeToServeTicket(Integer timeToServeTicket) {
-        this.timeToServeTicket = timeToServeTicket;
-    }
+    public void setDirection(Direction direction) { this.direction = direction; }
+    public void setSegment(Segment segment) { this.segment = segment; }
+    public void setClosed(Boolean bool) { this.isClosed = bool; }
+    public void setReserved(Boolean reserved) { isReserved = reserved; }
+    public void setTimeToServeTicket(Integer timeToServeTicket) { this.timeToServeTicket = timeToServeTicket; }
+    public void setTransactions(Iterable<ServeRecord> transactions) { this.transactions = transactions; }
 
-    public Boolean getReserved() {
-        return isReserved;
-    }
-
-    public void setReserved(Boolean reserved) {
-        isReserved = reserved;
-    }
-
-    public Iterable<ServeRecord> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(Iterable<ServeRecord> transactions) {
-        this.transactions = transactions;
-    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof TicketOffice that)) return false;
-        return Objects.equals(segment, that.segment)
-            && Objects.equals(queue, that.queue)
-            && Objects.equals(timeToServeTicket, that.timeToServeTicket)
-            && Objects.equals(isClosed, that.isClosed)
-            && Objects.equals(isReserved, that.isReserved)
-            && direction == that.direction
-            && Objects.equals(transactions, that.transactions);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(segment, queue, timeToServeTicket, isClosed, isReserved, direction, transactions);
+        return Objects.hash(id);
     }
 }
