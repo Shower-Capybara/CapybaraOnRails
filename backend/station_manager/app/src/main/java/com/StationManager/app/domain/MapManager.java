@@ -1,5 +1,6 @@
 package com.StationManager.app.domain;
 
+import com.StationManager.app.domain.client.Client;
 import com.StationManager.app.domain.train_station.Direction;
 import com.StationManager.app.domain.train_station.Hall;
 import com.StationManager.app.domain.train_station.Segment;
@@ -9,6 +10,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 public class MapManager {
     /**
@@ -20,11 +22,11 @@ public class MapManager {
      * are more than one ticket offices, client is assigned to the one, whose next free queue
      * position is closer to client
      *
-     * @param point The client point
+     * @param client The client
      * @param ticketOffices The list of ticket offices.
      */
     public static TicketOffice getClosestTicketOffice(
-        Point point,
+        Client client,
         List<TicketOffice> ticketOffices
     ) {
         if (ticketOffices.isEmpty()) {
@@ -35,7 +37,7 @@ public class MapManager {
             .stream()
             .min(
                 Comparator.comparingDouble(
-                    ticketOffice -> point.distance(calculatePositionForNewClient(ticketOffice))
+                    ticketOffice -> client.getPosition().distance(calculatePositionForNewClient(ticketOffice, client))
                 )
             )
             .get();
@@ -54,7 +56,7 @@ public class MapManager {
      * @return The calculated position for the new client or {@code null} if a suitable position is
      *     not found.
      */
-    public static Point calculatePositionForNewClient(TicketOffice ticketOffice) {
+    public static Point calculatePositionForNewClient(TicketOffice ticketOffice, Client newClient) {
         var initialTransformation = new HashMap<Direction, Function<Segment, Point>>() {{
             put(Direction.Up, (segment) -> new Point(segment.start().x + 1, segment.end().y + 1));
             put(Direction.Down, (segment) -> new Point(segment.start().x + 1, segment.start().y - 1));
@@ -66,15 +68,27 @@ public class MapManager {
             .get(ticketOffice.getDirection())
             .apply(ticketOffice.getSegment());
 
-        var step = new HashMap<Direction, Point>() {{
+        var step = getTicketOfficeQueueStep(ticketOffice);
+
+        for (var unused: ticketOffice.getQueue()) initialPoint.translate(step.x, step.y);
+        var queue = ticketOffice.getQueue();
+
+        var insertIndex = IntStream.range(queue.isEmpty()?0:1,
+                ticketOffice.getQueue().size())
+            .filter(index -> newClient.getPrivilegy().getSignificance() > queue.get(index).getPrivilegy().getSignificance())
+            .findFirst()
+            .orElse(queue.size());
+        initialPoint = (insertIndex == queue.size())?initialPoint: new Point(queue.get(insertIndex).getPosition());
+        return initialPoint;
+    }
+
+    public static Point getTicketOfficeQueueStep(TicketOffice ticketOffice){
+        return new HashMap<Direction, Point>() {{
             put(Direction.Up, new Point(0, 1));
             put(Direction.Down, new Point(0, -1));
             put(Direction.Left, new Point(1, 0));
             put(Direction.Right, new Point(-1, 0));
         }}.get(ticketOffice.getDirection());
-
-        for (var unused: ticketOffice.getQueue()) initialPoint.translate(step.x, step.y);
-        return initialPoint;
     }
 
     /**

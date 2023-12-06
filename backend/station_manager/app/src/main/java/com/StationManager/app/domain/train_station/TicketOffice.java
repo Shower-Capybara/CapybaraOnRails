@@ -9,6 +9,7 @@ import com.StationManager.app.domain.events.Event;
 
 import java.awt.Point;
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class TicketOffice {
     private final Integer id;
@@ -60,44 +61,22 @@ public class TicketOffice {
     }
 
     public void addClient(Client client) {
-        if (queue.isEmpty() || client.getPrivilegy() == null) {
-            queue.add(client);
-            client.setPosition(MapManager.calculatePositionForNewClient(this));
-            return;
-        }
-        var newEvents = new ArrayList<Event>();
-        // Find the position to insert the new client
-        int insertIndex = findInsertIndex(client);
-        queue.add(insertIndex, client);
 
-        Client nextClient = queue.get(insertIndex);
         // Take into account the change in customer positions during queue changes
-        Point insertedClientPosition = new Point(client.getPosition());
-        for (int i = insertIndex; i < queue.size() - 1; i++) {
+        Point insertedClientPosition = MapManager.calculatePositionForNewClient(this, client);
+        Point ticketOfficeStep = MapManager.getTicketOfficeQueueStep(this);
+
+        var insertIndex = IntStream.range(0, queue.size())
+            .filter(index -> queue.get(index).getPosition().equals(insertedClientPosition))
+            .findFirst()
+            .orElse(queue.size());
+
+        for (int i = insertIndex; i < queue.size(); i++) {
             var currentClient = queue.get(i);
-
-            nextClient = queue.get(i + 1);
-            currentClient.setPosition(nextClient.getPosition());
-            newEvents.add(new ClientMovedEvent(currentClient, currentClient.getPosition()));
+            currentClient.getPosition().translate(ticketOfficeStep.x, ticketOfficeStep.y);
         }
-        // Change the position for the last client
-        nextClient.setPosition(insertedClientPosition);
-        newEvents.add(new ClientMovedEvent(nextClient, insertedClientPosition));
-        Collections.reverse(newEvents);
-        this.events.addAll(newEvents);
-    }
-
-    private int findInsertIndex(Client newClient) {
-        int index = 0;
-        for (var client: queue) {
-            if (
-                newClient.getPrivilegy().getSignificance() > client.getPrivilegy().getSignificance()
-                && index != 0
-            ) break;
-
-            index += 1;
-        }
-        return index;
+        client.setPosition(insertedClientPosition);
+        queue.add(insertIndex, client);
     }
 
     public Integer getId() { return this.id;}

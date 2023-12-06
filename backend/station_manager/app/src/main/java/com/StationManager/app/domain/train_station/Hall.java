@@ -73,7 +73,7 @@ public class Hall {
             .collect(Collectors.toCollection(ArrayList::new));
 
         var closestTicketOffice = MapManager.getClosestTicketOffice(
-            client.getPosition(),
+            client,
             shortestQueueTicketOffices
         );
         closestTicketOffice.addClient(client);
