@@ -61,6 +61,7 @@ public class TicketOffice {
     }
 
     public void addClient(Client client) {
+        var newEvents = new ArrayList<Event>();
         Point insertedClientPosition = MapManager.calculatePositionForNewClient(this, client);
         Point ticketOfficeStep = MapManager.getTicketOfficeQueueStep(this);
 
@@ -72,9 +73,14 @@ public class TicketOffice {
         for (int i = insertIndex; i < queue.size(); i++) {
             var currentClient = queue.get(i);
             currentClient.getPosition().translate(ticketOfficeStep.x, ticketOfficeStep.y);
+            newEvents.add(new ClientMovedEvent(currentClient, currentClient.getPosition()));
         }
+        
         client.setPosition(insertedClientPosition);
         queue.add(insertIndex, client);
+        newEvents.add(new ClientMovedEvent(client, insertedClientPosition));
+        Collections.reverse(newEvents);
+        this.events.addAll(newEvents);
     }
 
     public Integer getId() { return this.id;}
