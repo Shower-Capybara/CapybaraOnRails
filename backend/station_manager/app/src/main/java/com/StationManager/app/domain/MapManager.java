@@ -71,15 +71,22 @@ public class MapManager {
         var step = getTicketOfficeQueueStep(ticketOffice);
 
         for (var unused: ticketOffice.getQueue()) initialPoint.translate(step.x, step.y);
-        var queue = ticketOffice.getQueue();
 
-        var insertIndex = IntStream.range(queue.isEmpty()?0:1,
-                ticketOffice.getQueue().size())
-            .filter(index -> newClient.getPrivilegy().getSignificance() > queue.get(index).getPrivilegy().getSignificance())
-            .findFirst()
-            .orElse(queue.size());
-        initialPoint = (insertIndex == queue.size())?initialPoint: new Point(queue.get(insertIndex).getPosition());
-        return initialPoint;
+
+        if (ticketOffice.getQueue().isEmpty()){
+            return initialPoint;
+        }
+
+        for (int i = ticketOffice.getQueue().size(); i > 0; i--) {
+            var currentClient = ticketOffice.getQueue().get(i - 1);
+            if (newClient.getPrivilegy().getSignificance() <= currentClient.getPrivilegy().getSignificance()) {
+                var pos = new Point(currentClient.getPosition());
+                pos.translate(step.x, step.y);
+                return pos;
+            }
+        }
+
+        return new Point (ticketOffice.getQueue().get(1).getPosition());
     }
 
     public static Point getTicketOfficeQueueStep(TicketOffice ticketOffice){

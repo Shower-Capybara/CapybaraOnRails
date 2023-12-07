@@ -61,8 +61,6 @@ public class TicketOffice {
     }
 
     public void addClient(Client client) {
-
-        // Take into account the change in customer positions during queue changes
         Point insertedClientPosition = MapManager.calculatePositionForNewClient(this, client);
         Point ticketOfficeStep = MapManager.getTicketOfficeQueueStep(this);
 
