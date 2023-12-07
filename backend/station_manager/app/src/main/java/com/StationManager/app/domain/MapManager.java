@@ -57,6 +57,23 @@ public class MapManager {
      *     not found.
      */
     public static Point calculatePositionForNewClient(TicketOffice ticketOffice, Client newClient) {
+        var initialPoint = GetInitialPoint(ticketOffice);
+
+        var step = getTicketOfficeQueueStep(ticketOffice);
+
+        for (var unused: ticketOffice.getQueue()) initialPoint.translate(step.x, step.y);
+        var queue = ticketOffice.getQueue();
+
+        var insertIndex = IntStream.range(queue.isEmpty()?0:1,
+                ticketOffice.getQueue().size())
+            .filter(index -> newClient.getPrivilegy().getSignificance() > queue.get(index).getPrivilegy().getSignificance())
+            .findFirst()
+            .orElse(queue.size());
+        initialPoint = (insertIndex == queue.size())?initialPoint: new Point(queue.get(insertIndex).getPosition());
+        return initialPoint;
+    }
+
+    public static Point GetInitialPoint(TicketOffice ticketOffice){
         var initialTransformation = new HashMap<Direction, Function<Segment, Point>>() {{
             put(Direction.Up, (segment) -> new Point(segment.start().x + 1, segment.end().y + 1));
             put(Direction.Down, (segment) -> new Point(segment.start().x + 1, segment.start().y - 1));
@@ -64,28 +81,9 @@ public class MapManager {
             put(Direction.Right, (segment) -> new Point(segment.start().x - 1, segment.start().y + 1));
         }};
 
-        var initialPoint = initialTransformation
+        return initialTransformation
             .get(ticketOffice.getDirection())
             .apply(ticketOffice.getSegment());
-
-        var step = getTicketOfficeQueueStep(ticketOffice);
-
-        if (ticketOffice.getQueue().isEmpty()){
-            return initialPoint;
-        }
-
-        for (int i = ticketOffice.getQueue().size(); i > 1; i--) {
-            var currentClient = ticketOffice.getQueue().get(i - 1);
-            if (newClient.getPrivilegy().getSignificance() <= currentClient.getPrivilegy().getSignificance()) {
-                var pos = new Point(currentClient.getPosition());
-                pos.translate(step.x, step.y);
-                return pos;
-            }
-        }
-
-        var positionZero = new Point(ticketOffice.getQueue().get(0).getPosition());
-        positionZero.translate(step.x, step.y);
-        return positionZero;
     }
 
     public static Point getTicketOfficeQueueStep(TicketOffice ticketOffice){
