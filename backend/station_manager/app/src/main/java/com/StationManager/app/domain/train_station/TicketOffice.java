@@ -75,7 +75,7 @@ public class TicketOffice {
             currentClient.getPosition().translate(ticketOfficeStep.x, ticketOfficeStep.y);
             newEvents.add(new ClientMovedEvent(currentClient, currentClient.getPosition()));
         }
-        
+
         client.setPosition(insertedClientPosition);
         queue.add(insertIndex, client);
         newEvents.add(new ClientMovedEvent(client, insertedClientPosition));
