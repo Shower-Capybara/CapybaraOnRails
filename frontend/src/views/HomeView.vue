@@ -1,17 +1,27 @@
 <script setup lang="ts">
 import * as PIXI from 'pixi.js'
+import { onMounted, ref } from 'vue'
+import * as canvasUtils from '@/js/canvasUtils.js'
 import EventList from '@/components/EventList/EventList.vue'
 
-const app = new PIXI.Application({ width: 800, height: 600 })
-const resizeCanvas = () => {
-  const div = document.querySelector('.pixi-container')
-  if (div) {
-    const { width, height } = div.getBoundingClientRect()
-    app.renderer.resize(width, height)
+const pixiCanvasContainer = ref<HTMLDivElement | null>(null)
+
+const app = new PIXI.Application({ background: '#ffffff', width: 800, height: 600 })
+
+canvasUtils.resizeCanvas(app)
+canvasUtils.addImageToCanvas(app)
+canvasUtils.createLineWithHole(app)
+canvasUtils.addGreenSquare(app)
+canvasUtils.moveHumanToGreenSquare(app)
+
+onMounted(() => {
+  const container = pixiCanvasContainer.value
+
+  if (container) {
+    const canvasElement = app.view as HTMLCanvasElement
+    container.appendChild(canvasElement)
   }
-}
-resizeCanvas()
-window.addEventListener('resize', resizeCanvas)
+})
 </script>
 
 <template>
