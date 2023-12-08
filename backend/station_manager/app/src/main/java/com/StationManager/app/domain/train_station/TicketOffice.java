@@ -69,6 +69,8 @@ public class TicketOffice {
             client.setPosition(MapManager.GetInitialPoint(this));
 
             newEvents.add(new ClientMovedEvent(client, client.getPosition()));
+            Collections.reverse(newEvents);
+            this.events.addAll(newEvents);
 
             queue.add(client);
             return;
@@ -94,7 +96,11 @@ public class TicketOffice {
                 newEvents.add(new ClientMovedEvent(currentClient, currentClient.getPosition()));
             } else {
                 client.setPosition(temp);
+
                 newEvents.add(new ClientMovedEvent(client, client.getPosition()));
+                Collections.reverse(newEvents);
+                this.events.addAll(newEvents);
+
                 queue.add(i, client);
                 return;
             }
@@ -106,11 +112,10 @@ public class TicketOffice {
         client.setPosition(temp);
 
         newEvents.add(new ClientMovedEvent(client, client.getPosition()));
-
-        queue.add(1, client);
-
         Collections.reverse(newEvents);
         this.events.addAll(newEvents);
+
+        queue.add(1, client);
     }
 
     public Integer getId() { return this.id;}
