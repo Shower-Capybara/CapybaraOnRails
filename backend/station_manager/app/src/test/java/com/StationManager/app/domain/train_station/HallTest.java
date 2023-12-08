@@ -124,14 +124,14 @@ class HallTest {
 
     private static Stream<Arguments> clientTicketOfficeTestData() {
         return Stream.of(
-            Arguments.of(Direction.Up, new Segment(new Point(10, 9), new Point(12, 10)),
-                new Point(3, 4), getClient(1, new Point(11, 11))),
-            Arguments.of(Direction.Down, new Segment(new Point(10, 9), new Point(12, 10)),
-                new Point(3, 4), getClient(1, new Point(11, 8))),
-            Arguments.of(Direction.Left, new Segment(new Point(10, 8), new Point(11, 10)),
-                new Point(3, 4), getClient(1, new Point(12, 9))),
-            Arguments.of(Direction.Right, new Segment(new Point(10, 8), new Point(11, 10)),
-                new Point(3, 4), getClient(1, new Point(9, 9)))
+            Arguments.of(Direction.Up, new Segment(new Point(10, 0), new Point(12, 1)),
+                new Point(3, 4), getClient(1, new Point(11, 2))),
+            Arguments.of(Direction.Down, new Segment(new Point(10, 19), new Point(12, 20)),
+                new Point(3, 4), getClient(1, new Point(11, 18))),
+            Arguments.of(Direction.Left, new Segment(new Point(0, 8), new Point(1, 10)),
+                new Point(3, 4), getClient(1, new Point(2, 9))),
+            Arguments.of(Direction.Right, new Segment(new Point(19, 8), new Point(20, 10)),
+                new Point(3, 4), getClient(1, new Point(18, 9)))
         );
     }
 
@@ -156,25 +156,25 @@ class HallTest {
 
     private static Stream<Arguments> clientsTicketOfficeTestData() {
         return Stream.of(
-            Arguments.of(Direction.Up, new Segment(new Point(10, 9), new Point(12, 10)),
+            Arguments.of(Direction.Up, new Segment(new Point(10, 0), new Point(12, 1)),
                 new Point(3, 4), new ArrayList<>(List.of(
-                    getClient(1, new Point(11, 11)),
-                    getClient(2, new Point(11, 12))
+                    getClient(1, new Point(11, 2)),
+                    getClient(2, new Point(11, 3))
                 ))),
-            Arguments.of(Direction.Down, new Segment(new Point(10, 9), new Point(12, 10)),
+            Arguments.of(Direction.Down, new Segment(new Point(10, 19), new Point(12, 20)),
                 new Point(3, 4), new ArrayList<>(List.of(
-                    getClient(1, new Point(11, 8)),
-                    getClient(2, new Point(11, 7))
+                    getClient(1, new Point(11, 18)),
+                    getClient(2, new Point(11, 17))
                 ))),
-            Arguments.of(Direction.Left, new Segment(new Point(10, 8), new Point(11, 10)),
+            Arguments.of(Direction.Left, new Segment(new Point(0, 8), new Point(1, 10)),
                 new Point(3, 4), new ArrayList<>(List.of(
-                    getClient(1, new Point(12, 9)),
-                    getClient(2, new Point(13, 9))
+                    getClient(1, new Point(2, 9)),
+                    getClient(2, new Point(3, 9))
                 ))),
-            Arguments.of(Direction.Right, new Segment(new Point(10, 8), new Point(11, 10)),
+            Arguments.of(Direction.Right, new Segment(new Point(19, 8), new Point(20, 10)),
                 new Point(3, 4), new ArrayList<>(List.of(
-                    getClient(1, new Point(9, 9)),
-                    getClient(2, new Point(8, 9))
+                    getClient(1, new Point(18, 9)),
+                    getClient(2, new Point(17, 9))
                 )))
         );
     }
