@@ -48,8 +48,8 @@ class HallTest {
         Hall hall = getHall();
 
         Segment ticketOfficeSegment1 = new Segment(new Point(0, 0), new Point(2, 1));
-        Segment ticketOfficeSegment2 = new Segment(new Point(0, 5), new Point(1, 7));
-        Segment ticketOfficeSegment3 = new Segment(new Point(10, 4), new Point(11, 6));
+        Segment ticketOfficeSegment2 = new Segment(new Point(0, 19), new Point(1, 20));
+        Segment ticketOfficeSegment3 = new Segment(new Point(0, 4), new Point(1, 6));
 
         int timeToServeTicket = 5;
 
@@ -85,8 +85,8 @@ class HallTest {
 
         Hall hall = getHall();
 
-        Segment ticketOfficeSegment1 = new Segment(new Point(0, 0), new Point(2, 1));
-        Segment ticketOfficeSegment2 = new Segment(new Point(0, 0), new Point(2, 1));
+        Segment ticketOfficeSegment1 = new Segment(new Point(0, 19), new Point(2, 20));
+        Segment ticketOfficeSegment2 = new Segment(new Point(0, 19), new Point(2, 20));
 
         int timeToServeTicket = 5;
         TicketOffice ticketOffice1 = new TicketOffice(
@@ -124,14 +124,14 @@ class HallTest {
 
     private static Stream<Arguments> clientTicketOfficeTestData() {
         return Stream.of(
-            Arguments.of(Direction.Up, new Segment(new Point(10, 9), new Point(12, 10)),
-                new Point(3, 4), getClient(1, new Point(11, 11))),
-            Arguments.of(Direction.Down, new Segment(new Point(10, 9), new Point(12, 10)),
-                new Point(3, 4), getClient(1, new Point(11, 8))),
-            Arguments.of(Direction.Left, new Segment(new Point(10, 8), new Point(11, 10)),
-                new Point(3, 4), getClient(1, new Point(12, 9))),
-            Arguments.of(Direction.Right, new Segment(new Point(10, 8), new Point(11, 10)),
-                new Point(3, 4), getClient(1, new Point(9, 9)))
+            Arguments.of(Direction.Up, new Segment(new Point(10, 0), new Point(12, 1)),
+                new Point(3, 4), getClient(1, new Point(11, 2))),
+            Arguments.of(Direction.Down, new Segment(new Point(10, 19), new Point(12, 20)),
+                new Point(3, 4), getClient(1, new Point(11, 18))),
+            Arguments.of(Direction.Left, new Segment(new Point(0, 8), new Point(1, 10)),
+                new Point(3, 4), getClient(1, new Point(2, 9))),
+            Arguments.of(Direction.Right, new Segment(new Point(19, 8), new Point(20, 10)),
+                new Point(3, 4), getClient(1, new Point(18, 9)))
         );
     }
 
@@ -156,25 +156,25 @@ class HallTest {
 
     private static Stream<Arguments> clientsTicketOfficeTestData() {
         return Stream.of(
-            Arguments.of(Direction.Up, new Segment(new Point(10, 9), new Point(12, 10)),
+            Arguments.of(Direction.Up, new Segment(new Point(10, 0), new Point(12, 1)),
                 new Point(3, 4), new ArrayList<>(List.of(
-                    getClient(1, new Point(11, 11)),
-                    getClient(2, new Point(11, 12))
+                    getClient(1, new Point(11, 2)),
+                    getClient(2, new Point(11, 3))
                 ))),
-            Arguments.of(Direction.Down, new Segment(new Point(10, 9), new Point(12, 10)),
+            Arguments.of(Direction.Down, new Segment(new Point(10, 19), new Point(12, 20)),
                 new Point(3, 4), new ArrayList<>(List.of(
-                    getClient(1, new Point(11, 8)),
-                    getClient(2, new Point(11, 7))
+                    getClient(1, new Point(11, 18)),
+                    getClient(2, new Point(11, 17))
                 ))),
-            Arguments.of(Direction.Left, new Segment(new Point(10, 8), new Point(11, 10)),
+            Arguments.of(Direction.Left, new Segment(new Point(0, 8), new Point(1, 10)),
                 new Point(3, 4), new ArrayList<>(List.of(
-                    getClient(1, new Point(12, 9)),
-                    getClient(2, new Point(13, 9))
+                    getClient(1, new Point(2, 9)),
+                    getClient(2, new Point(3, 9))
                 ))),
-            Arguments.of(Direction.Right, new Segment(new Point(10, 8), new Point(11, 10)),
+            Arguments.of(Direction.Right, new Segment(new Point(19, 8), new Point(20, 10)),
                 new Point(3, 4), new ArrayList<>(List.of(
-                    getClient(1, new Point(9, 9)),
-                    getClient(2, new Point(8, 9))
+                    getClient(1, new Point(18, 9)),
+                    getClient(2, new Point(17, 9))
                 )))
         );
     }
@@ -253,7 +253,7 @@ class HallTest {
 
         Hall hall = getHall();
 
-        Segment ticketOfficeSegment = new Segment(new Point(10, 9), new Point(12, 10));
+        Segment ticketOfficeSegment = new Segment(new Point(10, 0), new Point(12, 1));
         TicketOffice ticketOffice = new TicketOffice(1, ticketOfficeSegment, Direction.Up, 5);
 
         hall.addTicketOffice(ticketOffice);
@@ -272,13 +272,13 @@ class HallTest {
         hall.getTicketOffices().get(0).removeClient();
 
         var expectedClientsQueue = new LinkedList<Client>();
-        expectedClientsQueue.add(getClient(2, new Point(11, 11)));
-        expectedClientsQueue.add(getClient(3, new Point(11, 12)));
+        expectedClientsQueue.add(getClient(2, new Point(11, 2)));
+        expectedClientsQueue.add(getClient(3, new Point(11, 3)));
         assertIterableEquals(hall.getTicketOffices().get(0).getQueue(), expectedClientsQueue);
 
         hall.getTicketOffices().get(0).removeClient();
         expectedClientsQueue = new LinkedList<>();
-        expectedClientsQueue.add(getClient(3, new Point(11, 11)));
+        expectedClientsQueue.add(getClient(3, new Point(11, 2)));
         assertIterableEquals(expectedClientsQueue, hall.getTicketOffices().get(0).getQueue());
     }
 
@@ -288,7 +288,7 @@ class HallTest {
 
         Hall hall = getHall();
 
-        Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
+        Segment ticketOfficeSegment1 = new Segment(new Point(10, 0), new Point(12, 1));
         TicketOffice ticketOffice1 = new TicketOffice(1, ticketOfficeSegment1, Direction.Up, 5);
 
         hall.addTicketOffice(ticketOffice1);
@@ -308,10 +308,10 @@ class HallTest {
         hall.assignToTicketOffice(client4);
 
         var expectedClientsQueue = new LinkedList<Client>();
-        expectedClientsQueue.add(getClient(1, new Privilegy("ordinary", 0), new Point(11, 11)));
-        expectedClientsQueue.add(getClient(4, new Privilegy("disabled", 2), new Point(11, 12)));
-        expectedClientsQueue.add(getClient(3, new Privilegy("withChild", 1), new Point(11, 13)));
-        expectedClientsQueue.add(getClient(2, new Privilegy("ordinary", 0), new Point(11, 14)));
+        expectedClientsQueue.add(getClient(1, new Privilegy("ordinary", 0), new Point(11, 2)));
+        expectedClientsQueue.add(getClient(4, new Privilegy("disabled", 2), new Point(11, 3)));
+        expectedClientsQueue.add(getClient(3, new Privilegy("withChild", 1), new Point(11, 4)));
+        expectedClientsQueue.add(getClient(2, new Privilegy("ordinary", 0), new Point(11, 5)));
 
         assertIterableEquals(expectedClientsQueue, hall.getTicketOffices().get(0).getQueue());
     }
@@ -324,7 +324,7 @@ class HallTest {
 
         Hall hall = getHall();
 
-        Segment ticketOfficeSegment1 = new Segment(new Point(10, 9), new Point(12, 10));
+        Segment ticketOfficeSegment1 = new Segment(new Point(10, 0), new Point(12, 1));
         TicketOffice ticketOffice1 = new TicketOffice(1, ticketOfficeSegment1, Direction.Up, 5);
 
         hall.addTicketOffice(ticketOffice1);
@@ -347,11 +347,30 @@ class HallTest {
         hall.assignToTicketOffice(client5);
 
         var expectedClientsQueue = new LinkedList<Client>();
-        expectedClientsQueue.add(getClient(1, new Privilegy("ordinary", 0), new Point(11, 11)));
-        expectedClientsQueue.add(getClient(4, new Privilegy("disabled", 2), new Point(11, 12)));
-        expectedClientsQueue.add(getClient(3, new Privilegy("withChild", 1), new Point(11, 13)));
-        expectedClientsQueue.add(getClient(5, new Privilegy("withChild", 1), new Point(11, 14)));
-        expectedClientsQueue.add(getClient(2, new Privilegy("ordinary", 0), new Point(11, 15)));
+        expectedClientsQueue.add(getClient(1, new Privilegy("ordinary", 0), new Point(11, 2)));
+        expectedClientsQueue.add(getClient(4, new Privilegy("disabled", 2), new Point(11, 3)));
+        expectedClientsQueue.add(getClient(3, new Privilegy("withChild", 1), new Point(11, 4)));
+        expectedClientsQueue.add(getClient(5, new Privilegy("withChild", 1), new Point(11, 5)));
+        expectedClientsQueue.add(getClient(2, new Privilegy("ordinary", 0), new Point(11, 6)));
         assertIterableEquals(expectedClientsQueue, hall.getTicketOffices().get(0).getQueue());
+    }
+
+    @ParameterizedTest
+    @MethodSource("ticketOfficeFailSegmentData")
+    @DisplayName("Adding TicketOffice not attached to any its side. Should throw exception")
+    void testAddTicketOfficeToHallFailsWhenNotAttachedToSide(Direction direction, Segment ticketOfficeSegment ) {
+        Hall hall = getHall();
+        TicketOffice ticketOffice = new TicketOffice(1, ticketOfficeSegment, direction, 5);
+
+        assertThrows(IllegalStateException.class, () -> hall.addTicketOffice(ticketOffice));
+    }
+
+    private static Stream<Arguments> ticketOfficeFailSegmentData() {
+        return Stream.of(
+            Arguments.of(Direction.Up, new Segment(new Point(12, 3), new Point(14, 4))),
+            Arguments.of(Direction.Down, new Segment(new Point(12, 3), new Point(14, 4))),
+            Arguments.of(Direction.Left, new Segment(new Point(12, 3), new Point(13, 5))),
+            Arguments.of(Direction.Right, new Segment(new Point(12, 3), new Point(13, 5)))
+        );
     }
 }

@@ -36,10 +36,11 @@ public class Hall {
     }
 
     public void addTicketOffice(TicketOffice ticketOffice) {
-        if (MapManager.IsSegmentFree(ticketOffice.getSegment(), this)) {
+        if (MapManager.IsSegmentFree(ticketOffice.getSegment(), this)
+            && MapManager.TicketOfficeAttachedToSide(ticketOffice, segment)) {
             ticketOffices.add(ticketOffice);
         } else {
-            throw new IllegalStateException("Position is taken");
+            throw new IllegalStateException("Position is incorrect");
         }
         this.events.add(new TicketOfficeAddedEvent(ticketOffice));
     }
