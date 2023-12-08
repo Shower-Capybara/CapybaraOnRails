@@ -10,9 +10,14 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.IntStream;
 
 public class MapManager {
+    public static Point addPoints(Point point1, Point point2) {
+        var point1Cloned = (Point) point1.clone();
+        point1Cloned.translate(point2.x, point2.y);
+        return point1Cloned;
+    }
+
     /**
      * Returns the closest to client ticket office
      * locations.
@@ -32,7 +37,9 @@ public class MapManager {
             .stream()
             .min(
                 Comparator.comparingDouble(
-                    ticketOffice -> client.getPosition().distance(calculatePositionForNewClient(ticketOffice, client))
+                    ticketOffice -> client.getPosition().distance(
+                        calculatePositionForNewClient(ticketOffice, client)
+                    )
                 )
             )
             .get();
@@ -47,20 +54,23 @@ public class MapManager {
      * @return The calculated position for the new client
      */
     public static Point calculatePositionForNewClient(TicketOffice ticketOffice, Client newClient) {
-        var initialPoint = GetInitialPoint(ticketOffice);
-
-        var step = getTicketOfficeQueueStep(ticketOffice);
-
-        for (var unused: ticketOffice.getQueue()) initialPoint.translate(step.x, step.y);
         var queue = ticketOffice.getQueue();
+        var step = getTicketOfficeQueueStep(ticketOffice);
+        var point = queue.isEmpty() ?
+            GetInitialPoint(ticketOffice) :
+            addPoints(queue.get(0).getPosition(), step);
 
-        var insertIndex = IntStream.range(queue.isEmpty()?0:1,
-                ticketOffice.getQueue().size())
-            .filter(index -> newClient.getPrivilegy().getSignificance() > queue.get(index).getPrivilegy().getSignificance())
-            .findFirst()
-            .orElse(queue.size());
-        initialPoint = (insertIndex == queue.size())?initialPoint: new Point(queue.get(insertIndex).getPosition());
-        return initialPoint;
+        for (int i = 1; i < ticketOffice.getQueue().size(); i++) {
+            // start from 1, so we don't move currently served client
+            var currentClient = queue.get(i);
+            if (
+                newClient.getPrivilegy().getSignificance() <=
+                currentClient.getPrivilegy().getSignificance()
+            ) {
+                point.translate(step.x, step.y);
+            }
+        }
+        return point;
     }
 
     public static Point GetInitialPoint(TicketOffice ticketOffice){

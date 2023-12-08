@@ -154,7 +154,10 @@ class MapManagerTest {
     @DisplayName("Creating a few ticket Offices with some queue and checking if calculation of" +
         " position client should take is correct")
     void testCalculatePositionForNewClientInNotEmptyQueue(TicketOffice ticketOffice, Point expectedPoint){
-        assertEquals(expectedPoint, MapManager.calculatePositionForNewClient(ticketOffice, getClient(11, new Point(15, 8))));
+        assertEquals(
+            expectedPoint,
+            MapManager.calculatePositionForNewClient(ticketOffice, getClient(11, new Point(15, 8)))
+        );
     }
 
     private static Stream<Arguments> newClientPositionInNotEmptyQueueTestData(){
