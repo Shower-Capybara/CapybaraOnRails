@@ -86,7 +86,10 @@ public class MessageBusTest {
             uow.getClientRepository().add(client3);
 
             var events = MessageBus.handle(event, uow);
-            assertEquals(4, events.size()); // 1 ClientAddedEvent + 3 ClientMovedEvents
+
+            // 1 ClientAddedEvent + 4 ClientMovedEvents
+            // client1 moved, client2 moved, client2 moved step back, client3 moved
+            assertEquals(5, events.size());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -188,7 +191,7 @@ public class MessageBusTest {
         var newPosition = new Point(1, 1);
 
         MessageBus.addEventHandlers(ClientMovedEvent.class, List.of(new ClientMovedEventHandler()));
-        var event = new ClientMovedEvent(client, newPosition);
+        var event = new ClientMovedEvent(client, client.getPosition(), newPosition);
 
         try (var uow = new InMemoryUnitOfWork()) {
             uow.getClientRepository().add(client);

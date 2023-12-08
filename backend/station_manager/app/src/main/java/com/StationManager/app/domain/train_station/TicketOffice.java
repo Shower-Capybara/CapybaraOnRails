@@ -51,8 +51,14 @@ public class TicketOffice {
         Point previousClientPosition = removedClient.getPosition();
         for (Client client : queue) {
             Point currentClientPosition = client.getPosition();
+            newEvents.add(
+                new ClientMovedEvent(
+                    client,
+                    client.getPosition(),
+                    previousClientPosition
+                )
+            );
             client.setPosition(previousClientPosition);
-            newEvents.add(new ClientMovedEvent(client, previousClientPosition));
             previousClientPosition = currentClientPosition;
         }
 
@@ -60,44 +66,39 @@ public class TicketOffice {
     }
 
     public void addClient(Client client) {
-        if (queue.isEmpty() || client.getPrivilegy() == null) {
-            queue.add(client);
-            client.setPosition(MapManager.calculatePositionForNewClient(this));
-            return;
-        }
         var newEvents = new ArrayList<Event>();
-        // Find the position to insert the new client
-        int insertIndex = findInsertIndex(client);
-        queue.add(insertIndex, client);
+        Point ticketOfficeStep = MapManager.getTicketOfficeQueueStep(this);
 
-        Client nextClient = queue.get(insertIndex);
-        // Take into account the change in customer positions during queue changes
-        Point insertedClientPosition = new Point(client.getPosition());
-        for (int i = insertIndex; i < queue.size() - 1; i++) {
-            var currentClient = queue.get(i);
+        // initially equal to after the last client point
+        var point = queue.isEmpty() ?
+            MapManager.GetInitialPoint(this) :
+            MapManager.AddPoints(queue.get(queue.size() - 1).getPosition(), ticketOfficeStep);
 
-            nextClient = queue.get(i + 1);
-            currentClient.setPosition(nextClient.getPosition());
-            newEvents.add(new ClientMovedEvent(currentClient, currentClient.getPosition()));
-        }
-        // Change the position for the last client
-        nextClient.setPosition(insertedClientPosition);
-        newEvents.add(new ClientMovedEvent(nextClient, insertedClientPosition));
-        Collections.reverse(newEvents);
-        this.events.addAll(newEvents);
-    }
+        var insertIndex = queue.size();
 
-    private int findInsertIndex(Client newClient) {
-        int index = 0;
-        for (var client: queue) {
+        for (int i = queue.size(); i > 1; i--) {
+            var currentClient = queue.get(i - 1);
             if (
-                newClient.getPrivilegy().getSignificance() > client.getPrivilegy().getSignificance()
-                && index != 0
-            ) break;
-
-            index += 1;
+                client.getPrivilegy().getSignificance() >
+                currentClient.getPrivilegy().getSignificance()
+            ) { // current client steps back
+                var newPoint = MapManager.AddPoints(currentClient.getPosition(), ticketOfficeStep);
+                point = currentClient.getPosition();
+                newEvents.add(
+                    new ClientMovedEvent(currentClient, currentClient.getPosition(), newPoint)
+                );
+                currentClient.setPosition(newPoint);
+                insertIndex = i - 1;
+            } else {
+                break;
+            }
         }
-        return index;
+
+        // new client takes free position
+        newEvents.add(new ClientMovedEvent(client, client.getPosition(), point));
+        client.setPosition(point);
+        queue.add(insertIndex, client);
+        this.events.addAll(newEvents);
     }
 
     public Integer getId() { return this.id;}
