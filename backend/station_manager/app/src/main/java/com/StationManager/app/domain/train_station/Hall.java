@@ -40,7 +40,7 @@ public class Hall {
             && MapManager.TicketOfficeAttachedToSide(ticketOffice, segment)) {
             ticketOffices.add(ticketOffice);
         } else {
-            throw new IllegalStateException("Position is taken");
+            throw new IllegalStateException("Position is incorrect");
         }
         this.events.add(new TicketOfficeAddedEvent(ticketOffice));
     }
