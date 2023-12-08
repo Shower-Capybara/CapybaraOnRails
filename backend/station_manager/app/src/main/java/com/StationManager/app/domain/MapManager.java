@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public class MapManager {
-    public static Point addPoints(Point point1, Point point2) {
+    public static Point AddPoints(Point point1, Point point2) {
         var point1Cloned = (Point) point1.clone();
         point1Cloned.translate(point2.x, point2.y);
         return point1Cloned;
@@ -58,7 +58,7 @@ public class MapManager {
         var step = getTicketOfficeQueueStep(ticketOffice);
         var point = queue.isEmpty() ?
             GetInitialPoint(ticketOffice) :
-            addPoints(queue.get(0).getPosition(), step);
+            AddPoints(queue.get(0).getPosition(), step);
 
         for (int i = 1; i < ticketOffice.getQueue().size(); i++) {
             // start from 1, so we don't move currently served client

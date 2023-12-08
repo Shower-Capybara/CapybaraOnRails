@@ -3,6 +3,7 @@ package com.StationManager.app.services;
 import com.StationManager.app.domain.client.Client;
 import com.StationManager.app.domain.client.Privilegy;
 import com.StationManager.app.domain.events.ClientAddedEvent;
+import com.StationManager.app.domain.events.ClientMovedEvent;
 import com.StationManager.app.domain.train_station.Direction;
 import com.StationManager.app.domain.train_station.Hall;
 import com.StationManager.app.domain.train_station.Segment;
@@ -82,7 +83,10 @@ public class MessageBusTest {
             uow.getClientRepository().add(client3);
 
             var events = MessageBus.handle(event, uow);
-            assertEquals(4, events.size()); // 1 ClientAddedEvent + 3 ClientMovedEvents
+
+            // 1 ClientAddedEvent + 4 ClientMovedEvents
+            // client1 moved, client2 moved, client2 moved step back, client3 moved
+            assertEquals(5, events.size());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

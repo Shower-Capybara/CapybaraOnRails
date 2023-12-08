@@ -9,7 +9,6 @@ import com.StationManager.app.domain.events.Event;
 
 import java.awt.Point;
 import java.util.*;
-import java.util.stream.IntStream;
 
 public class TicketOffice {
     private final Integer id;
@@ -52,8 +51,14 @@ public class TicketOffice {
         Point previousClientPosition = removedClient.getPosition();
         for (Client client : queue) {
             Point currentClientPosition = client.getPosition();
+            newEvents.add(
+                new ClientMovedEvent(
+                    client,
+                    client.getPosition(),
+                    previousClientPosition
+                )
+            );
             client.setPosition(previousClientPosition);
-            newEvents.add(new ClientMovedEvent(client, previousClientPosition));
             previousClientPosition = currentClientPosition;
         }
 
@@ -64,58 +69,36 @@ public class TicketOffice {
         var newEvents = new ArrayList<Event>();
         Point ticketOfficeStep = MapManager.getTicketOfficeQueueStep(this);
 
-        /* Setting client position and adding it to queue if queue is empty (position is initial point). */
-        if (queue.isEmpty()){
-            client.setPosition(MapManager.GetInitialPoint(this));
+        // initially equal to after the last client point
+        var point = queue.isEmpty() ?
+            MapManager.GetInitialPoint(this) :
+            MapManager.AddPoints(queue.get(queue.size() - 1).getPosition(), ticketOfficeStep);
 
-            newEvents.add(new ClientMovedEvent(client, client.getPosition()));
-            Collections.reverse(newEvents);
-            this.events.addAll(newEvents);
+        var insertIndex = queue.size();
 
-            queue.add(client);
-            return;
-        }
-
-        /*
-         * Setting client position if queue has at least 2 items.
-         * The list is processed in reverse order as required by the frontend.
-         * Element 0 is not changed.
-         */
         for (int i = queue.size(); i > 1; i--) {
             var currentClient = queue.get(i - 1);
-
-            var temp = new Point(currentClient.getPosition());
-            temp.translate(ticketOfficeStep.x, ticketOfficeStep.y);
-
-            /*
-             * If new client privilegy significance is higher than current, current is moved one step.
-             * Else - new client is set to position one step after current.
-             */
-            if (client.getPrivilegy().getSignificance() > currentClient.getPrivilegy().getSignificance()) {
-                currentClient.setPosition(temp);
-                newEvents.add(new ClientMovedEvent(currentClient, currentClient.getPosition()));
+            if (
+                client.getPrivilegy().getSignificance() >
+                currentClient.getPrivilegy().getSignificance()
+            ) { // current client steps back
+                var newPoint = MapManager.AddPoints(currentClient.getPosition(), ticketOfficeStep);
+                point = currentClient.getPosition();
+                newEvents.add(
+                    new ClientMovedEvent(currentClient, currentClient.getPosition(), newPoint)
+                );
+                currentClient.setPosition(newPoint);
+                insertIndex = i - 1;
             } else {
-                client.setPosition(temp);
-
-                newEvents.add(new ClientMovedEvent(client, client.getPosition()));
-                Collections.reverse(newEvents);
-                this.events.addAll(newEvents);
-
-                queue.add(i, client);
-                return;
+                break;
             }
         }
 
-        /* Setting client position if queue has 1 element (position is initial point plus step). */
-        var temp = MapManager.GetInitialPoint(this);
-        temp.translate(ticketOfficeStep.x, ticketOfficeStep.y);
-        client.setPosition(temp);
-
-        newEvents.add(new ClientMovedEvent(client, client.getPosition()));
-        Collections.reverse(newEvents);
+        // new client takes free position
+        newEvents.add(new ClientMovedEvent(client, client.getPosition(), point));
+        client.setPosition(point);
+        queue.add(insertIndex, client);
         this.events.addAll(newEvents);
-
-        queue.add(1, client);
     }
 
     public Integer getId() { return this.id;}
