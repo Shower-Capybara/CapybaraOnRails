@@ -53,6 +53,7 @@ public class MapManager {
      * relative to the last client in the queue.
      *
      * @param ticketOffice The ticket office for which to calculate the new client's position.
+     * @param newClient The client whose new position is to be calculated
      * @return The calculated position for the new client or {@code null} if a suitable position is
      *     not found.
      */

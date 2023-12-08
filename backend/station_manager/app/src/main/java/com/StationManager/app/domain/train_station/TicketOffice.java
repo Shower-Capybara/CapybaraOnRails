@@ -64,9 +64,7 @@ public class TicketOffice {
         var newEvents = new ArrayList<Event>();
         Point ticketOfficeStep = MapManager.getTicketOfficeQueueStep(this);
 
-        //Setting client position if queue is empty (position is initial point)
-        //Adding it to queue
-        //Exiting method
+        /* Setting client position and adding it to queue if queue is empty (position is initial point). */
         if (queue.isEmpty()){
             client.setPosition(MapManager.GetInitialPoint(this));
 
@@ -76,38 +74,33 @@ public class TicketOffice {
             return;
         }
 
-        //Setting client position if queue has at least 2 items.
-        //List is processed in reversed order.
-        //Element 0 is not changed.
+        /*
+         * Setting client position if queue has at least 2 items.
+         * The list is processed in reverse order as required by the frontend.
+         * Element 0 is not changed.
+         */
         for (int i = queue.size(); i > 1; i--) {
             var currentClient = queue.get(i - 1);
-            //If new client privilegy significance is higher than current, current is moved one step
+
+            var temp = new Point(currentClient.getPosition());
+            temp.translate(ticketOfficeStep.x, ticketOfficeStep.y);
+
+            /*
+             * If new client privilegy significance is higher than current, current is moved one step.
+             * Else - new client is set to position one step after current.
+             */
             if (client.getPrivilegy().getSignificance() > currentClient.getPrivilegy().getSignificance()) {
-                var temp = new Point(currentClient.getPosition());
-                temp.translate(ticketOfficeStep.x, ticketOfficeStep.y);
                 currentClient.setPosition(temp);
-
                 newEvents.add(new ClientMovedEvent(currentClient, currentClient.getPosition()));
-            }
-            //If new client privilegy significance is same or less than current, new client is set
-            //to position one step after current.
-            //Adding it to queue
-            //Exiting method
-            else {
-                var temp = new Point(currentClient.getPosition());
-                temp.translate(ticketOfficeStep.x, ticketOfficeStep.y);
+            } else {
                 client.setPosition(temp);
-
                 newEvents.add(new ClientMovedEvent(client, client.getPosition()));
-
                 queue.add(i, client);
                 return;
             }
         }
 
-        //Setting client position if queue has 1 element.
-        //Position is initial plus step
-        //Adding it to queue at index 1
+        /* Setting client position if queue has 1 element (position is initial point plus step). */
         var temp = MapManager.GetInitialPoint(this);
         temp.translate(ticketOfficeStep.x, ticketOfficeStep.y);
         client.setPosition(temp);
