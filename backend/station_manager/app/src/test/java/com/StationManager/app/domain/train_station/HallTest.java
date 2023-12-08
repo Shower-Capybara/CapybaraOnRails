@@ -354,4 +354,23 @@ class HallTest {
         expectedClientsQueue.add(getClient(2, new Privilegy("ordinary", 0), new Point(11, 6)));
         assertIterableEquals(expectedClientsQueue, hall.getTicketOffices().get(0).getQueue());
     }
+
+    @ParameterizedTest
+    @MethodSource("ticketOfficeFailSegmentData")
+    @DisplayName("Adding TicketOffice not attached to any its side. Should throw exception")
+    void testAddTicketOfficeToHallFailsWhenNotAttachedToSide(Direction direction, Segment ticketOfficeSegment ) {
+        Hall hall = getHall();
+        TicketOffice ticketOffice = new TicketOffice(1, ticketOfficeSegment, direction, 5);
+
+        assertThrows(IllegalStateException.class, () -> hall.addTicketOffice(ticketOffice));
+    }
+
+    private static Stream<Arguments> ticketOfficeFailSegmentData() {
+        return Stream.of(
+            Arguments.of(Direction.Up, new Segment(new Point(12, 3), new Point(14, 4))),
+            Arguments.of(Direction.Down, new Segment(new Point(12, 3), new Point(14, 4))),
+            Arguments.of(Direction.Left, new Segment(new Point(12, 3), new Point(13, 5))),
+            Arguments.of(Direction.Right, new Segment(new Point(12, 3), new Point(13, 5)))
+        );
+    }
 }
