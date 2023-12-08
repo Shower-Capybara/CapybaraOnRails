@@ -193,4 +193,17 @@ public class MapManager {
 
         return points1.stream().anyMatch(points2::contains);
     }
+
+    public static boolean TicketOfficeAttachedToSide(TicketOffice ticketOffice, Segment bounds){
+        var isAttachedMap = new HashMap<Direction, Function<Segment, Boolean>>() {{
+            put(Direction.Up, (segment) -> segment.start().y == ticketOffice.getSegment().start().y);
+            put(Direction.Down, (segment) -> segment.end().y == ticketOffice.getSegment().end().y);
+            put(Direction.Left, (segment) -> segment.start().x == ticketOffice.getSegment().start().x);
+            put(Direction.Right, (segment) -> segment.end().x == ticketOffice.getSegment().end().x);
+        }};
+
+        return isAttachedMap
+            .get(ticketOffice.getDirection())
+            .apply(bounds);
+    }
 }
