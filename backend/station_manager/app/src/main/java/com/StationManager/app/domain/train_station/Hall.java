@@ -3,7 +3,6 @@ package com.StationManager.app.domain.train_station;
 import com.StationManager.app.domain.MapManager;
 import com.StationManager.app.domain.client.Client;
 import com.StationManager.app.domain.events.ClientAddedEvent;
-import com.StationManager.app.domain.events.ClientMovedEvent;
 import com.StationManager.app.domain.events.Event;
 import com.StationManager.app.domain.events.TicketOfficeAddedEvent;
 
@@ -73,11 +72,10 @@ public class Hall {
             .collect(Collectors.toCollection(ArrayList::new));
 
         var closestTicketOffice = MapManager.getClosestTicketOffice(
-            client.getPosition(),
+            client,
             shortestQueueTicketOffices
         );
         closestTicketOffice.addClient(client);
-        this.events.add(new ClientMovedEvent(client, client.getPosition()));
     }
 
     private static int getSizeOfShortestQueue(ArrayList<TicketOffice> ticketOffices) {

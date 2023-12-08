@@ -1,5 +1,6 @@
 package com.StationManager.app.domain;
 
+import com.StationManager.app.domain.client.Client;
 import com.StationManager.app.domain.train_station.Direction;
 import com.StationManager.app.domain.train_station.Hall;
 import com.StationManager.app.domain.train_station.Segment;
@@ -11,20 +12,21 @@ import java.util.List;
 import java.util.function.Function;
 
 public class MapManager {
+    public static Point AddPoints(Point point1, Point point2) {
+        var point1Cloned = (Point) point1.clone();
+        point1Cloned.translate(point2.x, point2.y);
+        return point1Cloned;
+    }
+
     /**
      * Returns the closest to client ticket office
      * locations.
      *
-     * <p>This method determines the ticket office which is the most suitable for client to be
-     * assigned to. If there is one ticketOffice, client is assigned to this ticket office If there
-     * are more than one ticket offices, client is assigned to the one, whose next free queue
-     * position is closer to client
-     *
-     * @param point The client point
+     * @param client The client
      * @param ticketOffices The list of ticket offices.
      */
     public static TicketOffice getClosestTicketOffice(
-        Point point,
+        Client client,
         List<TicketOffice> ticketOffices
     ) {
         if (ticketOffices.isEmpty()) {
@@ -35,7 +37,9 @@ public class MapManager {
             .stream()
             .min(
                 Comparator.comparingDouble(
-                    ticketOffice -> point.distance(calculatePositionForNewClient(ticketOffice))
+                    ticketOffice -> client.getPosition().distance(
+                        calculatePositionForNewClient(ticketOffice, client)
+                    )
                 )
             )
             .get();
@@ -43,18 +47,33 @@ public class MapManager {
 
     /**
      * Calculates the position for a new client at a ticket office, considering the office's
-     * direction and current queue.
-     *
-     * <p>This method calculates the position for a new client based on the specified ticket
-     * office's direction and the current queue of clients. If the queue is empty, it calculates the
-     * position near the ticket office, and if the queue is not empty, it calculates the position
-     * relative to the last client in the queue.
+     * direction, its queue and queue clients privileges.
      *
      * @param ticketOffice The ticket office for which to calculate the new client's position.
-     * @return The calculated position for the new client or {@code null} if a suitable position is
-     *     not found.
+     * @param newClient The client whose new position is to be calculated
+     * @return The calculated position for the new client
      */
-    public static Point calculatePositionForNewClient(TicketOffice ticketOffice) {
+    public static Point calculatePositionForNewClient(TicketOffice ticketOffice, Client newClient) {
+        var queue = ticketOffice.getQueue();
+        var step = getTicketOfficeQueueStep(ticketOffice);
+        var point = queue.isEmpty() ?
+            GetInitialPoint(ticketOffice) :
+            AddPoints(queue.get(0).getPosition(), step);
+
+        for (int i = 1; i < ticketOffice.getQueue().size(); i++) {
+            // start from 1, so we don't move currently served client
+            var currentClient = queue.get(i);
+            if (
+                newClient.getPrivilegy().getSignificance() <=
+                currentClient.getPrivilegy().getSignificance()
+            ) {
+                point.translate(step.x, step.y);
+            }
+        }
+        return point;
+    }
+
+    public static Point GetInitialPoint(TicketOffice ticketOffice){
         var initialTransformation = new HashMap<Direction, Function<Segment, Point>>() {{
             put(Direction.Up, (segment) -> new Point(segment.start().x + 1, segment.end().y + 1));
             put(Direction.Down, (segment) -> new Point(segment.start().x + 1, segment.start().y - 1));
@@ -62,19 +81,18 @@ public class MapManager {
             put(Direction.Right, (segment) -> new Point(segment.start().x - 1, segment.start().y + 1));
         }};
 
-        var initialPoint = initialTransformation
+        return initialTransformation
             .get(ticketOffice.getDirection())
             .apply(ticketOffice.getSegment());
+    }
 
-        var step = new HashMap<Direction, Point>() {{
+    public static Point getTicketOfficeQueueStep(TicketOffice ticketOffice){
+        return new HashMap<Direction, Point>() {{
             put(Direction.Up, new Point(0, 1));
             put(Direction.Down, new Point(0, -1));
             put(Direction.Left, new Point(1, 0));
             put(Direction.Right, new Point(-1, 0));
         }}.get(ticketOffice.getDirection());
-
-        for (var unused: ticketOffice.getQueue()) initialPoint.translate(step.x, step.y);
-        return initialPoint;
     }
 
     /**
@@ -82,14 +100,14 @@ public class MapManager {
      * offices.
      *
      * <p>This method verifies whether a given segment is suitable for use by checking several
-     * conditions: 1. It checks if the segment is within the defined bounds. 2. It checks if the
-     * segment overlaps with any entrance positions. 3. It checks if the segment overlaps with any
-     * ticket office positions. 4. It checks if the segment overlaps with any client positions in
-     * the queues of the ticket offices.
+     * conditions: <br/>
+     * 1. It checks if the segment is within the defined bounds.
+     * 2. It checks if the segment overlaps with any entrance positions. <br/>
+     * 3. It checks if the segment overlaps with any ticket office positions. <br/>
+     * 4. It checks if the segment overlaps with any client positions in the queues of the ticket offices.
      *
      * @param segment The segment to check for availability.
-     * @param hall The hall where to check for availability.
-     *     queues.
+     * @param hall The hall where to check for availability queues.
      * @return {@code true} if the segment is free, {@code false} otherwise.
      */
     public static Boolean IsSegmentFree(Segment segment, Hall hall) {
@@ -175,14 +193,4 @@ public class MapManager {
 
         return points1.stream().anyMatch(points2::contains);
     }
-
-    /**
-     * Generates a set of points within the bounds of the given segment.
-     *
-     * <p>This method creates a set of points representing all possible coordinates within the
-     * specified segment, inclusively.
-     *
-     * @param segment The segment for which to generate the set of points.
-     * @return A set of points within the bounds of the segment.
-     */
 }

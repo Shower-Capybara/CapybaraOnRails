@@ -79,8 +79,8 @@ class TicketOfficeTest {
         + " client with privilegy.significance == 2"
     )
     void testAddClientWithLessPrivilegyToQueueWithHigherPrivilegyClient() {
-        Segment ticketOfficeSegment = new Segment(new Point(2, 1), new Point(4, 0));
-        TicketOffice ticketOffice = new TicketOffice(1, ticketOfficeSegment, Direction.Down, 5);
+        Segment ticketOfficeSegment = new Segment(new Point(2, 0), new Point(4, 1));
+        TicketOffice ticketOffice = new TicketOffice(1, ticketOfficeSegment, Direction.Up, 5);
         Client client1 = getClient(1, new Privilegy("ordinary", 0), new Point(3, 2));
         Client client2 = getClient(2, new Privilegy("ordinary", 0), new Point(3, 3));
         Client client3 = getClient(3, new Privilegy("disabled", 2), new Point(3, 4));

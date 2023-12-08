@@ -117,18 +117,18 @@ class MapManagerTest {
     @MethodSource("closestTicketOfficeTestData")
     @DisplayName("Creating a few different points and ticket offices, then testing if calculation " +
         "of the closest ticket office to given point is correct")
-    void testGetClosestTicketOffice(Point point,
+    void testGetClosestTicketOffice(Client client,
                                     ArrayList<TicketOffice> ticketOffices,
                                     TicketOffice expectedTicketOffice){
-        assertEquals(expectedTicketOffice, MapManager.getClosestTicketOffice(point, ticketOffices));
+        assertEquals(expectedTicketOffice, MapManager.getClosestTicketOffice(client, ticketOffices));
     }
 
     private static Stream<Arguments> closestTicketOfficeTestData(){
         return Stream.of(
-            Arguments.of(new Point(5, 2), getTicketOffices(), getTicketOffices().get(0)),
-            Arguments.of(new Point(3, 15), getTicketOffices(), getTicketOffices().get(1)),
-            Arguments.of(new Point(6, 8), getTicketOffices(), getTicketOffices().get(2)),
-            Arguments.of(new Point(13, 12), getTicketOffices(), getTicketOffices().get(3))
+            Arguments.of(getClient(1, new Point(5, 2)), getTicketOffices(), getTicketOffices().get(0)),
+            Arguments.of(getClient(2, new Point(3, 15)), getTicketOffices(), getTicketOffices().get(1)),
+            Arguments.of(getClient(3, new Point(6, 8)), getTicketOffices(), getTicketOffices().get(2)),
+            Arguments.of(getClient(4, new Point(13, 12)), getTicketOffices(), getTicketOffices().get(3))
         );
     }
 
@@ -137,7 +137,7 @@ class MapManagerTest {
     @DisplayName("Creating a few empty ticket Offices and checking if calculation of position" +
         "client should take is correct")
     void testCalculatePositionForNewClient(TicketOffice ticketOffice, Point expectedPoint){
-        assertEquals(expectedPoint, MapManager.calculatePositionForNewClient(ticketOffice));
+        assertEquals(expectedPoint, MapManager.calculatePositionForNewClient(ticketOffice, getClient(11, new Point(15, 8))));
     }
 
     private static Stream<Arguments> newClientPositionTestData(){
@@ -154,7 +154,10 @@ class MapManagerTest {
     @DisplayName("Creating a few ticket Offices with some queue and checking if calculation of" +
         " position client should take is correct")
     void testCalculatePositionForNewClientInNotEmptyQueue(TicketOffice ticketOffice, Point expectedPoint){
-        assertEquals(expectedPoint, MapManager.calculatePositionForNewClient(ticketOffice));
+        assertEquals(
+            expectedPoint,
+            MapManager.calculatePositionForNewClient(ticketOffice, getClient(11, new Point(15, 8)))
+        );
     }
 
     private static Stream<Arguments> newClientPositionInNotEmptyQueueTestData(){
