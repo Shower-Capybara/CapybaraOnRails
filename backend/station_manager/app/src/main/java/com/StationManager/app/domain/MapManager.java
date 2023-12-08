@@ -17,11 +17,6 @@ public class MapManager {
      * Returns the closest to client ticket office
      * locations.
      *
-     * <p>This method determines the ticket office which is the most suitable for client to be
-     * assigned to. If there is one ticketOffice, client is assigned to this ticket office If there
-     * are more than one ticket offices, client is assigned to the one, whose next free queue
-     * position is closer to client
-     *
      * @param client The client
      * @param ticketOffices The list of ticket offices.
      */
@@ -45,17 +40,11 @@ public class MapManager {
 
     /**
      * Calculates the position for a new client at a ticket office, considering the office's
-     * direction and current queue.
-     *
-     * <p>This method calculates the position for a new client based on the specified ticket
-     * office's direction and the current queue of clients. If the queue is empty, it calculates the
-     * position near the ticket office, and if the queue is not empty, it calculates the position
-     * relative to the last client in the queue.
+     * direction, its queue and queue clients privileges.
      *
      * @param ticketOffice The ticket office for which to calculate the new client's position.
      * @param newClient The client whose new position is to be calculated
-     * @return The calculated position for the new client or {@code null} if a suitable position is
-     *     not found.
+     * @return The calculated position for the new client
      */
     public static Point calculatePositionForNewClient(TicketOffice ticketOffice, Client newClient) {
         var initialPoint = GetInitialPoint(ticketOffice);
@@ -101,14 +90,14 @@ public class MapManager {
      * offices.
      *
      * <p>This method verifies whether a given segment is suitable for use by checking several
-     * conditions: 1. It checks if the segment is within the defined bounds. 2. It checks if the
-     * segment overlaps with any entrance positions. 3. It checks if the segment overlaps with any
-     * ticket office positions. 4. It checks if the segment overlaps with any client positions in
-     * the queues of the ticket offices.
+     * conditions: <br/>
+     * 1. It checks if the segment is within the defined bounds.
+     * 2. It checks if the segment overlaps with any entrance positions. <br/>
+     * 3. It checks if the segment overlaps with any ticket office positions. <br/>
+     * 4. It checks if the segment overlaps with any client positions in the queues of the ticket offices.
      *
      * @param segment The segment to check for availability.
-     * @param hall The hall where to check for availability.
-     *     queues.
+     * @param hall The hall where to check for availability queues.
      * @return {@code true} if the segment is free, {@code false} otherwise.
      */
     public static Boolean IsSegmentFree(Segment segment, Hall hall) {
@@ -194,14 +183,4 @@ public class MapManager {
 
         return points1.stream().anyMatch(points2::contains);
     }
-
-    /**
-     * Generates a set of points within the bounds of the given segment.
-     *
-     * <p>This method creates a set of points representing all possible coordinates within the
-     * specified segment, inclusively.
-     *
-     * @param segment The segment for which to generate the set of points.
-     * @return A set of points within the bounds of the segment.
-     */
 }
