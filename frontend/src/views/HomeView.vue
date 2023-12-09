@@ -1,19 +1,11 @@
 <script setup lang="ts">
-import * as PIXI from 'pixi.js'
+import { onMounted, ref } from 'vue'
+import { app } from '@/game_engine/app'
+import { generateMap } from '@/game_engine/map'
 import EventList from '@/components/EventList/EventList.vue'
+import * as PIXI from 'pixi.js'
 
-const app = new PIXI.Application({ width: 800, height: 600 })
-const resizeCanvas = () => {
-  const div = document.querySelector('.pixi-container')
-  if (div) {
-    const { width, height } = div.getBoundingClientRect()
-    app.renderer.resize(width, height)
-  }
-}
-resizeCanvas()
-window.addEventListener('resize', resizeCanvas)
-
-// Websocket
+const pixiCanvasContainer = ref<HTMLDivElement | null>(null)
 
 const connection: WebSocket = new WebSocket('wss://ws.bitmex.com/realtime') // replace with your WebSocket URL
 
@@ -32,13 +24,24 @@ connection.onopen = (event: Event) => {
 connection.onmessage = (event: MessageEvent) => {
   console.log(event)
 }
+
+onMounted(() => {
+  const container = pixiCanvasContainer.value
+
+  if (container) {
+    generateMap(app)
+    const canvasElement = app.view as HTMLCanvasElement
+    container.appendChild(canvasElement)
+  }
+})
 </script>
 
 <template>
   <main class="min-h-screen max-h-screen flex flex-row justify-center w-full">
-    <div class="w-8/12 h-screen border-4 border-primary pixi-container">
-      <canvas ref="pixiCanvas"></canvas>
-    </div>
+    <div
+      class="w-8/12 h-screen border-4 border-primary pixi-container"
+      ref="pixiCanvasContainer"
+    ></div>
     <div
       class="w-4/12 h-screen border-4 border-l-yellow_design border-t-stroke_grey border-r-stroke_grey border-b-stroke_grey"
     >
