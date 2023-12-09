@@ -373,4 +373,43 @@ class HallTest {
             Arguments.of(Direction.Right, new Segment(new Point(12, 3), new Point(13, 5)))
         );
     }
+
+    @Test
+    @DisplayName(
+        "Creating two ticket offices, placing them the way that collision occurs when both ticket " +
+            "offices have 2 clients. On adding new client, this collision should be avoided and" +
+            "new client should be added to queue, next free position of which is free")
+    void testTicketOfficeQueueWithFreeSpacesFiltration() {
+        Hall hall = getHall();
+
+        Segment ticketOfficeSegment1 = new Segment(new Point(1, 0), new Point(3, 1));
+        Segment ticketOfficeSegment2 = new Segment(new Point(0, 2), new Point(1, 4));
+        TicketOffice ticketOffice1 = new TicketOffice(1, ticketOfficeSegment1, Direction.Up, 5);
+        TicketOffice ticketOffice2 = new TicketOffice(1, ticketOfficeSegment2, Direction.Left, 5);
+
+        hall.addTicketOffice(ticketOffice1);
+        hall.addTicketOffice(ticketOffice2);
+
+        Client client1 = getClient(1, new Privilegy("ordinary", 0), new Point(3, 4));
+        Client client2 = getClient(2, new Privilegy("ordinary", 0), new Point(3, 5));
+        Client client3 = getClient(3, new Privilegy("ordinary", 0), new Point(3, 6));
+        Client client4 = getClient(4, new Privilegy("ordinary", 0), new Point(3, 7));
+        Client client5 = getClient(5, new Privilegy("ordinary", 0), new Point(3, 8));
+
+        ticketOffice1.addClient(client1);
+        ticketOffice2.addClient(client2);
+        ticketOffice2.addClient(client3);
+
+        hall.addClient(client4);
+        hall.assignToTicketOffice(client4);
+        hall.addClient(client5);
+        hall.assignToTicketOffice(client5);
+
+        var expectedClientsQueue = new LinkedList<Client>();
+        expectedClientsQueue.add(getClient(2, new Privilegy("ordinary", 0), new Point(3, 3)));
+        expectedClientsQueue.add(getClient(3, new Privilegy("ordinary", 0), new Point(4, 3)));
+        expectedClientsQueue.add(getClient(4, new Privilegy("ordinary", 0), new Point(5, 3)));
+        expectedClientsQueue.add(getClient(5, new Privilegy("ordinary", 0), new Point(6, 3)));
+        assertIterableEquals(expectedClientsQueue, hall.getTicketOffices().get(1).getQueue());
+    }
 }
