@@ -67,9 +67,30 @@ public class Hall {
             .filter(ticketOffice -> !ticketOffice.getClosed())
             .collect(Collectors.toCollection(ArrayList::new));
 
-        int size = getSizeOfShortestQueue(workingTicketOffices);
+        var ticketOfficesWithFreePositionsInQueue = workingTicketOffices
+            .stream()
+            .filter(ticketOffice -> {
+                var step = MapManager.getTicketOfficeQueueStep(ticketOffice);
+                Point nextClientInQueuePosition;
 
-        var shortestQueueTicketOffices = workingTicketOffices.stream()
+                if (ticketOffice.getQueue().isEmpty()){
+                    nextClientInQueuePosition = MapManager.GetInitialPoint(ticketOffice);
+                }
+                else {
+                    var lastClientInQueuePosition = new Point(ticketOffice.getQueue().get(
+                        ticketOffice.getQueue().size() - 1).getPosition());
+                    lastClientInQueuePosition.translate(step.x, step.y);
+                    nextClientInQueuePosition = lastClientInQueuePosition;
+                }
+
+                return MapManager.IsSegmentFree(
+                    new Segment(nextClientInQueuePosition, nextClientInQueuePosition), this);
+            })
+            .collect(Collectors.toCollection(ArrayList::new));
+
+        int size = getSizeOfShortestQueue(ticketOfficesWithFreePositionsInQueue);
+
+        var shortestQueueTicketOffices = ticketOfficesWithFreePositionsInQueue.stream()
             .filter(ticketOffice -> ticketOffice.getQueue().size() == size)
             .collect(Collectors.toCollection(ArrayList::new));
 
