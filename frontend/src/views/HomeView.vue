@@ -46,9 +46,10 @@ connection.onmessage = (event: MessageEvent) => {
 
 <template>
   <main class="min-h-screen max-h-screen flex flex-row justify-center w-full">
-    <div class="w-8/12 h-screen border-4 border-primary pixi-container">
-      <canvas ref="pixiCanvas"></canvas>
-    </div>
+    <div
+      class="w-8/12 h-screen border-4 border-primary pixi-container"
+      ref="pixiCanvasContainer"
+    ></div>
     <div
       class="w-4/12 h-screen border-4 border-l-yellow_design border-t-stroke_grey border-r-stroke_grey border-b-stroke_grey"
     >
@@ -64,3 +65,4 @@ canvas {
   height: 100%;
 }
 </style>
+@/js/main.js
