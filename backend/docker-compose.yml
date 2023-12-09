@@ -5,4 +5,4 @@ services:
     container_name: "station-manager-redis"
     image: redis:7.2.3-alpine
     ports:
-      - "63791:6379"
+      - "6379:6379"

@@ -11,4 +11,8 @@ plugins {
 }
 
 rootProject.name = "generator"
+include("app1")
+
 include("app")
+
+project(":app").projectDir = File("../station_manager/app")

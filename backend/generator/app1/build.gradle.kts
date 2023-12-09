@@ -16,6 +16,7 @@ repositories {
 }
 
 dependencies {
+//    implementation(project(mapOf("path" to ":station_manager:app")))
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
 
@@ -24,6 +25,10 @@ dependencies {
     // This dependency is used by the application.
     implementation("com.google.guava:guava:32.1.1-jre")
     implementation("ch.qos.logback:logback-classic:1.4.6")
+    implementation("redis.clients:jedis:5.0.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    implementation(project(":app"))
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
