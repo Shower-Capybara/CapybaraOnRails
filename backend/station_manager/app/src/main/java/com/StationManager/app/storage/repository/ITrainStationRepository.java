@@ -1,6 +1,6 @@
 package com.StationManager.app.storage.repository;
 
-import com.StationManager.app.domain.train_station.TrainStation;
+import com.StationManager.shared.domain.train_station.TrainStation;
 
 import java.util.Optional;
 

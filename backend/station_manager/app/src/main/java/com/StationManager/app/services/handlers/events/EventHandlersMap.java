@@ -1,6 +1,6 @@
 package com.StationManager.app.services.handlers.events;
 
-import com.StationManager.app.domain.events.Event;
+import com.StationManager.shared.domain.events.Event;
 
 import java.util.HashMap;
 import java.util.List;

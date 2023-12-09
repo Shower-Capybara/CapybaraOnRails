@@ -30,6 +30,8 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-core:6.4.0.Final")
 
     implementation("ch.qos.logback:logback-classic:1.4.6")
+
+    implementation(project(":shared"));
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
