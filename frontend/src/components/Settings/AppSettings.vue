@@ -1,10 +1,18 @@
 <script lang="ts" setup>
 import AppButton from '@/components/atoms/AppButton.vue'
 import TextInput from '@/components/atoms/AppInput.vue'
-
 import { defineEmits } from 'vue'
 import { ref } from 'vue'
 const selected = ref('option1')
+const selectStrategy = (option) => {
+  selected.value = option
+  console.log(selected)
+}
+
+import { ref } from 'vue'
+
+const selected = ref('option1')
+
 const selectStrategy = (option) => {
   selected.value = option
   console.log(selected)
@@ -41,6 +49,7 @@ const closeSettings = () => {
         </div>
       </div>
       <label class="text-sm font-medium flex mb-2 justify-center">Стратегія появи</label>
+
       <div class="flex flex-col items-center mb-4">
         <div>
           <input
