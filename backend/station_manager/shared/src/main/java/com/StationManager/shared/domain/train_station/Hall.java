@@ -2,9 +2,9 @@ package com.StationManager.shared.domain.train_station;
 
 import com.StationManager.shared.domain.MapManager;
 import com.StationManager.shared.domain.client.Client;
-import com.StationManager.shared.domain.events.ClientAddedEvent;
-import com.StationManager.shared.domain.events.TicketOfficeAddedEvent;
 import com.StationManager.shared.domain.events.Event;
+import com.StationManager.shared.domain.events.TicketOfficeAddedEvent;
+import com.StationManager.shared.domain.events.ClientAddedEvent;
 
 import java.awt.*;
 import java.util.List;

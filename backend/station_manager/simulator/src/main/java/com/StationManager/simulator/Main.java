@@ -1,4 +1,4 @@
-package com.StationManager.generator_simulator;
+package com.StationManager.simulator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

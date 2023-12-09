@@ -1,11 +1,11 @@
 package com.StationManager.shared.domain.train_station;
 
-import com.StationManager.shared.domain.MapManager;
 import com.StationManager.shared.domain.ServeRecord;
 import com.StationManager.shared.domain.client.Client;
-import com.StationManager.shared.domain.events.ClientLeftEvent;
 import com.StationManager.shared.domain.events.ClientMovedEvent;
 import com.StationManager.shared.domain.events.Event;
+import com.StationManager.shared.domain.MapManager;
+import com.StationManager.shared.domain.events.ClientLeftEvent;
 
 import java.awt.*;
 import java.util.List;
@@ -22,7 +22,7 @@ public class TicketOffice {
     private Direction direction;
     private Iterable<ServeRecord> transactions;
 
-    public final Queue<Event> events = new LinkedList<>();
+    public final Queue<com.StationManager.shared.domain.events.Event> events = new LinkedList<>();
 
     public TicketOffice(
         Integer id,
@@ -46,7 +46,7 @@ public class TicketOffice {
                 "Client queue is empty: There are no clients to delete"
             );
         }
-        var newEvents = new ArrayList<Event>();
+        var newEvents = new ArrayList<com.StationManager.shared.domain.events.Event>();
         var removedClient = queue.remove(0);
         newEvents.add(new ClientLeftEvent(removedClient));
 

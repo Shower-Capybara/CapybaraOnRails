@@ -38,14 +38,14 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass.set("com.StationManager.generator.Main")
+    mainClass.set("com.StationManager.simulator.Main")
 }
 
 tasks.withType<Jar>() {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     manifest {
-        attributes["Main-Class"] = "com.StationManager.generator.Main"
+        attributes["Main-Class"] = "com.StationManager.simulator.Main"
     }
     configurations["compileClasspath"].forEach { file: File ->
         from(zipTree(file.absoluteFile))

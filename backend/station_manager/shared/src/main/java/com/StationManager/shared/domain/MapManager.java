@@ -1,10 +1,10 @@
 package com.StationManager.shared.domain;
 
 import com.StationManager.shared.domain.client.Client;
-import com.StationManager.shared.domain.train_station.Direction;
-import com.StationManager.shared.domain.train_station.Hall;
 import com.StationManager.shared.domain.train_station.Segment;
 import com.StationManager.shared.domain.train_station.TicketOffice;
+import com.StationManager.shared.domain.train_station.Direction;
+import com.StationManager.shared.domain.train_station.Hall;
 
 import java.awt.*;
 import java.util.Comparator;
