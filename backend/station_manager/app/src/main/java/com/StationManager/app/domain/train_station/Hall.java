@@ -76,12 +76,14 @@ public class Hall {
                     nextClientInQueuePosition = MapManager.GetInitialPoint(ticketOffice);
                 }
                 else {
-                    var lastClientInQueuePosition = new Point(ticketOffice.getQueue().get(ticketOffice.getQueue().size() - 1).getPosition());
+                    var lastClientInQueuePosition = new Point(ticketOffice.getQueue().get(
+                        ticketOffice.getQueue().size() - 1).getPosition());
                     lastClientInQueuePosition.translate(step.x, step.y);
                     nextClientInQueuePosition = lastClientInQueuePosition;
                 }
 
-                return MapManager.IsSegmentFree(new Segment(nextClientInQueuePosition, nextClientInQueuePosition), this);
+                return MapManager.IsSegmentFree(
+                    new Segment(nextClientInQueuePosition, nextClientInQueuePosition), this);
             })
             .collect(Collectors.toCollection(ArrayList::new));
 
