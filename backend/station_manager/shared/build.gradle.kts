@@ -39,23 +39,6 @@ java {
         languageVersion.set(JavaLanguageVersion.of(20))
     }
 }
-
-application {
-    // Define the main class for the application.
-    mainClass.set("com.StationManager.shared.Main")
-}
-
-tasks.withType<Jar>() {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
-    manifest {
-        attributes["Main-Class"] = "com.StationManager.shared.Main"
-    }
-    configurations["compileClasspath"].forEach { file: File ->
-        from(zipTree(file.absoluteFile))
-    }
-}
-
 tasks.named<Test>("test") {
     useJUnitPlatform()
     testLogging {
