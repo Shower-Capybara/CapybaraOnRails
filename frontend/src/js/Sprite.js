@@ -1,15 +1,16 @@
+// Sprite.js
+import { reactive } from 'vue'
+
 class Sprite {
   constructor(config) {
-    //Set up the image
     this.image = new Image()
     this.image.src = config.src
     this.image.onload = () => {
       this.isLoaded = true
     }
 
-    //Shadow
     this.shadow = new Image()
-    this.useShadow = true //config.useShadow || false
+    this.useShadow = true
     if (this.useShadow) {
       this.shadow.src = '/images/characters/shadow.png'
     }
@@ -17,24 +18,27 @@ class Sprite {
       this.isShadowLoaded = true
     }
 
-    //Configure Animation & Initial State
     this.animations = config.animations || {
       idleDown: [[0, 0]]
     }
     this.currentAnimation = config.currentAnimation || 'idleDown'
     this.currentAnimationFrame = 0
 
-    //Reference the game object
     this.gameObject = config.gameObject
+
+    this.spriteData = reactive({
+      x: this.gameObject.x - 8,
+      y: this.gameObject.y - 18,
+      isLoaded: false,
+      isShadowLoaded: false
+    })
   }
 
   draw(ctx) {
-    const x = this.gameObject.x - 8
-    const y = this.gameObject.y - 18
+    const { x, y, isLoaded, isShadowLoaded } = this.spriteData
 
-    this.isShadowLoaded && ctx.drawImage(this.shadow, x, y)
-
-    this.isLoaded && ctx.drawImage(this.image, 0, 0, 32, 32, x, y, 32, 32)
+    isShadowLoaded && ctx.drawImage(this.shadow, x, y)
+    isLoaded && ctx.drawImage(this.image, 0, 0, 32, 32, x, y, 32, 32)
   }
 }
 
