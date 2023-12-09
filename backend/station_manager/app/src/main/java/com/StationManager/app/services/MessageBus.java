@@ -1,8 +1,8 @@
 package com.StationManager.app.services;
 
-import com.StationManager.app.domain.Message;
-import com.StationManager.app.domain.commands.Command;
-import com.StationManager.app.domain.events.Event;
+import com.StationManager.shared.domain.Message;
+import com.StationManager.shared.domain.commands.Command;
+import com.StationManager.shared.domain.events.Event;
 import com.StationManager.app.services.handlers.commands.CommandHandler;
 import com.StationManager.app.services.handlers.commands.CommandHandlersMap;
 import com.StationManager.app.services.handlers.events.EventHandler;

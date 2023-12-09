@@ -1,6 +1,6 @@
 package com.StationManager.app.services.unitofwork;
 
-import com.StationManager.app.domain.events.Event;
+import com.StationManager.shared.domain.events.Event;
 import com.StationManager.app.storage.repository.*;
 import com.StationManager.app.storage.repository.inmemory.*;
 import org.hibernate.Session;

@@ -12,3 +12,5 @@ plugins {
 
 rootProject.name = "StationManager"
 include("app")
+include("generator_simulator")
+include("shared")

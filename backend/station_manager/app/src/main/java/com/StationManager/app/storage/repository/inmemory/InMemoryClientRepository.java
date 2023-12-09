@@ -1,6 +1,6 @@
 package com.StationManager.app.storage.repository.inmemory;
 
-import com.StationManager.app.domain.client.Client;
+import com.StationManager.shared.domain.client.Client;
 import com.StationManager.app.storage.repository.IClientRepository;
 
 import java.awt.*;

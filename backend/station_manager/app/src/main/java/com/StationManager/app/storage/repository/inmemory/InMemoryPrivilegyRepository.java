@@ -1,6 +1,6 @@
 package com.StationManager.app.storage.repository.inmemory;
 
-import com.StationManager.app.domain.client.Privilegy;
+import com.StationManager.shared.domain.client.Privilegy;
 import com.StationManager.app.storage.repository.IPrivilegyRepository;
 
 import java.util.Optional;

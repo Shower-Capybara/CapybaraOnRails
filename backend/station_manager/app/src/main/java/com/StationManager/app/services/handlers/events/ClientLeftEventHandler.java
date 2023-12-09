@@ -1,6 +1,6 @@
 package com.StationManager.app.services.handlers.events;
 
-import com.StationManager.app.domain.events.ClientLeftEvent;
+import com.StationManager.shared.domain.events.ClientLeftEvent;
 import com.StationManager.app.services.unitofwork.UnitOfWork;
 
 public class ClientLeftEventHandler implements EventHandler<ClientLeftEvent> {

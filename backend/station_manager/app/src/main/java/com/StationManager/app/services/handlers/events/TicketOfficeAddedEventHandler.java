@@ -1,6 +1,6 @@
 package com.StationManager.app.services.handlers.events;
 
-import com.StationManager.app.domain.events.TicketOfficeAddedEvent;
+import com.StationManager.shared.domain.events.TicketOfficeAddedEvent;
 import com.StationManager.app.services.unitofwork.UnitOfWork;
 
 public class TicketOfficeAddedEventHandler implements EventHandler<TicketOfficeAddedEvent> {
