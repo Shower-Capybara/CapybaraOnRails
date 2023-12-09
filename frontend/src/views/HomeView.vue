@@ -34,8 +34,25 @@ const overworld = new Overworld({
   element: pixiCanvasContainer
 })
 overworld.init()
+// Websocket
 
-// Your Websocket code can be placed here
+const connection: WebSocket = new WebSocket('wss://ws.bitmex.com/realtime') // replace with your WebSocket URL
+
+const sendMessage = (message: string) => {
+  console.log(connection)
+  connection.send(message)
+}
+
+console.log('Starting connection to websocket server')
+
+connection.onopen = (event: Event) => {
+  console.log(event)
+  console.log('Successfully connected')
+}
+
+connection.onmessage = (event: MessageEvent) => {
+  console.log(event)
+}
 </script>
 
 <style>
