@@ -22,7 +22,7 @@ public class TicketOffice {
     private Direction direction;
     private Iterable<ServeRecord> transactions;
 
-    public final Queue<com.StationManager.shared.domain.events.Event> events = new LinkedList<>();
+    public final Queue<Event> events = new LinkedList<>();
 
     public TicketOffice(
         Integer id,
@@ -46,7 +46,7 @@ public class TicketOffice {
                 "Client queue is empty: There are no clients to delete"
             );
         }
-        var newEvents = new ArrayList<com.StationManager.shared.domain.events.Event>();
+        var newEvents = new ArrayList<Event>();
         var removedClient = queue.remove(0);
         newEvents.add(new ClientLeftEvent(removedClient));
 
