@@ -1,9 +1,7 @@
 import Overworld from './Overworld'
-
-const init = () => {
-  return new Overworld({
+;(function () {
+  const overworld = new Overworld({
     element: document.querySelector('.game-container')
-  }).init()
-}
-
-export default init
+  })
+  overworld.init()
+})()

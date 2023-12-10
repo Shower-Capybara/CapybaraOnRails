@@ -3,20 +3,12 @@ import AppButton from '@/components/atoms/AppButton.vue'
 import TextInput from '@/components/atoms/AppInput.vue'
 import { defineEmits } from 'vue'
 import { ref } from 'vue'
-const selected = ref('option1')
 const selectStrategy = (option) => {
   selected.value = option
   console.log(selected)
 }
 
-import { ref } from 'vue'
-
 const selected = ref('option1')
-
-const selectStrategy = (option) => {
-  selected.value = option
-  console.log(selected)
-}
 
 const emit = defineEmits(['input'])
 

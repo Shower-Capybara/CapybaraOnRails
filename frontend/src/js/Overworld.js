@@ -16,7 +16,7 @@ class Overworld {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
       // Draw the person
-      this.person.update(/* pass your state here if needed */)
+      this.person.update()
       this.person.sprite.draw(this.ctx)
 
       requestAnimationFrame(() => {
@@ -28,6 +28,7 @@ class Overworld {
   }
 
   init() {
+    console.log('init')
     // Initialize PIXI
     const app = new PIXI.Application({
       width: this.canvas.width,
@@ -37,8 +38,14 @@ class Overworld {
 
     // Create your person object
     this.person = new Person({
-      // ... pass your configuration here
+      x: 3,
+      y: 3,
+      width: 16,
+      height: 16,
+      texture: PIXI.Texture.fromImage('./images_png/human.png')
     })
+
+    this.person.move({ x: 2, y: 2 })
 
     // Start the game loop
     this.startGameLoop()
