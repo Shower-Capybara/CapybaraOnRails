@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import AppButton from '@/components/atoms/AppButton.vue'
 import TextInput from '@/components/atoms/AppInput.vue'
-// #TODO: Fix layout(see Figma desing) +++
-// #TODO: Use custom component for buttons(@/components/atoms/AppButton.vue) +++
-// #TODO: Create and use custom component for input (text input and select input should be 2 different components, +++
-//        also keep in mind that select component is used on welcome screen for station selection) +++
-// #TODO: Add close button and handle close event(see Figma desing) +++
-
 import { defineEmits } from 'vue'
+import { ref } from 'vue'
+const selectStrategy = (option) => {
+  selected.value = option
+  console.log(selected)
+}
+
+const selected = ref('option1')
 
 const emit = defineEmits(['input'])
 
@@ -39,12 +40,32 @@ const closeSettings = () => {
           <TextInput id="time" value="30" />
         </div>
       </div>
-      <label class="text-sm font-medium flex mb-4 justify-center">Стратегія появи</label>
+      <label class="text-sm font-medium flex mb-2 justify-center">Стратегія появи</label>
 
-      <v-radio-group class="m-6">
-        <v-radio label="Стратегія 1" value="one"></v-radio>
-        <v-radio label="Стратегія 2" value="two"></v-radio>
-      </v-radio-group>
+      <div class="flex flex-col items-center mb-4">
+        <div>
+          <input
+            type="radio"
+            id="option1"
+            name="option"
+            value="option1"
+            v-model="selected"
+            @click="selectStrategy('option1')"
+          />
+          <label class="text-sm font-medium p-4" for="option1">Стратегія 1</label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id="option2"
+            name="option"
+            value="option2"
+            v-model="selected"
+            @click="selectStrategy('option2')"
+          />
+          <label class="text-sm font-medium p-4" for="option2">Стратегія 2</label>
+        </div>
+      </div>
 
       <div class="flex flex-row justify-center items-center w-full gap-8">
         <div class="h-10 w-36">
@@ -60,5 +81,18 @@ const closeSettings = () => {
 <style lang="scss" module>
 .backdrop {
   backdrop-filter: blur(2px);
+}
+input[type='radio'] {
+  -webkit-appearance: radio; /* WebKit/Blink browsers */
+  -moz-appearance: radio; /* Firefox */
+  appearance: radio; /* Standard */
+  display: inline-block; /* Для вирівнювання відносно тексту */
+  width: 20px; /* Розмір кола (можна змінити) */
+  height: 16px; /* Розмір кола (можна змінити) */
+  border-radius: 50%; /* Заокруглені кути, щоб отримати коло */
+  border: 1px solid #ccc; /* Обведення кола (можна змінити) */
+  margin: 0; /* Зовнішній відступ */
+  padding: 0; /* Внутрішній відступ */
+  vertical-align: middle; /* Вирівнювання по вертикалі */
 }
 </style>

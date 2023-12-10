@@ -13,28 +13,15 @@
 </template>
 
 <script setup lang="ts">
-import * as PIXI from 'pixi.js'
 import { onMounted, ref } from 'vue'
-import Overworld from '@/js/Overworld' // Adjust the path accordingly
+import { app } from '@/game_engine/app'
+import { generateMap } from '@/game_engine/map'
+import EventList from '@/components/EventList/EventList.vue'
+import * as PIXI from 'pixi.js'
+import { Sprite } from '@/game_engine/sprite'
+import { Point } from '@/game_engine/types'
 
 const pixiCanvasContainer = ref<HTMLDivElement | null>(null)
-
-const app = new PIXI.Application({ background: '#ffffff', width: 800, height: 600 })
-
-onMounted(() => {
-  const container = pixiCanvasContainer.value
-
-  if (container) {
-    const canvasElement = app.view as HTMLCanvasElement
-    container.appendChild(canvasElement)
-  }
-})
-
-const overworld = new Overworld({
-  element: pixiCanvasContainer
-})
-overworld.init()
-// Websocket
 
 const connection: WebSocket = new WebSocket('wss://ws.bitmex.com/realtime') // replace with your WebSocket URL
 
@@ -53,6 +40,24 @@ connection.onopen = (event: Event) => {
 connection.onmessage = (event: MessageEvent) => {
   console.log(event)
 }
+
+onMounted(() => {
+  const container = pixiCanvasContainer.value
+
+  if (container) {
+    generateMap(app)
+    const canvasElement = app.view as HTMLCanvasElement
+    container.appendChild(canvasElement)
+  }
+
+  const sprite = new Sprite(0, 0, 16, 16)
+  sprite.addTexture('src/images_png/human.png', app)
+  const pointToMove: Point = { x: 8, y: 12 }
+  sprite.move(pointToMove)
+
+  const pointToMove2: Point = { x: 2, y: 2 }
+  sprite.move(pointToMove2)
+})
 </script>
 
 <style>
