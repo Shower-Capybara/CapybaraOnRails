@@ -9,15 +9,6 @@ const selectStrategy = (option) => {
   console.log(selected)
 }
 
-import { ref } from 'vue'
-
-const selected = ref('option1')
-
-const selectStrategy = (option) => {
-  selected.value = option
-  console.log(selected)
-}
-
 const emit = defineEmits(['input'])
 
 const closeSettings = () => {
