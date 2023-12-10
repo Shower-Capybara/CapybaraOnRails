@@ -1,6 +1,6 @@
 package com.StationManager.app.storage.repository.inmemory;
 
-import com.StationManager.app.domain.train_station.TrainStation;
+import com.StationManager.shared.domain.train_station.TrainStation;
 import com.StationManager.app.storage.repository.ITrainStationRepository;
 
 import java.util.Optional;

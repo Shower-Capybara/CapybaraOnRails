@@ -29,4 +29,5 @@ jobs:
       - name: "Run tests"
         run: |
           gradle -p station_manager app:test
-          gradle -p generator app:test
+          gradle -p station_manager simulator:test
+          gradle -p station_manager shared:test

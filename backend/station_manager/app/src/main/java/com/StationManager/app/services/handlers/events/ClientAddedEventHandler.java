@@ -1,6 +1,6 @@
 package com.StationManager.app.services.handlers.events;
 
-import com.StationManager.app.domain.events.ClientAddedEvent;
+import com.StationManager.shared.domain.events.ClientAddedEvent;
 import com.StationManager.app.services.unitofwork.UnitOfWork;
 
 public class ClientAddedEventHandler implements EventHandler<ClientAddedEvent> {

@@ -1,13 +1,8 @@
 package com.StationManager.app.services.unitofwork;
 
-import com.StationManager.app.domain.events.Event;
-import com.StationManager.app.storage.repository.*;
 import com.StationManager.app.storage.repository.inmemory.*;
 import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PostgresUnitOfWork extends UnitOfWork {
     public Session session;
