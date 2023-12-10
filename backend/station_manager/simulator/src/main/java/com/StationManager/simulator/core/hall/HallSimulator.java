@@ -5,12 +5,11 @@ import com.StationManager.shared.domain.commands.AddClientCommand;
 import com.StationManager.simulator.Json;
 import com.StationManager.simulator.Settings;
 import com.StationManager.simulator.core.hall.policies.Policy;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
-
-import java.util.HashMap;
 
 public class HallSimulator implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(HallSimulator.class);
@@ -18,7 +17,7 @@ public class HallSimulator implements Runnable {
     private final Integer id;
     private Policy schedulingPolicy;
     private final Jedis redis;
-    private final Gson gson = Json.getGson();
+    private final ObjectMapper objectMapper = Json.getObjectMapper();
 
     public HallSimulator(Integer id, Policy schedulingPolicy, Jedis redis) {
         this.id = id;
@@ -42,15 +41,17 @@ public class HallSimulator implements Runnable {
             // TODO: check if the hall is not exceeding the capacity norm
             var client = this.generateClient();
             var command = new AddClientCommand(client, this.id);
-            HashMap<String, Object> message = new HashMap<>();
-            message.put("type", "AddClientCommand");
-            message.put("payload", command);
 
             try {
-                this.redis.publish(Settings.REDIS_COMMANDS_CHANNEL, gson.toJson(message));
-                logger.info("Sent AddClientCommand to Redis");
+                var channel = String.format(
+                    "%s:%s",
+                    Settings.REDIS_COMMANDS_CHANNEL,
+                    command.getClass().getSimpleName()
+                );
+                this.redis.publish(channel, this.objectMapper.writeValueAsString(command));
+                logger.info(String.format("Sent AddClientCommand to %s channel", channel));
                 Thread.sleep(Math.round(this.schedulingPolicy.getSeconds() * 1000));
-            } catch (InterruptedException e) {
+            } catch (InterruptedException | JsonProcessingException e) {
                 break;
             }
         }

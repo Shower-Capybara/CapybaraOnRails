@@ -5,7 +5,7 @@ run:
 	env $$(cat .env) ../gradlew run
 
 commandListener:
-	env $$(cat .env) ../gradlew runCommandListener
+	env $$(cat .env) ../gradlew runMessageListener
 
 test:
 	env $$(cat .env) ../gradlew test

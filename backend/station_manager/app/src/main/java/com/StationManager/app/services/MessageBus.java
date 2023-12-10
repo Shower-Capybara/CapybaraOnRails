@@ -1,13 +1,11 @@
 package com.StationManager.app.services;
 
-import com.StationManager.shared.domain.Message;
-import com.StationManager.shared.domain.commands.Command;
-import com.StationManager.shared.domain.events.Event;
-import com.StationManager.app.services.handlers.commands.CommandHandler;
-import com.StationManager.app.services.handlers.commands.CommandHandlersMap;
-import com.StationManager.app.services.handlers.events.EventHandler;
-import com.StationManager.app.services.handlers.events.EventHandlersMap;
+import com.StationManager.app.services.handlers.events.*;
+import com.StationManager.app.services.handlers.commands.*;
 import com.StationManager.app.services.unitofwork.UnitOfWork;
+import com.StationManager.shared.domain.Message;
+import com.StationManager.shared.domain.events.*;
+import com.StationManager.shared.domain.commands.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,21 +31,22 @@ public class MessageBus {
         commandHandlers.put(command, handler);
     }
 
-    public static List<Event> handle(Message message, UnitOfWork uow) {
+    public static List<Event> handle(Message initialMessage, UnitOfWork uow) {
         var eventsList = new ArrayList<Event>();
         var messageQueue = new LinkedList<Message>();
-        messageQueue.add(message);
+        messageQueue.add(initialMessage);
 
         while (!messageQueue.isEmpty()) {
-            message = messageQueue.poll();
+            var message = messageQueue.poll();
 
             if (message instanceof Event event) {
-                eventsList.add(event);
+                if (event != initialMessage) eventsList.add(event);
                 handleEvent(event, uow, messageQueue);
             } else if (message instanceof Command command) {
                 handleCommand(command, uow, messageQueue);
             }
         }
+
         return eventsList;
     }
 
@@ -84,5 +83,17 @@ public class MessageBus {
             logger.error(String.format("Exception when handling event: %s", e));
             throw e;
         }
+    }
+
+    public static void bootstrap() {
+        eventHandlers.put(ClientAddedEvent.class, List.of(new ClientAddedEventHandler()));
+        eventHandlers.put(ClientLeftEvent.class, List.of(new ClientLeftEventHandler()));
+        eventHandlers.put(ClientMovedEvent.class, List.of(new ClientMovedEventHandler()));
+        eventHandlers.put(TicketOfficeAddedEvent.class, List.of(new TicketOfficeAddedEventHandler()));
+
+        commandHandlers.put(AddClientCommand.class, new AddClientCommandHandler());
+        commandHandlers.put(AddTicketOfficeCommand.class, new AddTicketOfficeCommandHandler());
+        commandHandlers.put(ResumeGeneratorCommand.class, new ResumeGeneratorCommandHandler());
+        commandHandlers.put(StopGeneratorCommand.class, new StopGeneratorCommandHandler());
     }
 }

@@ -13,9 +13,9 @@ import java.util.Queue;
 import java.util.*;
 
 public class TicketOffice {
-    private final Integer id;
+    private Integer id;
     private Segment segment;
-    private final List<Client> queue;
+    private List<Client> queue;
     private Integer timeToServeTicket;
     private Boolean isClosed;
     private Boolean isReserved;
@@ -23,6 +23,8 @@ public class TicketOffice {
     private Iterable<ServeRecord> transactions;
 
     public final transient Queue<Event> events = new LinkedList<>();
+
+    private TicketOffice() {} // require for jackson
 
     public TicketOffice(
         Integer id,

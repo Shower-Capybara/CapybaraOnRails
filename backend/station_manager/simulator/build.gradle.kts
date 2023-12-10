@@ -30,6 +30,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.6")
     implementation("redis.clients:jedis:5.0.0")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.16.0")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.0")
     implementation(project(":shared"));
 }
 

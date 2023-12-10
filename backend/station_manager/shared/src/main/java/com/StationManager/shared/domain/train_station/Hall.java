@@ -13,12 +13,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Hall {
-    private final Integer id;
-    private final List<Segment> entrances;
-    private final List<TicketOffice> ticketOffices;
-    private final Segment segment;
+    private Integer id;
+    private List<Segment> entrances;
+    private List<TicketOffice> ticketOffices;
+    private Segment segment;
 
     public final transient Queue<Event> events = new LinkedList<>();
+
+    private Hall() {}  // required for Jackson
 
     public Hall(
         Integer id,
@@ -82,7 +84,6 @@ public class Hall {
                     lastClientInQueuePosition.translate(step.x, step.y);
                     nextClientInQueuePosition = lastClientInQueuePosition;
                 }
-
                 return MapManager.IsSegmentFree(
                     new Segment(nextClientInQueuePosition, nextClientInQueuePosition), this);
             })

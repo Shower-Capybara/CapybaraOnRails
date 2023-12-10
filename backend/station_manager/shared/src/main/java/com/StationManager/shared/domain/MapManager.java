@@ -77,10 +77,10 @@ public class MapManager {
 
     public static Point GetInitialPoint(TicketOffice ticketOffice){
         var initialTransformation = new HashMap<Direction, Function<Segment, Point>>() {{
-            put(Direction.Up, (segment) -> new Point(segment.start().x + 1, segment.end().y + 1));
-            put(Direction.Down, (segment) -> new Point(segment.start().x + 1, segment.start().y - 1));
-            put(Direction.Left, (segment) -> new Point(segment.end().x + 1, segment.end().y - 1));
-            put(Direction.Right, (segment) -> new Point(segment.start().x - 1, segment.start().y + 1));
+            put(Direction.Up, (segment) -> new Point(segment.start.x + 1, segment.end.y + 1));
+            put(Direction.Down, (segment) -> new Point(segment.start.x + 1, segment.start.y - 1));
+            put(Direction.Left, (segment) -> new Point(segment.end.x + 1, segment.end.y - 1));
+            put(Direction.Right, (segment) -> new Point(segment.start.x - 1, segment.start.y + 1));
         }};
 
         return initialTransformation
@@ -154,10 +154,10 @@ public class MapManager {
      * @return {@code true} if the segment is completely out of bounds, {@code false} otherwise.
      */
     private static boolean isOutOfBounds(Segment childSegment, Segment parentSegment) {
-        return childSegment.start().x < parentSegment.start().x
-            || childSegment.start().y < parentSegment.start().y
-            || childSegment.end().x > parentSegment.end().x
-            || childSegment.end().y > parentSegment.end().y;
+        return childSegment.start.x < parentSegment.start.x
+            || childSegment.start.y < parentSegment.start.y
+            || childSegment.end.x > parentSegment.end.x
+            || childSegment.end.y > parentSegment.end.y;
     }
 
     /**
@@ -172,8 +172,8 @@ public class MapManager {
      */
     public static Boolean segmentContainsPoint(Segment segment, Point point) {
         int pointX = point.x, pointY = point.y;
-        int startX = segment.start().x, startY = segment.start().y;
-        int endX = segment.end().x, endY = segment.end().y;
+        int startX = segment.start.x, startY = segment.start.y;
+        int endX = segment.end.x, endY = segment.end.y;
 
         return pointX >= startX && pointX <= endX && pointY >= startY && pointY <= endY;
     }
@@ -198,10 +198,10 @@ public class MapManager {
 
     public static boolean TicketOfficeAttachedToSide(TicketOffice ticketOffice, Segment bounds){
         var isAttachedMap = new HashMap<Direction, Function<Segment, Boolean>>() {{
-            put(Direction.Up, (segment) -> segment.start().y == ticketOffice.getSegment().start().y);
-            put(Direction.Down, (segment) -> segment.end().y == ticketOffice.getSegment().end().y);
-            put(Direction.Left, (segment) -> segment.start().x == ticketOffice.getSegment().start().x);
-            put(Direction.Right, (segment) -> segment.end().x == ticketOffice.getSegment().end().x);
+            put(Direction.Up, (segment) -> segment.start.y == ticketOffice.getSegment().start.y);
+            put(Direction.Down, (segment) -> segment.end.y == ticketOffice.getSegment().end.y);
+            put(Direction.Left, (segment) -> segment.start.x == ticketOffice.getSegment().start.x);
+            put(Direction.Right, (segment) -> segment.end.x == ticketOffice.getSegment().end.x);
         }};
 
         return isAttachedMap
