@@ -4,6 +4,7 @@ import { app } from '@/game_engine/app'
 import { generateMap } from '@/game_engine/map'
 import EventList from '@/components/EventList/EventList.vue'
 import * as PIXI from 'pixi.js'
+import { Cashpoint } from '@/game_engine/cashpoint'
 
 const pixiCanvasContainer = ref<HTMLDivElement | null>(null)
 

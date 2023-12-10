@@ -1,24 +1,16 @@
 <script lang="ts" setup>
 import AppButton from '@/components/atoms/AppButton.vue'
 import TextInput from '@/components/atoms/AppInput.vue'
-import { defineEmits } from 'vue'
 import { ref } from 'vue'
-const selected = ref('option1')
-const selectStrategy = (option) => {
-  selected.value = option
-  console.log(selected)
-}
 
-import { ref } from 'vue'
+const emit = defineEmits(['close', 'input'])
 
 const selected = ref('option1')
 
-const selectStrategy = (option) => {
+const selectStrategy = (option: string) => {
   selected.value = option
   console.log(selected)
 }
-
-const emit = defineEmits(['input'])
 
 const closeSettings = () => {
   emit('close')
