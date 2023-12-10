@@ -1,6 +1,6 @@
 package com.StationManager.app.storage.repository;
 
-import com.StationManager.app.domain.train_station.TicketOffice;
+import com.StationManager.shared.domain.train_station.TicketOffice;
 
 import java.util.Optional;
 

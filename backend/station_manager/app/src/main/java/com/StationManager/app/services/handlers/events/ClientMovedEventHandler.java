@@ -1,6 +1,6 @@
 package com.StationManager.app.services.handlers.events;
 
-import com.StationManager.app.domain.events.ClientMovedEvent;
+import com.StationManager.shared.domain.events.ClientMovedEvent;
 import com.StationManager.app.services.unitofwork.UnitOfWork;
 
 public class ClientMovedEventHandler implements EventHandler<ClientMovedEvent> {
