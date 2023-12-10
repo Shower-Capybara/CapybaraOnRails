@@ -28,6 +28,10 @@ dependencies {
     implementation("com.google.guava:guava:32.1.1-jre")
     implementation("io.javalin:javalin:5.6.3")
     implementation("org.hibernate.orm:hibernate-core:6.4.0.Final")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("redis.clients:jedis:5.0.0")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.16.0")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.0")
 
     implementation("ch.qos.logback:logback-classic:1.4.6")
 
@@ -96,4 +100,20 @@ tasks.named<Test>("test") {
                 }
         }))
     }
+}
+
+val otherStartScripts = tasks.register<CreateStartScripts>("otherStartScripts") {
+    mainClass.set("com.StationManager.app.CommandListener")
+    applicationName = "RedisCommandListener"
+    outputDir = tasks.named<CreateStartScripts>("startScripts").get().outputDir
+    classpath = tasks.named<CreateStartScripts>("startScripts").get().classpath
+}
+
+tasks.named("startScripts") {
+    dependsOn(otherStartScripts)
+}
+
+tasks.register<JavaExec>("runMessageListener") {
+    mainClass.set("com.StationManager.app.MessageListener")
+    classpath = java.sourceSets["main"].runtimeClasspath
 }

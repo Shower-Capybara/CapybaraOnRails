@@ -1,5 +1,9 @@
 package com.StationManager.shared.domain.client;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.awt.*;
 import java.util.Objects;
 
@@ -10,17 +14,20 @@ public class Client {
     private Privilegy privilegy;
     private Point position;
 
+    private static Integer IdSequence = 0;
+
+    @JsonCreator
     public Client(
-        Integer id,
-        String firstName,
-        String lastName,
-        Privilegy privilegy,
-        Point position
+        @JsonProperty("id") Integer id,
+        @JsonProperty("firstName") String firstName,
+        @JsonProperty("lastName") String lastName,
+        @JsonProperty("privilegy") Privilegy privilegy,
+        @JsonProperty("position") Point position
     ) {
-        this.id = id;
+        this.id = id == null ? IdSequence++ : id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.privilegy = privilegy;
+        this.privilegy = privilegy == null ? new Privilegy("default", 0): privilegy;
         this.position = position;
     }
 

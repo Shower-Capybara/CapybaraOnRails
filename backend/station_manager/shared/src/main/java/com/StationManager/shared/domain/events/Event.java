@@ -1,6 +1,7 @@
 package com.StationManager.shared.domain.events;
 
 import com.StationManager.shared.domain.Message;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,10 @@ public abstract class Event implements Message, Comparable<Event> {
 
     public LocalDateTime getTimestamp() {
         return this.timestamp;
+    }
+    @JsonProperty("type")
+    private String type() {
+        return this.getClass().getSimpleName();
     }
 
     @Override

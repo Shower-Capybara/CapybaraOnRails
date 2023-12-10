@@ -2,6 +2,7 @@ package com.StationManager.shared.domain.train_station;
 
 import com.StationManager.shared.domain.ServeRecord;
 import com.StationManager.shared.domain.client.Client;
+import com.StationManager.shared.domain.events.ClientBeingServedEvent;
 import com.StationManager.shared.domain.events.ClientMovedEvent;
 import com.StationManager.shared.domain.events.Event;
 import com.StationManager.shared.domain.MapManager;
@@ -13,16 +14,18 @@ import java.util.Queue;
 import java.util.*;
 
 public class TicketOffice {
-    private final Integer id;
+    private Integer id;
     private Segment segment;
-    private final List<Client> queue;
+    private List<Client> queue;
     private Integer timeToServeTicket;
     private Boolean isClosed;
     private Boolean isReserved;
     private Direction direction;
     private Iterable<ServeRecord> transactions;
 
-    public final Queue<Event> events = new LinkedList<>();
+    public final transient Queue<Event> events = new LinkedList<>();
+
+    private TicketOffice() {} // require for jackson
 
     public TicketOffice(
         Integer id,
@@ -64,6 +67,7 @@ public class TicketOffice {
             previousClientPosition = currentClientPosition;
         }
 
+        if (!queue.isEmpty()) newEvents.add(new ClientBeingServedEvent(this, queue.get(0)));
         this.events.addAll(newEvents);
     }
 
@@ -100,6 +104,7 @@ public class TicketOffice {
         newEvents.add(new ClientMovedEvent(client, client.getPosition(), point));
         client.setPosition(point);
         queue.add(insertIndex, client);
+        if (insertIndex == 0) this.events.add(new ClientBeingServedEvent(this, client));
         this.events.addAll(newEvents);
     }
 

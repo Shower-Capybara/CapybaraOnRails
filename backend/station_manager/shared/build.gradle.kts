@@ -24,6 +24,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("ch.qos.logback:logback-classic:1.4.6")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.16.0")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

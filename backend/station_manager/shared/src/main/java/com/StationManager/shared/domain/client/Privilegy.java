@@ -1,12 +1,19 @@
 package com.StationManager.shared.domain.client;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Privilegy {
     private String type;
     private Integer significance;
 
-    public Privilegy(String type, Integer significance) {
+    @JsonCreator
+    public Privilegy(
+        @JsonProperty("type") String type,
+        @JsonProperty("significance") Integer significance
+    ) {
         this.type = type;
         this.significance = significance;
     }
