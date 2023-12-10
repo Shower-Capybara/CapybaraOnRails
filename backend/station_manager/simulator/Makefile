@@ -18,6 +18,3 @@ docker_run:
 		-p 8000:8000 \
 		--name $(SIMULATOR_CONTAINER_NAME) \
 		 $(SIMULATOR_IMAGE_NAME)
-
-publish:
-	jq -c . data/ClientBeingServedEvent.json | redis-cli -x publish station_manager:events
