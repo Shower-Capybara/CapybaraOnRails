@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = ClientLeftEvent.class, name = "ClientLeftEvent"),
     @JsonSubTypes.Type(value = ClientMovedEvent.class, name = "ClientMovedEvent"),
     @JsonSubTypes.Type(value = TicketOfficeAddedEvent.class, name = "TicketOfficeAddedEvent"),
+    @JsonSubTypes.Type(value = ClientServedEvent.class, name = "ClientServedEvent"),
+    @JsonSubTypes.Type(value = ClientBoughtTicketEvent.class, name = "ClientBoughtTicketEvent"),
 
     @JsonSubTypes.Type(value = AddClientCommand.class, name = "AddClientCommand"),
     @JsonSubTypes.Type(value = AddTicketOfficeCommand.class, name = "AddTicketOfficeCommand"),

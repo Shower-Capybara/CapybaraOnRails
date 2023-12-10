@@ -23,17 +23,20 @@ import java.util.List;
 public class RedisPubSub extends JedisPubSub {
     private static final Logger logger = LoggerFactory.getLogger(RedisPubSub.class);
     private final Jedis redisPublisher;
-    private UnitOfWork uow;
+    private final UnitOfWork uow;
 
     public RedisPubSub(Jedis redisPublisher) {
         super();
         this.redisPublisher = redisPublisher;
 
+        // remove when postgres is in place
         var ticketOffice = new TicketOffice(1, new Segment(new Point(0, 0), new Point(2, 1)), Direction.Up, 5);
         Hall hall = new Hall(1, new Segment(new Point(0, 0), new Point(10, 10)), List.of(new Segment(new Point(0, 5), new Point(0, 7))), new ArrayList<>());
         hall.addTicketOffice(ticketOffice);
+
         this.uow = new InMemoryUnitOfWork(); // TODO: replace with PostgresUnitOfWork
         uow.getHallRepository().add(hall);
+        uow.getTicketOfficeRepository().add(hall.getTicketOffices().get(0));
     }
 
     @Override

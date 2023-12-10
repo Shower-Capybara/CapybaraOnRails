@@ -1,4 +1,6 @@
-package com.StationManager.simulator;
+package com.StationManager.simulator.core.ticketOffice;
+
+import com.StationManager.simulator.core.ticketOffice.TicketOfficeSimulator;
 
 public class TicketOfficeSimulatorThread extends Thread {
     private final TicketOfficeSimulator simulator;

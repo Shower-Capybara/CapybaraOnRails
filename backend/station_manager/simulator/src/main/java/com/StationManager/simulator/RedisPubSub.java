@@ -1,5 +1,6 @@
 package com.StationManager.simulator;
 
+import com.StationManager.simulator.core.ticketOffice.TicketOfficeSimulatorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.JedisPubSub;
@@ -7,9 +8,9 @@ import redis.clients.jedis.JedisPubSub;
 public class RedisPubSub extends JedisPubSub {
     private static final Logger logger = LoggerFactory.getLogger(RedisPubSub.class);
 
-    private final SimulatorManager simulator;
+    private final TicketOfficeSimulatorManager simulator;
 
-    public RedisPubSub(SimulatorManager simulator) {
+    public RedisPubSub(TicketOfficeSimulatorManager simulator) {
         super();
         this.simulator = simulator;
     }

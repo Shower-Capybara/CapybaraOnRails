@@ -4,7 +4,7 @@ STATION_MANAGER_CONTAINER_NAME ?= station_manager
 run:
 	env $$(cat .env) ../gradlew run
 
-commandListener:
+messageListener:
 	env $$(cat .env) ../gradlew runMessageListener
 
 test:

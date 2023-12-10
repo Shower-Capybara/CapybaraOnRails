@@ -1,23 +1,22 @@
-package com.StationManager.simulator;
+package com.StationManager.simulator.core.ticketOffice;
 
 import com.StationManager.shared.domain.Message;
+import com.StationManager.shared.domain.events.ClientBoughtTicketEvent;
+import com.StationManager.shared.domain.events.ClientServedEvent;
 import com.StationManager.shared.domain.events.Event;
 import com.StationManager.shared.domain.events.ClientBeingServedEvent;
+import com.StationManager.simulator.Json;
+import com.StationManager.simulator.Settings;
 import com.StationManager.simulator.handlers.EventHandlersMap;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.function.Consumer;
 
 public class TicketOfficeSimulator implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(TicketOfficeSimulator.class);
@@ -42,7 +41,42 @@ public class TicketOfficeSimulator implements Runnable {
     }
 
     private void handleClientBeingServedEvent(ClientBeingServedEvent event) {
+        var numTickets = 2; // add numTickets somewhere to the client
+        for (int ticket = 1; ticket < numTickets + 1; ticket++) {
+            try {
+                Thread.sleep(3 * 1000); // simulate buying
+            } catch (InterruptedException e) {
+                break;
+            }
 
+            var newEvent = new ClientBoughtTicketEvent(event.client);
+            try {
+                this.redis.publish(
+                    String.format(
+                        "%s:%s",
+                        Settings.REDIS_EVENTS_CHANNEL,
+                        newEvent.getClass().getSimpleName()
+                    ),
+                    this.objectMapper.writeValueAsString(newEvent)
+                );
+            } catch (JsonProcessingException e) {
+                logger.error(e.toString());
+            }
+        }
+
+        var newEvent = new ClientServedEvent(event.ticketOffice.getId(), event.client);
+        try {
+            this.redis.publish(
+                String.format(
+                    "%s:%s",
+                    Settings.REDIS_EVENTS_CHANNEL,
+                    newEvent.getClass().getSimpleName()
+                ),
+                this.objectMapper.writeValueAsString(newEvent)
+            );
+        } catch (JsonProcessingException e) {
+            logger.error(e.toString());
+        }
     }
 
     public <T extends Event> void handleEvent(T event) {
@@ -50,7 +84,7 @@ public class TicketOfficeSimulator implements Runnable {
         if (handlers == null) {
             logger.info("No handler found for " + event.getClass().getSimpleName() + " event");
             return;
-        };
+        }
 
         for (var handler: handlers) {
             handler.accept(event);

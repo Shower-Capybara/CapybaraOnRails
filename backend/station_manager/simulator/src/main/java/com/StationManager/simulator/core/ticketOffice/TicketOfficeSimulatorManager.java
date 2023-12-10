@@ -1,4 +1,4 @@
-package com.StationManager.simulator;
+package com.StationManager.simulator.core.ticketOffice;
 
 import redis.clients.jedis.Jedis;
 
@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class SimulatorManager {
+public class TicketOfficeSimulatorManager {
     private final List<TicketOfficeSimulatorThread> simulatorThreads = new ArrayList<>();
     private final Jedis redis;
 
-    public SimulatorManager(Jedis redis) {
+    public TicketOfficeSimulatorManager(Jedis redis) {
         this.redis = redis;
     }
 

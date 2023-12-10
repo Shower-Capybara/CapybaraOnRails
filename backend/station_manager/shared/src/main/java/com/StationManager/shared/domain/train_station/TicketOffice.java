@@ -2,6 +2,7 @@ package com.StationManager.shared.domain.train_station;
 
 import com.StationManager.shared.domain.ServeRecord;
 import com.StationManager.shared.domain.client.Client;
+import com.StationManager.shared.domain.events.ClientBeingServedEvent;
 import com.StationManager.shared.domain.events.ClientMovedEvent;
 import com.StationManager.shared.domain.events.Event;
 import com.StationManager.shared.domain.MapManager;
@@ -66,6 +67,7 @@ public class TicketOffice {
             previousClientPosition = currentClientPosition;
         }
 
+        if (!queue.isEmpty()) newEvents.add(new ClientBeingServedEvent(this, queue.get(0)));
         this.events.addAll(newEvents);
     }
 
@@ -102,6 +104,7 @@ public class TicketOffice {
         newEvents.add(new ClientMovedEvent(client, client.getPosition(), point));
         client.setPosition(point);
         queue.add(insertIndex, client);
+        if (insertIndex == 0) this.events.add(new ClientBeingServedEvent(this, client));
         this.events.addAll(newEvents);
     }
 

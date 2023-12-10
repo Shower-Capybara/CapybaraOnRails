@@ -35,7 +35,7 @@ public class HallSimulatorManager {
                 );
             }
         );
-        var simulator = new HallSimulator(hallId, new IntervalPolicy(5.0), redis);
+        var simulator = new HallSimulator(hallId, new IntervalPolicy(20.0), redis);
         var thread = new HallSimulatorThread(simulator);
         this.simulatorThreads.add(thread);
         thread.start();
