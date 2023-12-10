@@ -61,7 +61,7 @@ public class MessageBusTest {
             uow.getClientRepository().add(client);
             var events = MessageBus.handle(event, uow);
             assertNotEquals(initialPosition, client.getPosition());
-            assertEquals(1, events.size());
+            assertEquals(0, events.size());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
