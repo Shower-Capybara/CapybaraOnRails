@@ -22,7 +22,7 @@ public class TicketOffice {
     private Direction direction;
     private Iterable<ServeRecord> transactions;
 
-    public final Queue<Event> events = new LinkedList<>();
+    public final transient Queue<Event> events = new LinkedList<>();
 
     public TicketOffice(
         Integer id,

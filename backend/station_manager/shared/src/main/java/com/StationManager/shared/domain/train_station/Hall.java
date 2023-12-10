@@ -18,7 +18,7 @@ public class Hall {
     private final List<TicketOffice> ticketOffices;
     private final Segment segment;
 
-    public final Queue<Event> events = new LinkedList<>();
+    public final transient Queue<Event> events = new LinkedList<>();
 
     public Hall(
         Integer id,

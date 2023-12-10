@@ -13,6 +13,7 @@ public class RedisPubSub extends JedisPubSub {
         super();
         this.simulator = simulator;
     }
+
     @Override
     public void onMessage(String channel, String message) {
         logger.info(String.format("Channel %s received message: %s", channel, message));
