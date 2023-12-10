@@ -117,3 +117,8 @@ tasks.register<JavaExec>("runMessageListener") {
     mainClass.set("com.StationManager.app.MessageListener")
     classpath = java.sourceSets["main"].runtimeClasspath
 }
+
+tasks.register<JavaExec>("runApi") {
+    mainClass.set("com.StationManager.app.Api")
+    classpath = java.sourceSets["main"].runtimeClasspath
+}
