@@ -1,0 +1,6 @@
+{
+  "type": "ClientBeingServedEvent",
+  "payload": {
+    "a": 1
+  }
+}

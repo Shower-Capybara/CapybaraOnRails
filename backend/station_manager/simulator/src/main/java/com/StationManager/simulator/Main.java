@@ -2,11 +2,24 @@ package com.StationManager.simulator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPubSub;
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
-        logger.info("Hello world");
+        var redis = new Jedis(Settings.REDIS_HOST, Settings.REDIS_PORT);
+        var listenerRedis = new Jedis(Settings.REDIS_HOST, Settings.REDIS_PORT);
+
+        var simulator = new SimulatorManager(redis);
+        simulator.addTicketOffice(1);
+
+        logger.info("App startup completed");
+
+        var pubsub = new RedisPubSub(simulator);
+        listenerRedis.subscribe(pubsub, Settings.REDIS_CHANNEL);
+        redis.close();
+        listenerRedis.close();
     }
 }
