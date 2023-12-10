@@ -10,5 +10,4 @@ public class InMemoryPrivilegyRepository extends InMemoryRepository<Privilegy> i
     public Optional<Privilegy> getByType(String type) {
         return entities.stream().filter(privilegy -> privilegy.getType().equals(type)).findFirst();
     }
-
 }

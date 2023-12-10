@@ -62,7 +62,7 @@ public class Hall {
 
     public void assignToTicketOffice(Client client) {
         var workingTicketOffices = ticketOffices.stream()
-            .filter(ticketOffice -> !ticketOffice.getClosed())
+            .filter(ticketOffice -> !ticketOffice.getIsClosed())
             .collect(Collectors.toCollection(ArrayList::new));
 
         int size = getSizeOfShortestQueue(workingTicketOffices);

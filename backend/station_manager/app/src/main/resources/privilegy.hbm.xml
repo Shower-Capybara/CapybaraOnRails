@@ -1,0 +1,18 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.StationManager.app.domain.client">
+
+    <class name="Privilegy" table="privilegies">
+
+        <id name="type" type="string">
+            <column name="type" length="50" />
+            <generator class="assigned" />
+        </id>
+
+        <property name="significance" type="integer">
+            <column name="significance" />
+        </property>
+
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.StationManager.app.domain.train_station">
+
+    <class name="TicketOffice" table="ticket_offices">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+
+        <property name="timeToServeTicket" column="time_to_serve_ticket" type="integer"/>
+        <property name="isClosed" column="is_closed" type="boolean"/>
+        <property name="isReserved" column="is_reserved" type="boolean"/>
+        <property name="direction" column="direction" type="converted::com.StationManager.app.storage.database.converters.DirectionConverter"/>
+        <property name="segment" column="segment" type="converted::com.StationManager.app.storage.database.converters.SegmentConverter" />
+        <list name="queuePositions" cascade="all" table="client_positions">
+            <key column="ticket_office_id"/>
+            <list-index column="position_in_queue"/>
+            <one-to-many class="com.StationManager.app.storage.database.dto.ClientPositions"/>
+<!--            <many-to-many class="com.StationManager.app.domain.client.Client" column="client_id" />-->
+<!--            <element type="converter::com.StationManager.app.storage.database.converters.QueueListConverter"/>-->
+        </list>
+    </class>
+
+</hibernate-mapping>

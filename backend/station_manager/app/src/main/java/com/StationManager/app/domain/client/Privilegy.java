@@ -6,6 +6,8 @@ public class Privilegy {
     private String type;
     private Integer significance;
 
+    public Privilegy() { }
+
     public Privilegy(String type, Integer significance) {
         this.type = type;
         this.significance = significance;

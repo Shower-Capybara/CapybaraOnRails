@@ -27,9 +27,14 @@ dependencies {
     // This dependency is used by the application.
     implementation("com.google.guava:guava:32.1.1-jre")
     implementation("io.javalin:javalin:5.6.3")
-    implementation("org.hibernate.orm:hibernate-core:6.4.0.Final")
 
     implementation("ch.qos.logback:logback-classic:1.4.6")
+
+    // These dependencies are used for the database
+    implementation("org.postgresql:postgresql:42.5.1")
+    implementation("org.hibernate.orm:hibernate-core:6.4.0.Final")
+    implementation("org.hibernate.orm:hibernate-spatial:6.4.0.Final")
+    implementation("org.modelmapper:modelmapper:3.0.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

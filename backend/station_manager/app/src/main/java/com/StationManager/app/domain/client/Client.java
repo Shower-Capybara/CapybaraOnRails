@@ -1,5 +1,9 @@
 package com.StationManager.app.domain.client;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+
 import java.awt.*;
 import java.util.Objects;
 
@@ -9,6 +13,20 @@ public class Client {
     private String lastName;
     private Privilegy privilegy;
     private Point position;
+
+    public Client() { }
+
+    public Client(
+            String firstName,
+            String lastName,
+            Privilegy privilegy,
+            Point position
+    ) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.privilegy = privilegy;
+        this.position = position;
+    }
 
     public Client(
         Integer id,
