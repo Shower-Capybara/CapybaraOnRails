@@ -7,6 +7,9 @@ run:
 messageListener:
 	env $$(cat .env) ../gradlew runMessageListener
 
+api:
+	env $$(cat .env) ../gradlew runApi
+
 test:
 	env $$(cat .env) ../gradlew test
 
