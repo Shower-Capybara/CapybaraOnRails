@@ -46,7 +46,7 @@ public class Api {
                 broadcastMessage(message);
                 logger.info(message);
             }
-        }, "station_manager:events:*");
+        }, Settings.getEventChannel("*"));
     }
 
     private static void broadcastMessage(String message) {
