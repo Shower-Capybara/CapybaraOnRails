@@ -51,14 +51,8 @@ public class TicketOfficeSimulator implements Runnable {
 
             var newEvent = new ClientBoughtTicketEvent(event.client);
             try {
-                this.redis.publish(
-                    String.format(
-                        "%s:%s",
-                        Settings.REDIS_EVENTS_CHANNEL_PREFIX,
-                        newEvent.getClass().getSimpleName()
-                    ),
-                    this.objectMapper.writeValueAsString(newEvent)
-                );
+                var channel = Settings.getEventChannel(newEvent.getClass().getSimpleName());
+                this.redis.publish(channel, this.objectMapper.writeValueAsString(newEvent));
             } catch (JsonProcessingException e) {
                 logger.error(e.toString());
             }
@@ -66,14 +60,8 @@ public class TicketOfficeSimulator implements Runnable {
 
         var newEvent = new ClientServedEvent(event.ticketOffice.getId(), event.client);
         try {
-            this.redis.publish(
-                String.format(
-                    "%s:%s",
-                    Settings.REDIS_EVENTS_CHANNEL_PREFIX,
-                    newEvent.getClass().getSimpleName()
-                ),
-                this.objectMapper.writeValueAsString(newEvent)
-            );
+            var channel = Settings.getEventChannel(newEvent.getClass().getSimpleName());
+            this.redis.publish(channel, this.objectMapper.writeValueAsString(newEvent));
         } catch (JsonProcessingException e) {
             logger.error(e.toString());
         }
@@ -97,11 +85,7 @@ public class TicketOfficeSimulator implements Runnable {
             try {
                 var data = this.messageQueue.take();
                 var message = objectMapper.readValue(data, Message.class);
-
                 if (message instanceof Event event) handleEvent(event);
-
-//                redis.publish(Settings.REDIS_CHANNEL, "1"); // publish new client message
-                logger.info("Publishing new client command");
             } catch (InterruptedException | JsonProcessingException e) {
                 break;
             }

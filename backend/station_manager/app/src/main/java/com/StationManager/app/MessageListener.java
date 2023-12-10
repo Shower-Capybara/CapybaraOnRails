@@ -21,11 +21,7 @@ public class MessageListener {
         redisListener.psubscribe(
             pubsub,
             String.format("%s:*", Settings.REDIS_COMMANDS_CHANNEL_PREFIX),
-            String.format(
-                "%s:%s",
-                Settings.REDIS_EVENTS_CHANNEL_PREFIX,
-                ClientServedEvent.class.getSimpleName()
-            )
+            Settings.getEventChannel(ClientServedEvent.class.getSimpleName())
         );
         redisListener.close();
         redisPublisher.close();

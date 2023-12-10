@@ -49,10 +49,8 @@ public class RedisPubSub extends JedisPubSub {
             uow.commit();
 
             for (var event: events) {
-                this.redisPublisher.publish(
-                    String.format("%s:%s", Settings.REDIS_EVENTS_CHANNEL_PREFIX, event.getClass().getSimpleName()),
-                    objectMapper.writeValueAsString(event)
-                );
+                var eventChannel = Settings.getEventChannel(event.getClass().getSimpleName());
+                this.redisPublisher.publish(eventChannel, objectMapper.writeValueAsString(event));
             }
         } catch (Exception e) {
             logger.error(e.toString());

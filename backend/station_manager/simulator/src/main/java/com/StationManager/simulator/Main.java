@@ -24,11 +24,7 @@ public class Main {
         var pubsub = new RedisPubSub(simulator);
         listenerRedis.subscribe(
             pubsub,
-            String.format(
-                "%s:%s",
-                Settings.REDIS_EVENTS_CHANNEL_PREFIX,
-                ClientBeingServedEvent.class.getSimpleName()
-            )
+            Settings.getEventChannel(ClientBeingServedEvent.class.getSimpleName())
         );
         redis.close();
         listenerRedis.close();

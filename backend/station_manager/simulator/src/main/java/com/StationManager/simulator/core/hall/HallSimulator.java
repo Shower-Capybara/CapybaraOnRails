@@ -43,11 +43,7 @@ public class HallSimulator implements Runnable {
             var command = new AddClientCommand(client, this.id);
 
             try {
-                var channel = String.format(
-                    "%s:%s",
-                    Settings.REDIS_COMMANDS_CHANNEL_PREFIX,
-                    command.getClass().getSimpleName()
-                );
+                var channel = Settings.getCommandChannel(command.getClass().getSimpleName());
                 this.redis.publish(channel, this.objectMapper.writeValueAsString(command));
                 logger.info(String.format("Sent AddClientCommand to %s channel", channel));
                 Thread.sleep(Math.round(this.schedulingPolicy.getSeconds() * 1000));
