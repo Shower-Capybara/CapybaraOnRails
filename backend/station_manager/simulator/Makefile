@@ -20,4 +20,4 @@ docker_run:
 		 $(SIMULATOR_IMAGE_NAME)
 
 publish:
-	jq -c . data/ClientBeingServedEvent.json | redis-cli -x publish generator:commands
+	jq -c . data/ClientBeingServedEvent.json | redis-cli -x publish station_manager:events

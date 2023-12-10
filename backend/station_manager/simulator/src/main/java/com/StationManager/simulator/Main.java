@@ -1,5 +1,6 @@
 package com.StationManager.simulator;
 
+import com.StationManager.simulator.core.hall.HallSimulatorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
@@ -13,12 +14,14 @@ public class Main {
         var listenerRedis = new Jedis(Settings.REDIS_HOST, Settings.REDIS_PORT);
 
         var simulator = new SimulatorManager(redis);
+        var hallSimulator = new HallSimulatorManager(redis);
         simulator.addTicketOffice(1);
+        hallSimulator.addHall(1);
 
         logger.info("App startup completed");
 
         var pubsub = new RedisPubSub(simulator);
-        listenerRedis.subscribe(pubsub, Settings.REDIS_CHANNEL);
+        listenerRedis.subscribe(pubsub, Settings.REDIS_EVENTS_CHANNEL);
         redis.close();
         listenerRedis.close();
     }
