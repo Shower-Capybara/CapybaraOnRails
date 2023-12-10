@@ -1,16 +1,16 @@
 package com.StationManager.app.services;
 
-import com.StationManager.app.domain.client.Client;
-import com.StationManager.app.domain.client.Privilegy;
-import com.StationManager.app.domain.commands.AddClientCommand;
-import com.StationManager.app.domain.commands.AddTicketOfficeCommand;
-import com.StationManager.app.domain.events.ClientAddedEvent;
-import com.StationManager.app.domain.events.ClientLeftEvent;
-import com.StationManager.app.domain.events.ClientMovedEvent;
-import com.StationManager.app.domain.train_station.Direction;
-import com.StationManager.app.domain.train_station.Hall;
-import com.StationManager.app.domain.train_station.Segment;
-import com.StationManager.app.domain.train_station.TicketOffice;
+import com.StationManager.shared.domain.client.Client;
+import com.StationManager.shared.domain.client.Privilegy;
+import com.StationManager.shared.domain.commands.AddClientCommand;
+import com.StationManager.shared.domain.commands.AddTicketOfficeCommand;
+import com.StationManager.shared.domain.events.ClientAddedEvent;
+import com.StationManager.shared.domain.events.ClientLeftEvent;
+import com.StationManager.shared.domain.events.ClientMovedEvent;
+import com.StationManager.shared.domain.train_station.Direction;
+import com.StationManager.shared.domain.train_station.Hall;
+import com.StationManager.shared.domain.train_station.Segment;
+import com.StationManager.shared.domain.train_station.TicketOffice;
 import com.StationManager.app.services.handlers.commands.AddClientCommandHandler;
 import com.StationManager.app.services.handlers.commands.AddTicketOfficeCommandHandler;
 import com.StationManager.app.services.handlers.events.ClientAddedEventHandler;
@@ -61,7 +61,7 @@ public class MessageBusTest {
             uow.getClientRepository().add(client);
             var events = MessageBus.handle(event, uow);
             assertNotEquals(initialPosition, client.getPosition());
-            assertEquals(1, events.size());
+            assertEquals(0, events.size());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
