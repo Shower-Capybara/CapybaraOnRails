@@ -26,7 +26,7 @@ public class Main {
             pubsub,
             String.format(
                 "%s:%s",
-                Settings.REDIS_EVENTS_CHANNEL,
+                Settings.REDIS_EVENTS_CHANNEL_PREFIX,
                 ClientBeingServedEvent.class.getSimpleName()
             )
         );

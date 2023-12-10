@@ -9,7 +9,6 @@ import com.StationManager.shared.domain.train_station.Direction;
 import com.StationManager.shared.domain.train_station.Hall;
 import com.StationManager.shared.domain.train_station.Segment;
 import com.StationManager.shared.domain.train_station.TicketOffice;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
@@ -51,7 +50,7 @@ public class RedisPubSub extends JedisPubSub {
 
             for (var event: events) {
                 this.redisPublisher.publish(
-                    String.format("%s:%s", Settings.REDIS_EVENTS_CHANNEL, event.getClass().getSimpleName()),
+                    String.format("%s:%s", Settings.REDIS_EVENTS_CHANNEL_PREFIX, event.getClass().getSimpleName()),
                     objectMapper.writeValueAsString(event)
                 );
             }

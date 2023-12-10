@@ -54,7 +54,7 @@ public class TicketOfficeSimulator implements Runnable {
                 this.redis.publish(
                     String.format(
                         "%s:%s",
-                        Settings.REDIS_EVENTS_CHANNEL,
+                        Settings.REDIS_EVENTS_CHANNEL_PREFIX,
                         newEvent.getClass().getSimpleName()
                     ),
                     this.objectMapper.writeValueAsString(newEvent)
@@ -69,7 +69,7 @@ public class TicketOfficeSimulator implements Runnable {
             this.redis.publish(
                 String.format(
                     "%s:%s",
-                    Settings.REDIS_EVENTS_CHANNEL,
+                    Settings.REDIS_EVENTS_CHANNEL_PREFIX,
                     newEvent.getClass().getSimpleName()
                 ),
                 this.objectMapper.writeValueAsString(newEvent)

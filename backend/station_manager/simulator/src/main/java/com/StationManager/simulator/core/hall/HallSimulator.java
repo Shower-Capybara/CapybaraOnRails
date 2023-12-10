@@ -45,7 +45,7 @@ public class HallSimulator implements Runnable {
             try {
                 var channel = String.format(
                     "%s:%s",
-                    Settings.REDIS_COMMANDS_CHANNEL,
+                    Settings.REDIS_COMMANDS_CHANNEL_PREFIX,
                     command.getClass().getSimpleName()
                 );
                 this.redis.publish(channel, this.objectMapper.writeValueAsString(command));
