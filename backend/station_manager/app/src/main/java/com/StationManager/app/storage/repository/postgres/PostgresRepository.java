@@ -15,11 +15,10 @@ import java.util.Set;
  */
 public abstract class PostgresRepository<T> implements IRepository<T> {
     protected final Set<T> seen = new HashSet<>();
-    private Session session;
+    protected Session session;
 
     public PostgresRepository(Session session) {
         this.session = session;
-        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override

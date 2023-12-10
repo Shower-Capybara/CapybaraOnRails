@@ -1,28 +1,28 @@
 package com.StationManager.app.services.unitofwork;
 
-import com.StationManager.app.storage.repository.inmemory.*;
+import com.StationManager.app.storage.database.utils.HibernateUtil;
+import com.StationManager.app.storage.repository.postgres.PostgresClientRepository;
+import com.StationManager.app.storage.repository.postgres.PostgresPrivilegyRepository;
 import org.hibernate.Session;
-import org.hibernate.cfg.Configuration;
 
 public class PostgresUnitOfWork extends UnitOfWork {
     public Session session;
 
     public PostgresUnitOfWork() {
-        // this.session = PgSessionFactory.openSession();  // TODO: replace with real session factory
-        //noinspection resource - session is closed in close() method
-        this.session = new Configuration().configure().buildSessionFactory().openSession();
-
-        // replace with correct repos
-        this.clientRepository = new InMemoryClientRepository();
-        this.hallRepository = new InMemoryHallRepository();
-        this.privilegyRepository = new InMemoryPrivilegyRepository();
-        this.ticketOfficeRepository = new InMemoryTicketOfficeRepository();
-        this.trainStationRepository = new InMemoryTrainStationRepository();
+        this.session = HibernateUtil.getSessionFactory().openSession();
+//
+//        this.clientRepository = new InMemoryClientRepository();
+//        this.hallRepository = new InMemoryHallRepository();
+//        this.privilegyRepository = new InMemoryPrivilegyRepository();
+//        this.ticketOfficeRepository = new InMemoryTicketOfficeRepository();
+//        this.trainStationRepository = new InMemoryTrainStationRepository();
+        this.privilegyRepository = new PostgresPrivilegyRepository(session);
+        this.clientRepository = new PostgresClientRepository(session);
     }
 
     @Override
     public void commit() {
-        session.getTransaction().commit();
+        this.session.getTransaction().commit();
         logger.info("Changes committed.");
     }
 
@@ -36,5 +36,17 @@ public class PostgresUnitOfWork extends UnitOfWork {
     public void close() throws Exception {
         this.rollback();
         this.session.close();
+    }
+
+    @Override
+    public PostgresPrivilegyRepository getPrivilegyRepository() {
+        if (!this.session.getTransaction().isActive()) this.session.beginTransaction();
+        return (PostgresPrivilegyRepository) this.privilegyRepository;
+    }
+
+    @Override
+    public PostgresClientRepository getClientRepository() {
+        if (!this.session.getTransaction().isActive()) this.session.beginTransaction();
+        return (PostgresClientRepository) this.clientRepository;
     }
 }

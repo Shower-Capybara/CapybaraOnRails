@@ -1,0 +1,22 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database connection properties - Driver, URL, user, password -->
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+
+        <!-- org.hibernate.HibernateException: No CurrentSessionContext configured! -->
+        <property name="hibernate.current_session_context_class">thread</property>
+        <property name="hibernate.transaction.auto_close_session">false</property>
+        <property name="show_sql">true</property>
+        <property name="hbm2ddl.auto">validate</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgresPlusDialect</property>
+        <mapping resource="client.hbm.xml"/>
+        <mapping resource="privilegy.hbm.xml"/>
+        <mapping resource="ticket_office.hbm.xml"/>
+        <mapping resource="client_positions.hbm.xml"/>
+<!--        <mapping class="com.StationManager.app.storage.database.dto.ClientDTO"/>-->
+
+    </session-factory>
+</hibernate-configuration>

@@ -9,6 +9,8 @@ public class Privilegy {
     private String type;
     private Integer significance;
 
+    public Privilegy() { }
+
     @JsonCreator
     public Privilegy(
         @JsonProperty("type") String type,

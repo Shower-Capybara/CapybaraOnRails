@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+
 import java.awt.*;
 import java.util.Objects;
 
@@ -13,10 +17,23 @@ public class Client {
     private String lastName;
     private Privilegy privilegy;
     private Point position;
-
     private static Integer IdSequence = 0;
 
     @JsonCreator
+    public Client() { }
+
+    public Client(
+            String firstName,
+            String lastName,
+            Privilegy privilegy,
+            Point position
+    ) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.privilegy = privilegy;
+        this.position = position;
+    }
+
     public Client(
         @JsonProperty("id") Integer id,
         @JsonProperty("firstName") String firstName,
