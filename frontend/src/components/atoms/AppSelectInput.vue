@@ -26,8 +26,9 @@ function updateValue(event: Event): void {
       :required="props.required"
       :title="props.title"
       @change="updateValue"
-      class="mb-3 px-1 py-2 border border-solid border-stroke_grey-25 rounded bg-background_grey text-sm"
+      class="mb-3 px-1 py-2 border-2 border-primary rounded bg-background_grey text-sm"
     >
+      <option value="none" selected disabled hidden>Оберіть станцію</option>
       <option v-for="(option, index) in props.options" :key="index" :value="option">
         {{ option }}
       </option>
