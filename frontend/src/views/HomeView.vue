@@ -75,6 +75,15 @@ onMounted(() => {
       map
     )
 
+    const sprite3 = new Sprite(
+      1,
+      map.getCoordinates({ x: 10, y: 10 }),
+      CELL_SIZE,
+      CELL_SIZE,
+      '/images/man.svg',
+      map
+    )
+
     setTimeout(() => {
       sprite1.move(map.getCoordinates({ x: 10, y: 10 }))
       sprite2.move(map.getCoordinates({ x: 4, y: 10 }))
