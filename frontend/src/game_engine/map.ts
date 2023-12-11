@@ -38,7 +38,6 @@ export class Map {
       y: this.cells[point.x * this.size + point.y].y
     }
   }
-
   getCellSize(): number {
     return this.cellSize
   }
