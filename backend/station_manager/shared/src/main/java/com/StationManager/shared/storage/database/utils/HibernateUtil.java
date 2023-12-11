@@ -3,8 +3,12 @@ package com.StationManager.shared.storage.database.utils;
 import com.StationManager.shared.Settings;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HibernateUtil {
+
+    protected static final Logger logger = LoggerFactory.getLogger(HibernateUtil.class);
 
     private static SessionFactory sessionFactory;
 
@@ -12,20 +16,16 @@ public class HibernateUtil {
         try {
             // Create the SessionFactory from hibernate.cfg.xml
             Configuration configuration = new Configuration();
-            System.out.println(Settings.PG_URL);
             configuration.setProperty("hibernate.connection.url", Settings.PG_URL);
             configuration.setProperty("hibernate.connection.username", Settings.PG_USER);
             configuration.setProperty("hibernate.connection.password", Settings.PG_PASSWORD);
 
             configuration.configure();
-            System.out.println("Hibernate Configuration loaded");
-
-            System.out.println("Hibernate serviceRegistry created");
-
+            logger.info("Hibernate Configuration loaded");
             return configuration.buildSessionFactory();
         } catch (Throwable ex) {
             // Make sure you log the exception, as it might be swallowed
-            System.err.println("Initial SessionFactory creation failed." + ex);
+            logger.error("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
     }
