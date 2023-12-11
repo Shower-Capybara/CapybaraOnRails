@@ -1,12 +1,16 @@
 package com.StationManager.app.controllers;
 
 import com.StationManager.app.Settings;
+import com.StationManager.app.services.MessageBus;
 import com.StationManager.app.services.command_listener.Json;
 import com.StationManager.app.services.command_listener.RedisPubSub;
+import com.StationManager.shared.domain.commands.AddTicketOfficeCommand;
 import com.StationManager.shared.domain.commands.CloseTicketOfficeCommand;
 import com.StationManager.shared.domain.commands.OpenTicketOfficeCommand;
 import com.StationManager.shared.domain.commands.StopGeneratorCommand;
 import com.StationManager.shared.domain.events.ClientServedEvent;
+import com.StationManager.shared.domain.train_station.TicketOffice;
+import com.StationManager.shared.services.unitofwork.PostgresUnitOfWork;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
@@ -18,7 +22,22 @@ public class TicketOfficeController {
 
 
     public static void createTicketOffice(Context ctx) {
-        // Implementation
+        var hallId = Integer.parseInt(ctx.pathParam("h_id"));
+        var body = ctx.body();
+        TicketOffice ticketOffice;
+
+        try {
+            ticketOffice = objectMapper.readValue(body, TicketOffice.class);
+        } catch (JsonProcessingException e) {
+            ctx.status(422);
+            return;
+        }
+
+        var command = new AddTicketOfficeCommand(ticketOffice, hallId);
+        try (var uow = new PostgresUnitOfWork()) {
+            MessageBus.handle(command, uow);
+            uow.commit();
+        }
         ctx.status(200).result("Ticket office created successfully");
     }
 

@@ -39,7 +39,6 @@ public class PostgresUnitOfWork extends UnitOfWork {
 
     @Override
     public void close() {
-        this.rollback();
         this.session.close();
     }
 

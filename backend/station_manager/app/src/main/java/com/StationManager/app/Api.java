@@ -27,7 +27,7 @@ public class Api {
                    get(TrainStationController::getState);
                 });
                 path("/halls/{h_id}", () -> {
-                    path("/state", () -> {
+                    path("", () -> {
                         get(HallController::getState);
                     });
                     put("/configure_system", HallController::configureSystem);
