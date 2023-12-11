@@ -14,7 +14,7 @@ public class InMemoryClientRepository extends InMemoryRepository<Client> impleme
 
     @Override
     public boolean removeById(int id) {
-        return false;
+        return entities.removeIf(client -> client.getId() == id);
     }
 
     @Override
