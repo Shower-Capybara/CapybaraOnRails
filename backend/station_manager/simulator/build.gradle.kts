@@ -32,6 +32,11 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.16.0")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.0")
+
+    implementation("org.postgresql:postgresql:42.5.1")
+    implementation("org.hibernate.orm:hibernate-core:6.4.0.Final")
+    implementation("org.hibernate.orm:hibernate-spatial:6.4.0.Final")
+
     implementation(project(":shared"));
 }
 

@@ -5,6 +5,7 @@ import com.StationManager.app.controllers.SocketController;
 import com.StationManager.app.controllers.TicketOfficeController;
 import com.StationManager.app.services.MessageBus;
 import com.StationManager.app.services.command_listener.ForwardPubSub;
+import com.StationManager.shared.storage.database.utils.*;
 import io.javalin.Javalin;
 import redis.clients.jedis.Jedis;
 
@@ -22,7 +23,6 @@ public class Api {
                 path("/halls/{h_id}", () -> {
                     path("/state", () -> {
                         get(HallController::getState);
-                        put(HallController::saveState);
                     });
                     put("/configure_system", HallController::configureSystem);
                     path("/service_history", () -> {
@@ -44,5 +44,6 @@ public class Api {
         });
 
         redisListener.psubscribe(new ForwardPubSub(SocketController.wsSessions), Settings.getEventChannel("*"));
+        HibernateUtil.getSessionFactory().close();
     }
 }

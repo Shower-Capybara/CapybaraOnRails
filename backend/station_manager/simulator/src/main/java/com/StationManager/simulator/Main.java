@@ -1,6 +1,7 @@
 package com.StationManager.simulator;
 
 import com.StationManager.shared.domain.events.ClientBeingServedEvent;
+import com.StationManager.shared.storage.database.utils.HibernateUtil;
 import com.StationManager.simulator.core.hall.HallSimulatorManager;
 import com.StationManager.simulator.core.ticketOffice.TicketOfficeSimulatorManager;
 import org.slf4j.Logger;
@@ -31,5 +32,6 @@ public class Main {
 
         redis.close();
         listenerRedis.close();
+        HibernateUtil.getSessionFactory().close();
     }
 }
