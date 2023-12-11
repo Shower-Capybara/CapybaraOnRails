@@ -26,6 +26,11 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.6")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.16.0")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.0")
+
+    // These dependencies are used for the database
+    implementation("org.postgresql:postgresql:42.5.1")
+    implementation("org.hibernate.orm:hibernate-core:6.4.0.Final")
+    implementation("org.hibernate.orm:hibernate-spatial:6.4.0.Final")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

@@ -1,7 +1,7 @@
 package com.StationManager.app.services.handlers.events;
 
 import com.StationManager.shared.domain.events.TicketOfficeAddedEvent;
-import com.StationManager.app.services.unitofwork.UnitOfWork;
+import com.StationManager.shared.services.unitofwork.UnitOfWork;
 
 public class TicketOfficeAddedEventHandler implements EventHandler<TicketOfficeAddedEvent> {
     @Override
