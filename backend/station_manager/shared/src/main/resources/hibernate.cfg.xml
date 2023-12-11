@@ -8,7 +8,8 @@
         <!-- org.hibernate.HibernateException: No CurrentSessionContext configured! -->
         <property name="hibernate.current_session_context_class">thread</property>
         <property name="hibernate.transaction.auto_close_session">false</property>
-        <property name="show_sql">true</property>
+        <property name="log4j.logger.org.hibernate">error</property>
+        <property name="show_sql">false</property>
         <property name="hbm2ddl.auto">validate</property>
 
         <mapping resource="mappings/client.hbm.xml"/>

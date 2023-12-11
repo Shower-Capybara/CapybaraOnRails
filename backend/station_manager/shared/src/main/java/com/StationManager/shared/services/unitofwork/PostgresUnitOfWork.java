@@ -35,14 +35,11 @@ public class PostgresUnitOfWork extends UnitOfWork {
     @Override
     public void rollback() {
         session.getTransaction().rollback();
-        logger.info("Changes rollback.");
     }
 
     @Override
-    public void close() throws Exception {
-        this.rollback();
+    public void close() {
         this.session.close();
-        HibernateUtil.getSessionFactory().close();
     }
 
     @Override

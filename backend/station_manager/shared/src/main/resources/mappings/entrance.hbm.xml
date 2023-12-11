@@ -7,10 +7,17 @@
         <id name="id" type="int" column="id">
             <generator class="increment"/>
         </id>
-        <many-to-one name="hall" class="com.StationManager.shared.storage.database.dto.HallDTO" column="hall_id"/>
+        <many-to-one
+            lazy="false"
+            name="hall"
+            class="com.StationManager.shared.storage.database.dto.HallDTO"
+            column="hall_id"
+        />
         <property name="index" column="index" type="integer"/>
-        <property name="segment" column="segment"
-                  type="converted::com.StationManager.shared.storage.database.converters.SegmentConverter"/>
+        <property
+            name="segment"
+            column="segment"
+            type="converted::com.StationManager.shared.storage.database.converters.SegmentConverter"/>
 
     </class>
 </hibernate-mapping>
