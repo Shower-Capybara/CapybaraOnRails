@@ -2,7 +2,7 @@ package com.StationManager.app.services;
 
 import com.StationManager.app.services.handlers.events.*;
 import com.StationManager.app.services.handlers.commands.*;
-import com.StationManager.app.services.unitofwork.UnitOfWork;
+import com.StationManager.shared.services.unitofwork.UnitOfWork;
 import com.StationManager.shared.domain.Message;
 import com.StationManager.shared.domain.events.*;
 import com.StationManager.shared.domain.commands.*;

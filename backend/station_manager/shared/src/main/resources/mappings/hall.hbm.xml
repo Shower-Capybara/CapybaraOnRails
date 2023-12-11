@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.StationManager.shared.storage.database.dto">
+    <class name="com.StationManager.shared.storage.database.dto.HallDTO" table="halls">
+
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+
+        <property name="segment" column="segment"
+                  type="converted::com.StationManager.shared.storage.database.converters.SegmentConverter"/>
+        <list name="entrances" cascade="all" inverse="true">
+            <key>
+                <column name="hall_id"/>
+            </key>
+            <index column="index"/>
+            <one-to-many class="com.StationManager.shared.storage.database.dto.Entrance"/>
+        </list>
+
+        <list name="ticketOffices" cascade="all,delete-orphan">
+            <key column="hall_id"/>
+            <index column="idx"/>
+            <one-to-many class="com.StationManager.shared.storage.database.dto.HallsTicketOffices"/>
+        </list>
+
+    </class>
+</hibernate-mapping>

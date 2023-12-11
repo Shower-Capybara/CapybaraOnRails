@@ -25,8 +25,6 @@ public class TicketOffice {
 
     public final transient Queue<Event> events = new LinkedList<>();
 
-    private TicketOffice() {} // require for jackson
-
     public TicketOffice() {
         this.queue = new LinkedList<>();
     }
@@ -45,15 +43,6 @@ public class TicketOffice {
         this.isReserved = false;
         this.direction = direction;
         this.transactions = new ArrayList<>();
-    }
-
-    public List<ClientPositions> getQueuePositions() {
-        return queuePositions;
-    }
-
-    public void setQueuePositions(List<ClientPositions> queuePositions) {
-        this.queuePositions.clear();
-        this.queuePositions.addAll(queuePositions);
     }
 
     public void removeClient() {

@@ -34,12 +34,6 @@ dependencies {
 
     implementation("ch.qos.logback:logback-classic:1.4.6")
 
-    // These dependencies are used for the database
-    implementation("org.postgresql:postgresql:42.5.1")
-    implementation("org.hibernate.orm:hibernate-core:6.4.0.Final")
-    implementation("org.hibernate.orm:hibernate-spatial:6.4.0.Final")
-    implementation("org.modelmapper:modelmapper:3.0.0")
-
     implementation(project(":shared"));
 }
 

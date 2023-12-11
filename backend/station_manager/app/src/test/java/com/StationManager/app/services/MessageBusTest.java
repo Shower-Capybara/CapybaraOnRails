@@ -16,7 +16,7 @@ import com.StationManager.app.services.handlers.commands.AddTicketOfficeCommandH
 import com.StationManager.app.services.handlers.events.ClientAddedEventHandler;
 import com.StationManager.app.services.handlers.events.ClientLeftEventHandler;
 import com.StationManager.app.services.handlers.events.ClientMovedEventHandler;
-import com.StationManager.app.services.unitofwork.InMemoryUnitOfWork;
+import com.StationManager.shared.services.unitofwork.InMemoryUnitOfWork;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;

@@ -2,9 +2,6 @@ package com.StationManager.app;
 
 public class Settings {
     public static int JAVALIN_PORT = Integer.parseInt(System.getenv("JAVALIN_PORT"));
-    public static String PG_URL = System.getenv("PG_URL");
-    public static String PG_USER = System.getenv("PG_USER");
-    public static String PG_PASSWORD = System.getenv("PG_PASSWORD");
     public static String REDIS_HOST = System.getenv("REDIS_HOST");
     public static Integer REDIS_PORT = Integer.parseInt(System.getenv("REDIS_PORT"));
     public static String REDIS_EVENTS_CHANNEL_PREFIX = System.getenv("REDIS_EVENTS_CHANNEL_PREFIX");
