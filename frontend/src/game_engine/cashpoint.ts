@@ -33,8 +33,13 @@ export class Cashpoint {
 
   mount(container: PIXI.Container<PIXI.DisplayObject>): void {
     this.render()
-    container.addChild(this.graphics)
-    container.addChild(this.text)
+    if (this.map.cashpointsContainer) {
+      this.map.cashpointsContainer.addChild(this.graphics)
+      this.map.cashpointsContainer.addChild(this.text)
+    } else {
+      container.addChild(this.graphics)
+      container.addChild(this.text)
+    }
   }
 
   private render(): void {
@@ -65,9 +70,18 @@ export class Cashpoint {
   }
 
   private paint(coords: Point, width: number, height: number): void {
+    const offsetX = 1 // Зміщення зліва
+    const offsetY = 1 // Зміщення зверху
+
     this.graphics.beginFill('#FAFAFA')
     this.graphics.lineStyle({ color: '#122083', width: 1 })
-    this.graphics.drawRoundedRect(coords.x, coords.y, width, height, Cashpoint.radius)
+    this.graphics.drawRoundedRect(
+      coords.x + offsetX,
+      coords.y + offsetY,
+      width,
+      height,
+      Cashpoint.radius
+    )
     this.graphics.endFill()
     this.graphics.beginFill(Cashpoint.colors[this.options.status])
     this.graphics.lineStyle({ alpha: 0 })
@@ -78,18 +92,21 @@ export class Cashpoint {
     )
 
     this.graphics.endFill()
-    this.text.position.set(coords.x + Cashpoint.padding, coords.y + Cashpoint.padding * 4)
+    this.text.position.set(
+      coords.x + Cashpoint.padding + offsetX,
+      coords.y + Cashpoint.padding * 4 + offsetY
+    )
   }
 
   private get width(): number {
     const coordsStart = this.map.getCoordinates({ x: this.start.x, y: this.start.y })
     const coordsEnd = this.map.getCoordinates({ x: this.end.x, y: this.end.y })
-    return Math.abs(coordsStart.x - coordsEnd.x)
+    return Math.abs(coordsStart.x - coordsEnd.x) - 2
   }
 
   private get height(): number {
     const coordsStart = this.map.getCoordinates({ x: this.start.x, y: this.start.y })
     const coordsEnd = this.map.getCoordinates({ x: this.end.x, y: this.end.y })
-    return Math.abs(coordsStart.y - coordsEnd.y)
+    return Math.abs(coordsStart.y - coordsEnd.y) - 2
   }
 }
