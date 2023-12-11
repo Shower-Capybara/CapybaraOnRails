@@ -9,7 +9,7 @@ public class TicketOfficeClosedEvent extends Event {
 
     @JsonCreator
     public TicketOfficeClosedEvent(
-        @JsonProperty(value = "ticketOffice", required = true) Integer ticketOfficeId
+        @JsonProperty(value = "ticketOfficeId", required = true) Integer ticketOfficeId
     ) {
         super();
         this.ticketOfficeId = ticketOfficeId;

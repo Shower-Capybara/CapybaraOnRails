@@ -25,12 +25,12 @@ public class TicketOfficeController {
     public static void closeTicketOffice(Context ctx) throws JsonProcessingException {
         CloseTicketOfficeCommand closeTicketOfficeCommand = new CloseTicketOfficeCommand(Integer.parseInt(ctx.body()));
         redisPublisher.publish(Settings.getCommandChannel(CloseTicketOfficeCommand.class.getSimpleName()), objectMapper.writeValueAsString(closeTicketOfficeCommand));
-        ctx.status(200);
+        ctx.status(201);
     }
 
     public static void openTicketOffice(Context ctx) throws JsonProcessingException {
         OpenTicketOfficeCommand openTicketOfficeCommand = new OpenTicketOfficeCommand(Integer.parseInt(ctx.body()));
         redisPublisher.publish(Settings.getCommandChannel(OpenTicketOfficeCommand.class.getSimpleName()), objectMapper.writeValueAsString(openTicketOfficeCommand));
-        ctx.status(200);
+        ctx.status(201);
     }
 }
