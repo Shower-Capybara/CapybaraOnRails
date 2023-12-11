@@ -24,8 +24,11 @@ public class Main {
         var pubsub = new RedisPubSub(simulator);
         listenerRedis.subscribe(
             pubsub,
+            Settings.getCommandChannel("CloseTicketOfficeCommand"),
+            Settings.getCommandChannel("OpenTicketOfficeCommand"),
             Settings.getEventChannel(ClientBeingServedEvent.class.getSimpleName())
         );
+
         redis.close();
         listenerRedis.close();
     }
