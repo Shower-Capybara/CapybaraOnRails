@@ -20,11 +20,17 @@ public class Api {
         app.routes(() -> {
             path("/train_station", () -> {
                 path("/halls/{h_id}", () -> {
-                    get("/get_state", HallController::getState);
-                    put("/save_state", HallController::saveState);
+                    path("/state", () -> {
+                        get(HallController::getState);
+                        put(HallController::saveState);
+                    });
                     put("/configure_system", HallController::configureSystem);
-                    get("/get_service_history", HallController::getServiceHistory);
-                    post("/create_entry", HallController::createEntry);
+                    path("/service_history", () -> {
+                        get(HallController::getServiceHistory);
+                    });
+                    path("/entry", () -> {
+                        post(HallController::createEntry);
+                    });
                     path("/ticket_offices", ()->{
                         post(TicketOfficeController::createTicketOffice);
                         path("/{t_id}/open", () ->
