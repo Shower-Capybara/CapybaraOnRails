@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { CELL_SIZE, MAP_SIZE } from './contants'
+import { CELL_SIZE, MAP_SIZE } from './constants'
 import type { Point } from './types'
 import { Cashpoint } from './cashpoint'
 
@@ -35,12 +35,6 @@ function createGrid(gridContainer: PIXI.Container<PIXI.DisplayObject>) {
       cells.push(cell)
     }
   }
-  const cashpoint = new Cashpoint({ x: 0, y: 6 }, { x: 2, y: 7 }, 'vertical')
+  const cashpoint = new Cashpoint(12, { x: 0, y: 5 }, { x: 1, y: 7 }, { status: 'working' })
   cashpoint.mount(gridContainer)
-  // const graphics = new PIXI.Graphics()
-  // graphics.beginFill(0xff0000)
-  // graphics.lineStyle({ color: '#D0D0D0', width: 1 })
-  // graphics.drawRoundedRect(160, 200, 40, 80, 5)
-  // graphics.endFill()
-  // gridContainer.addChild(graphics)
 }
