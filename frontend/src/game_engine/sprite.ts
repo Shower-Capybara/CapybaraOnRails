@@ -1,75 +1,94 @@
 import * as PIXI from 'pixi.js'
-import { getCoordinates } from './map'
-import { getNormalizedCoordinates } from './utils'
+import * as TWEEN from '@tweenjs/tween.js'
 import type { Point } from './types'
+import type { Map } from './map'
 export class Sprite {
-  private sprite: PIXI.Sprite
-
+  private sprite!: PIXI.Sprite
+  private static spritesContainer: PIXI.Container<PIXI.DisplayObject> = new PIXI.Container()
   constructor(
-    private x: number,
-    private y: number,
+    private id: number,
+    private point: Point,
     private width: number,
-    private height: number
-  ) {}
+    private height: number,
+    private texturePath: string,
+    private map: Map
+  ) {
+    this.renderSprite(this.point)
+    this.map.addSpritesContainer(Sprite.spritesContainer)
+  }
 
-  set addTexture(path: string) {
-    this.sprite = new PIXI.Sprite(PIXI.Texture.from(path))
-    const coords: Point = getCoordinates({ cellX: this.x, cellY: this.y })
-    const { x, y } = getNormalizedCoordinates(coords, this.width, this.height)
-    this.sprite.x = x
-    this.sprite.y = y
+  private renderSprite(point: Point): void {
+    this.sprite = new PIXI.Sprite(PIXI.Texture.from(this.texturePath))
+    this.sprite.x = point.x
+    this.sprite.y = point.y
     this.sprite.width = this.width
     this.sprite.height = this.height
+    Sprite.spritesContainer.addChild(this.sprite)
+  }
+
+  private checkCollision(targetPosition: Point): boolean {
+    const targetBounds = new PIXI.Rectangle(
+      targetPosition.x,
+      targetPosition.y,
+      this.width,
+      this.height
+    )
+
+    for (const sprite of Sprite.spritesContainer.children) {
+      if (sprite !== this.sprite) {
+        const spriteBounds = sprite.getBounds()
+        if (targetBounds.intersects(spriteBounds)) {
+          return true
+        }
+      }
+    }
+
+    return false
+  }
+
+  private moveWithCollisionHandling(start: Point, end: Point, duration: number): void {
+    const tween = new TWEEN.Tween(start)
+      .to(end, duration)
+      .easing(TWEEN.Easing.Linear.None)
+      .onUpdate(({ x, y }) => {
+        const nextPoint = { x: Math.round(x), y: Math.round(y) }
+
+        if (!this.checkCollision(nextPoint)) {
+          this.sprite.alpha = 1
+          this.sprite.x = x
+          this.sprite.y = y
+          start.x = x
+          start.y = y
+        } else {
+          console.log('collision')
+          this.sprite.alpha = 0.5
+          // tween.stop()
+          this.sprite.x = x
+          this.sprite.y = y
+          start.x = x
+          start.y = y
+        }
+      })
+      // .onComplete(() => {
+      //   Sprite.spritesContainer.removeChild(this.sprite)
+      // })
+      .start()
   }
 
   move(point: Point): void {
-    const moveToCoords: Point = getCoordinates({ cellX: point.x, cellY: point.y })
+    const start = { x: this.point.x, y: this.point.y }
+    const end = { x: point.x, y: point.y }
 
-    // while(this.sprite.x < moveToCoords.x )
+    const duration = 4000 // milliseconds
 
-    // function update() {
-    //   square.position.x += 1
-
-    //   app.render(app.stage)
-
-    //   requestAnimationFrame(update)
-    // }
+    this.moveWithCollisionHandling(start, end, duration)
   }
 
-  getSprite(): PIXI.Sprite | undefined {
+  getSprite(): PIXI.Sprite {
     return this.sprite
   }
-}
 
-human.anchor.set(0.5)
-human.x = 20
-human.y = 20
-human.width = 40
-human.height = 40
-app.stage.addChild(human)
-
-export const moveHumanToGreenSquare = (app) => {
-  console.log('moveHumanToGreenSquare called!')
-  const greenSquareX = 10 // координата X зеленого квадрата
-  const greenSquareY = app.screen.height - 50 // координата Y зеленого квадрата
-
-  const startX = human.x // початкова позиція X людини
-  const startY = human.y // початкова позиція Y людини
-
-  const distanceX = greenSquareX - startX // відстань по X до зеленого квадрата
-  const distanceY = greenSquareY - startY // відстань по Y до зеленого квадрата
-
-  // Рухати людину до зеленого квадрата тільки якщо вона не на червоній лінії
-  if (!isOnRedLine(human.x, human.y)) {
-    // Якщо поточна позиція людини не збігається з позицією зеленого квадрата
-    if (distanceX !== 0 || distanceY !== 0) {
-      // Визначення кроків для переміщення
-      const stepX = distanceX > 0 ? 1 : -1 // напрямок руху по X
-      const stepY = distanceY > 0 ? 1 : -1 // напрямок руху по Y
-
-      // Переміщення людини в напрямку зеленого квадрата
-      human.x += stepX
-      human.y += stepY
-    }
+  getId(): number {
+    return this.id
   }
 }
