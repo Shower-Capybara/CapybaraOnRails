@@ -30,11 +30,6 @@ public abstract class PostgresRepository<T> implements IRepository<T> {
     }
 
     @Override
-    public List<T> getAll() {
-        return new LinkedList<>();
-    }
-
-    @Override
     public Set<T> getSeen() {
         return this.seen;
     }
