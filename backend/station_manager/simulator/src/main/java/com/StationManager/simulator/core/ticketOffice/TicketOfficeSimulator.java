@@ -15,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -36,6 +38,7 @@ public class TicketOfficeSimulator implements Runnable {
         this.id = id;
         this.redis = redis;
         this.eventHandlers.put(ClientBeingServedEvent.class, List.of(this::handleClientBeingServedEvent));
+        this.eventHandlers.put(ClientBeingServedEvent.class, List.of(this::handleClientBeingServedEvent));
         this.commandHandlers.put(CloseTicketOfficeCommand.class, this::handleCloseTicketOfficeCommand);
         this.commandHandlers.put(OpenTicketOfficeCommand.class, this::handleOpenTicketOfficeCommand);
     }
@@ -48,6 +51,7 @@ public class TicketOfficeSimulator implements Runnable {
         if(isSuspended){
             return;
         }
+        Timestamp clientServeStartTime = Timestamp.valueOf(LocalDateTime.now());
         var numTickets = 2; // add numTickets somewhere to the client
         for (int ticket = 1; ticket < numTickets + 1; ticket++) {
             try {
@@ -64,11 +68,15 @@ public class TicketOfficeSimulator implements Runnable {
                 logger.error(e.toString());
             }
         }
+        Timestamp clientServeEndTime = Timestamp.valueOf(LocalDateTime.now());
 
-        var newEvent = new ClientServedEvent(event.ticketOffice.getId(), event.client);
+        var newClientServedEvent = new ClientServedEvent(event.ticketOffice.getId(), event.client);
+        var newLogRecordEvent = new LogRecordEvent(event.client, clientServeStartTime, clientServeEndTime);
         try {
-            var channel = Settings.getEventChannel(newEvent.getClass().getSimpleName());
-            this.redis.publish(channel, this.objectMapper.writeValueAsString(newEvent));
+            var clientServedChannel = Settings.getEventChannel(newClientServedEvent.getClass().getSimpleName());
+            this.redis.publish(clientServedChannel, this.objectMapper.writeValueAsString(newClientServedEvent));
+            var logRecordChannel = Settings.getEventChannel(newLogRecordEvent.getClass().getSimpleName());
+            this.redis.publish(logRecordChannel, this.objectMapper.writeValueAsString(newLogRecordEvent));
         } catch (JsonProcessingException e) {
             logger.error(e.toString());
         }

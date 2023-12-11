@@ -2,7 +2,10 @@ package com.StationManager.app;
 
 import com.StationManager.app.services.MessageBus;
 import com.StationManager.app.services.command_listener.RedisPubSub;
-import com.StationManager.shared.domain.events.*;
+import com.StationManager.shared.domain.events.ClientServedEvent;
+import com.StationManager.shared.domain.events.LogRecordEvent;
+import com.StationManager.shared.domain.events.TicketOfficeClosedEvent;
+import com.StationManager.shared.domain.events.TicketOfficeOpenedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
@@ -23,7 +26,8 @@ public class MessageListener {
             String.format("%s:*", Settings.REDIS_COMMANDS_CHANNEL_PREFIX),
             Settings.getEventChannel(ClientServedEvent.class.getSimpleName()),
             Settings.getEventChannel(TicketOfficeOpenedEvent.class.getSimpleName()),
-            Settings.getEventChannel(TicketOfficeClosedEvent.class.getSimpleName())
+            Settings.getEventChannel(TicketOfficeClosedEvent.class.getSimpleName()),
+            Settings.getEventChannel(LogRecordEvent.class.getSimpleName())
         );
         redisListener.close();
         redisPublisher.close();
