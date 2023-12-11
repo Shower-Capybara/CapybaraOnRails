@@ -1,4 +1,4 @@
-import { CELL_SIZE } from './contants'
+import { CELL_SIZE } from './constants'
 import type { Point } from './types'
 
 export function getNormalizedCoordinates(point: Point, width: number, height: number): Point {

@@ -3,6 +3,14 @@ import AppButton from '@/components/atoms/AppButton.vue'
 import TextInput from '@/components/atoms/AppInput.vue'
 import { ref } from 'vue'
 
+const selected = ref('')
+
+const emit = defineEmits(['close'])
+
+const selectStrategy = (option: string) => {
+  selected.value = option
+}
+
 const closeSettings = () => {
   emit('close')
 }
