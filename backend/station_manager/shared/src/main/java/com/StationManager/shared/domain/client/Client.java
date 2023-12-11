@@ -13,10 +13,23 @@ public class Client {
     private String lastName;
     private Privilegy privilegy;
     private Point position;
-
     private static Integer IdSequence = 0;
 
     @JsonCreator
+    public Client() { }
+
+    public Client(
+            String firstName,
+            String lastName,
+            Privilegy privilegy,
+            Point position
+    ) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.privilegy = privilegy;
+        this.position = position;
+    }
+
     public Client(
         @JsonProperty("id") Integer id,
         @JsonProperty("firstName") String firstName,

@@ -1,7 +1,7 @@
 package com.StationManager.app.services.handlers.events;
 
 import com.StationManager.shared.domain.events.ClientMovedEvent;
-import com.StationManager.app.services.unitofwork.UnitOfWork;
+import com.StationManager.shared.services.unitofwork.UnitOfWork;
 
 public class ClientMovedEventHandler implements EventHandler<ClientMovedEvent> {
     @Override

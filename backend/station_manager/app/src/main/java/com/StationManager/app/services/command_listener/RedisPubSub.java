@@ -2,8 +2,8 @@ package com.StationManager.app.services.command_listener;
 
 import com.StationManager.app.Settings;
 import com.StationManager.app.services.MessageBus;
-import com.StationManager.app.services.unitofwork.InMemoryUnitOfWork;
-import com.StationManager.app.services.unitofwork.UnitOfWork;
+import com.StationManager.shared.services.unitofwork.InMemoryUnitOfWork;
+import com.StationManager.shared.services.unitofwork.UnitOfWork;
 import com.StationManager.shared.domain.Message;
 import com.StationManager.shared.domain.train_station.Direction;
 import com.StationManager.shared.domain.train_station.Hall;
