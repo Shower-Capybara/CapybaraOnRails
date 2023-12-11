@@ -18,11 +18,12 @@
     "src/**/*.{js,vue}": "npm run lint"
   },
   "dependencies": {
+    "@tweenjs/tween.js": "^18.6.4",
     "pinia": "^2.1.7",
     "pixi.js": "^7.3.2",
     "vue": "^3.3.4",
-    "vuetify": "^3.4.6",
     "vue-router": "^4.2.5",
+    "vue3-toastify": "^0.1.14",
     "vuetify": "^3.4.6",
     "ws": "^8.14.2"
   },

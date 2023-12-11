@@ -46,7 +46,3 @@ public class Api {
         redisListener.psubscribe(new ForwardPubSub(SocketController.wsSessions), Settings.getEventChannel("*"));
     }
 }
-
-
-
-

@@ -1,37 +1,44 @@
 import * as PIXI from 'pixi.js'
-import { CELL_SIZE, MAP_SIZE } from './contants'
 import type { Point } from './types'
 
 type Cell = PIXI.Graphics
-
-const cells: Cell[] = []
-
-export function generateMap(app: PIXI.Application<PIXI.ICanvas>) {
-  const gridContainer = new PIXI.Container()
-  app.stage.addChild(gridContainer)
-  createGrid(gridContainer)
-}
-
-export function getCoordinates({ cellX, cellY }: { cellX: number; cellY: number }): Point {
-  return {
-    x: cells[cellX * MAP_SIZE].x,
-    y: cells[cellX * MAP_SIZE + cellY].y
+export class Map {
+  private cells: Cell[] = []
+  constructor(
+    private size: number,
+    private cellSize: number,
+    private container: PIXI.Container<PIXI.DisplayObject>
+  ) {}
+  generate(): void {
+    const gridContainer = new PIXI.Container()
+    this.container.addChild(gridContainer)
+    this.createGrid(gridContainer)
   }
-}
 
-export function getCells(): Cell[] {
-  return [...cells]
-}
-
-function createGrid(gridContainer: PIXI.Container<PIXI.DisplayObject>) {
-  for (let i = 0; i < MAP_SIZE; i++) {
-    for (let j = 0; j < MAP_SIZE; j++) {
-      const cell = new PIXI.Graphics()
-      cell.lineStyle(1, 0x000000, 0.5)
-      cell.drawRect(0, 0, CELL_SIZE, CELL_SIZE)
-      cell.position.set(i * CELL_SIZE, j * CELL_SIZE)
-      gridContainer.addChild(cell)
-      cells.push(cell)
+  private createGrid(gridContainer: PIXI.Container<PIXI.DisplayObject>): void {
+    for (let i = 0; i < this.size; i++) {
+      for (let j = 0; j < this.size; j++) {
+        const cell = new PIXI.Graphics()
+        // cell.lineStyle(1, 0x000000, 0.5)
+        cell.drawRect(0, 0, this.cellSize, this.cellSize)
+        cell.position.set(i * this.cellSize, j * this.cellSize)
+        gridContainer.addChild(cell)
+        this.cells.push(cell)
+      }
     }
+  }
+
+  addSpritesContainer(spritesContainer: PIXI.Container<PIXI.DisplayObject>): void {
+    this.container.addChild(spritesContainer)
+  }
+
+  getCoordinates(point: Point): Point {
+    return {
+      x: this.cells[point.x * this.size].x,
+      y: this.cells[point.x * this.size + point.y].y
+    }
+  }
+  getCellSize(): number {
+    return this.cellSize
   }
 }
