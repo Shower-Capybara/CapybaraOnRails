@@ -91,6 +91,8 @@ public class MessageBus {
         eventHandlers.put(ClientMovedEvent.class, List.of(new ClientMovedEventHandler()));
         eventHandlers.put(TicketOfficeAddedEvent.class, List.of(new TicketOfficeAddedEventHandler()));
         eventHandlers.put(ClientServedEvent.class, List.of(new ClientServedEventHandler()));
+        eventHandlers.put(TicketOfficeOpenedEvent.class, List.of(new TicketOfficeOpenedEventHandler()));
+        eventHandlers.put(TicketOfficeClosedEvent.class, List.of(new TicketOfficeClosedEventHandler()));
 
         commandHandlers.put(AddClientCommand.class, new AddClientCommandHandler());
         commandHandlers.put(AddTicketOfficeCommand.class, new AddTicketOfficeCommandHandler());
