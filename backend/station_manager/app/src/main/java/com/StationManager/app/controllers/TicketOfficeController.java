@@ -23,14 +23,22 @@ public class TicketOfficeController {
     }
 
     public static void closeTicketOffice(Context ctx) throws JsonProcessingException {
-        CloseTicketOfficeCommand closeTicketOfficeCommand = new CloseTicketOfficeCommand(Integer.parseInt(ctx.body()));
-        redisPublisher.publish(Settings.getCommandChannel(CloseTicketOfficeCommand.class.getSimpleName()), objectMapper.writeValueAsString(closeTicketOfficeCommand));
+        var ticketOfficeId = Integer.parseInt(ctx.pathParam("t_id"));
+        var closeTicketOfficeCommand = new CloseTicketOfficeCommand(ticketOfficeId);
+        redisPublisher.publish(
+            Settings.getCommandChannel(CloseTicketOfficeCommand.class.getSimpleName()),
+            objectMapper.writeValueAsString(closeTicketOfficeCommand)
+        );
         ctx.status(201);
     }
 
     public static void openTicketOffice(Context ctx) throws JsonProcessingException {
-        OpenTicketOfficeCommand openTicketOfficeCommand = new OpenTicketOfficeCommand(Integer.parseInt(ctx.body()));
-        redisPublisher.publish(Settings.getCommandChannel(OpenTicketOfficeCommand.class.getSimpleName()), objectMapper.writeValueAsString(openTicketOfficeCommand));
+        var ticketOfficeId = Integer.parseInt(ctx.pathParam("t_id"));
+        var openTicketOfficeCommand = new OpenTicketOfficeCommand(ticketOfficeId);
+        redisPublisher.publish(
+            Settings.getCommandChannel(OpenTicketOfficeCommand.class.getSimpleName()),
+            objectMapper.writeValueAsString(openTicketOfficeCommand)
+        );
         ctx.status(201);
     }
 }
