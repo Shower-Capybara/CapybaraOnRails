@@ -62,6 +62,10 @@ const addCashier = () => {
       let coords2 = map.value?.getCellCoordinates(x2, y2)
 
       console.log('Coords:', coords1.x, coords1.y, coords2.x, coords2.y)
+      coords2.x = coords2.x + 1
+      coords2.y = coords2.y + 1
+      console.log('New:', coords1.x, coords1.y, coords2.x, coords2.y)
+
       const number = cashpoints.value.length + 1
       const newCashpoint = new Cashpoint(
         number,
@@ -73,6 +77,7 @@ const addCashier = () => {
         }
       )
       cashpoints.value.push(newCashpoint)
+      newCashpoint.mount(app.stage)
       console.log(cashpoints.value)
       map.value?.hideGrid()
       isCashierAdditionDone.value = true
