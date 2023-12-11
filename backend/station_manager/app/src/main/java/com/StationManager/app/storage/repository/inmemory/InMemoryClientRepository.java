@@ -13,6 +13,11 @@ public class InMemoryClientRepository extends InMemoryRepository<Client> impleme
     }
 
     @Override
+    public boolean removeById(int id) {
+        return false;
+    }
+
+    @Override
     public void updatePosition(Integer id, Point point) {
         var clientResult = this.getById(id);
         if (clientResult.isEmpty()) throw new IllegalStateException("No client match given Id");

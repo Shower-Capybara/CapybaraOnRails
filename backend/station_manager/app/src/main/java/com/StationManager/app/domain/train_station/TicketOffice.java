@@ -15,7 +15,6 @@ public class TicketOffice {
     private Integer id;
     private Segment segment;
     private final List<Client> queue;
-    public final List<ClientPositions> queuePositions = new ArrayList<>();
 
     private Integer timeToServeTicket;
     private Boolean isClosed;
@@ -43,15 +42,6 @@ public class TicketOffice {
         this.isReserved = false;
         this.direction = direction;
         this.transactions = new ArrayList<>();
-    }
-
-    public List<ClientPositions> getQueuePositions() {
-        return queuePositions;
-    }
-
-    public void setQueuePositions(List<ClientPositions> queuePositions) {
-        this.queuePositions.clear();
-        this.queuePositions.addAll(queuePositions);
     }
 
     public void removeClient() {

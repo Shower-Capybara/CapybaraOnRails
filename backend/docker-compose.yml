@@ -6,14 +6,3 @@ services:
     image: redis:7.2.3-alpine
     ports:
       - "63791:6379"
-  postgres:
-    container_name: "station-manager-postgres"
-    image: postgres:16.1-alpine
-    ports:
-      - "54321:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: station_manager
-    volumes:
-      - ./postgres-data:/var/lib/postgresql/data

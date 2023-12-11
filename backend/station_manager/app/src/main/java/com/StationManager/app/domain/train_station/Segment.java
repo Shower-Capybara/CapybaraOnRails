@@ -1,8 +1,6 @@
 package com.StationManager.app.domain.train_station;
 
-import com.StationManager.app.domain.MapManager;
-
-import java.awt.Point;
+import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,5 +31,13 @@ public class Segment {
         }
 
         return points;
+    }
+
+    @Override
+    public String toString() {
+        return "Segment{" +
+            "Start=" + Start +
+            ", End=" + End +
+            '}';
     }
 }

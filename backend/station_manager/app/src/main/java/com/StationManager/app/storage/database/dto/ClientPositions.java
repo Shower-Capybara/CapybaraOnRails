@@ -2,30 +2,40 @@ package com.StationManager.app.storage.database.dto;
 
 import com.StationManager.app.domain.client.Client;
 import com.StationManager.app.domain.train_station.TicketOffice;
+import jakarta.persistence.*;
 
+//@Entity
+//@Table(name = "client_positions")
 public class ClientPositions {
-        private Integer id;
-        private Client client;
-        private TicketOffice ticketOffice;
-        private Integer positionInQueue;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "id")
+    private Integer id;
+//    @ManyToOne
+//    @JoinColumn(name = "client_id")
+    private Client client;
+//    @ManyToOne
+//    @JoinColumn(name = "ticket_office_id")
+    private TicketOfficeDTO ticketOffice;
+//    @Column(name = "position_in_queue")
+    private Integer positionInQueue;
 
     public ClientPositions() {
         }
 
-        public ClientPositions(Integer id, Client client, TicketOffice ticketOffice, Integer positionInQueue) {
-            this.id = id;
+        public ClientPositions(Client client, TicketOfficeDTO ticketOffice, Integer positionInQueue) {
             this.client = client;
             this.ticketOffice = ticketOffice;
             this.positionInQueue = positionInQueue;
         }
 
-        public Integer getTicketOfficeId() {
-            return ticketOffice.getId();
-        }
-
-        public void setTicketOfficeId(Integer id) {
-            ticketOffice.setId(id);
-        }
+//        public Integer getTicketOfficeId() {
+//            return ticketOffice.getId();
+//        }
+//
+//        public void setTicketOfficeId(Integer id) {
+//            ticketOffice.setId(id);
+//        }
 
     public Integer getId() {
         return id;
@@ -43,11 +53,11 @@ public class ClientPositions {
         this.client = client;
     }
 
-    public TicketOffice getTicketOffice() {
+    public TicketOfficeDTO getTicketOffice() {
         return ticketOffice;
     }
 
-    public void setTicketOffice(TicketOffice ticketOffice) {
+    public void setTicketOffice(TicketOfficeDTO ticketOffice) {
         this.ticketOffice = ticketOffice;
     }
 

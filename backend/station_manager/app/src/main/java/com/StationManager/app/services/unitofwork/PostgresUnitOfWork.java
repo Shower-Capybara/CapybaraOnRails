@@ -1,37 +1,34 @@
 package com.StationManager.app.services.unitofwork;
 
-import com.StationManager.app.domain.events.Event;
 import com.StationManager.app.storage.database.utils.HibernateUtil;
-import com.StationManager.app.storage.repository.*;
-import com.StationManager.app.storage.repository.inmemory.*;
-import com.StationManager.app.storage.repository.postgres.PostgresClientRepository;
-import com.StationManager.app.storage.repository.postgres.PostgresPrivilegyRepository;
-import org.hibernate.Hibernate;
+import com.StationManager.app.storage.repository.postgres.*;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PostgresUnitOfWork extends UnitOfWork {
-    public Session session;
+    public final Session session;
 
     public PostgresUnitOfWork() {
         this.session = HibernateUtil.getSessionFactory().openSession();
-//
-//        this.clientRepository = new InMemoryClientRepository();
-//        this.hallRepository = new InMemoryHallRepository();
-//        this.privilegyRepository = new InMemoryPrivilegyRepository();
-//        this.ticketOfficeRepository = new InMemoryTicketOfficeRepository();
-//        this.trainStationRepository = new InMemoryTrainStationRepository();
+
         this.privilegyRepository = new PostgresPrivilegyRepository(session);
         this.clientRepository = new PostgresClientRepository(session);
+        this.ticketOfficeRepository = new PostgresTicketOfficeRepository(session);
+        this.hallRepository = new PostgresHallRepository(session);
+        this.trainStationRepository = new PostgresTrainStationRepository(session);
     }
 
     @Override
     public void commit() {
         this.session.getTransaction().commit();
+        this.session.clear();  // clear cache, so that we can get fresh data from database
+
+        // clearing seen sets
+        this.privilegyRepository.getSeen().clear();
+        this.clientRepository.getSeen().clear();
+        this.ticketOfficeRepository.getSeen().clear();
+        this.hallRepository.getSeen().clear();
+        this.trainStationRepository.getSeen().clear();
+
         logger.info("Changes committed.");
     }
 
@@ -45,6 +42,7 @@ public class PostgresUnitOfWork extends UnitOfWork {
     public void close() throws Exception {
         this.rollback();
         this.session.close();
+        HibernateUtil.getSessionFactory().close();
     }
 
     @Override
@@ -57,5 +55,23 @@ public class PostgresUnitOfWork extends UnitOfWork {
     public PostgresClientRepository getClientRepository() {
         if (!this.session.getTransaction().isActive()) this.session.beginTransaction();
         return (PostgresClientRepository) this.clientRepository;
+    }
+
+    @Override
+    public PostgresTicketOfficeRepository getTicketOfficeRepository() {
+        if (!this.session.getTransaction().isActive()) this.session.beginTransaction();
+        return (PostgresTicketOfficeRepository) this.ticketOfficeRepository;
+    }
+
+    @Override
+    public PostgresHallRepository getHallRepository() {
+        if (!this.session.getTransaction().isActive()) this.session.beginTransaction();
+        return (PostgresHallRepository) this.hallRepository;
+    }
+
+    @Override
+    public PostgresTrainStationRepository getTrainStationRepository() {
+        if (!this.session.getTransaction().isActive()) this.session.beginTransaction();
+        return (PostgresTrainStationRepository) this.trainStationRepository;
     }
 }

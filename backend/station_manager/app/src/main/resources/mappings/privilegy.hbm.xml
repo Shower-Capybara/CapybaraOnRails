@@ -5,12 +5,12 @@
     <class name="Privilegy" table="privilegies">
 
         <id name="type" type="string">
-            <column name="type" length="50" />
-            <generator class="assigned" />
+            <column name="type" length="50"/>
+            <generator class="assigned"/>
         </id>
 
         <property name="significance" type="integer">
-            <column name="significance" />
+            <column name="significance"/>
         </property>
 
     </class>

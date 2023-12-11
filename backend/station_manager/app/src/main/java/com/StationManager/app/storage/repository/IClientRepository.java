@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface IClientRepository extends IRepository<Client> {
     Optional<Client> getById(int id);
+    boolean removeById(int id);
     void updatePosition(Integer id, Point point);
 }

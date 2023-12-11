@@ -6,5 +6,5 @@ import java.util.Optional;
 
 
 public interface ITicketOfficeRepository extends IRepository<TicketOffice> {
-    Optional<TicketOffice> getById(int hallId);
+    Optional<TicketOffice> getById(int ticketOfficeId);
 }

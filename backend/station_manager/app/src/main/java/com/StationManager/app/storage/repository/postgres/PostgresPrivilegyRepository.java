@@ -13,16 +13,16 @@ public class PostgresPrivilegyRepository extends PostgresRepository<Privilegy> i
 
     @Override
     public Optional<Privilegy> getByType(String type) {
-        return this.session.createQuery("from Privilegy where type = :type", Privilegy.class)
+        var privilegy = this.session.createQuery("from Privilegy where type = :type", Privilegy.class)
                 .setParameter("type", type)
                 .getResultList()
                 .stream()
                 .findFirst();
-    }
-
-    @Override
-    public void add(Privilegy entity) {
-        this.session.persist(entity);
+        if (privilegy.isEmpty()) {
+            return Optional.empty();
+        }
+        this.seen.add(privilegy.get());
+        return privilegy;
     }
 
 //    @Override

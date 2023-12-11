@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-        "https://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        "https://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="com.StationManager.app.domain.client">
     <class name="Client" table="clients">
@@ -11,8 +11,9 @@
 
         <property name="firstName" column="first_name" type="string"/>
         <property name="lastName" column="last_name" type="string"/>
-        <property name="position" column="position" type="converted::com.StationManager.app.storage.database.converters.PointConverter" />
-        <many-to-one name="privilegy" class="Privilegy" column="privilegy" not-null="true"/>
+        <property name="position" column="position"
+                  type="converted::com.StationManager.app.storage.database.converters.PointConverter"/>
+        <many-to-one name="privilegy" class="Privilegy" column="privilegy" not-null="false"/>
 
     </class>
 </hibernate-mapping>
