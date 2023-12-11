@@ -10,6 +10,8 @@ import { CELL_SIZE, MAP_SIZE } from '@/game_engine/constants'
 import { Sprite } from '@/game_engine/sprite'
 
 const pixiCanvasContainer = ref<HTMLDivElement | null>(null)
+const map = ref<Map | null>(null)
+const isCashierAdditionDone = ref<boolean>(true)
 
 const connection: WebSocket = new WebSocket('wss://ws.bitmex.com/realtime') // replace with your WebSocket URL
 
@@ -29,28 +31,87 @@ connection.onmessage = (event: MessageEvent) => {
   console.log(event)
 }
 
+function getClickCanvasCoords(event) {
+  const { x, y } = event.data.global
+  return { x, y }
+}
+
+const addCashier = () => {
+  isCashierAdditionDone.value = false
+  map.value?.showGrid()
+  app.stage.interactive = true
+  let clicks = 0
+  let x1,
+    y1,
+    x2,
+    y2 = 0
+  app.stage.on('pointerdown', (event) => {
+    if (clicks >= 1) {
+      const { x, y } = getClickCanvasCoords(event)
+      x2 = x
+      y2 = y
+      app.stage.interactive = false
+      console.log('end')
+      console.log(map.value?.getCellCoordinates(x1, y1))
+      console.log(map.value?.getCellCoordinates(x2, y2))
+      isCashierAdditionDone.value = true
+      map.value?.hideGrid()
+
+      return
+    }
+    clicks = clicks + 1
+    const { x, y } = getClickCanvasCoords(event)
+    console.log(x, y)
+    x1 = x
+    y1 = y
+  })
+}
+// app.stage.interactive = false
+
+// map lightCell
+// send position of cells
+// get response (error/200)
+// if 200 display cashier
+// if error display error
+//isCashierAdditionDone.value = true
+
 onMounted(() => {
   const container = pixiCanvasContainer.value
 
   if (container) {
-    const map = new Map(MAP_SIZE, CELL_SIZE, app.stage)
-    map.generate()
-
-    const cashpoint1 = new Cashpoint(1, { x: 0, y: 3 }, { x: 1, y: 5 }, map, { status: 'working' })
-
-    const cashpoint2 = new Cashpoint(2, { x: 0, y: 7 }, { x: 1, y: 9 }, map, { status: 'working' })
-
-    const cashpoint3 = new Cashpoint(3, { x: 0, y: 11 }, { x: 1, y: 13 }, map, {
+    map.value = new Map(MAP_SIZE, CELL_SIZE, app.stage)
+    map.value.generate()
+    const cashpoint1 = new Cashpoint(1, { x: 0, y: 3 }, { x: 1, y: 5 }, map.value as Map, {
       status: 'working'
     })
 
-    const cashpoint4 = new Cashpoint(4, { x: 3, y: MAP_SIZE - 1 }, { x: 5, y: MAP_SIZE }, map, {
-      status: 'stopped'
+    const cashpoint2 = new Cashpoint(2, { x: 0, y: 7 }, { x: 1, y: 9 }, map.value as Map, {
+      status: 'working'
     })
 
-    const cashpoint5 = new Cashpoint(5, { x: 3, y: MAP_SIZE - 1 }, { x: 5, y: MAP_SIZE }, map, {
-      status: 'stopped'
+    const cashpoint3 = new Cashpoint(3, { x: 0, y: 11 }, { x: 1, y: 13 }, map.value as Map, {
+      status: 'working'
     })
+
+    const cashpoint4 = new Cashpoint(
+      4,
+      { x: 3, y: MAP_SIZE - 1 },
+      { x: 5, y: MAP_SIZE },
+      map.value as Map,
+      {
+        status: 'stopped'
+      }
+    )
+
+    const cashpoint5 = new Cashpoint(
+      5,
+      { x: 3, y: MAP_SIZE - 1 },
+      { x: 5, y: MAP_SIZE },
+      map.value as Map,
+      {
+        status: 'stopped'
+      }
+    )
 
     const cashpoints = [cashpoint1, cashpoint2, cashpoint3, cashpoint4, cashpoint5]
     for (let cashpoint of cashpoints) {
@@ -59,25 +120,27 @@ onMounted(() => {
 
     const sprite1 = new Sprite(
       1,
-      map.getCoordinates({ x: 4, y: 5 }),
+      map.value.getCoordinates({ x: 4, y: 5 }),
       CELL_SIZE,
       CELL_SIZE,
       '/images/man.svg',
-      map
+      map.value as Map
     )
 
     const sprite2 = new Sprite(
       1,
-      map.getCoordinates({ x: 10, y: 5 }),
+      map.value.getCoordinates({ x: 10, y: 5 }),
       CELL_SIZE,
       CELL_SIZE,
       '/images/man.svg',
-      map
+      map.value as Map
     )
 
     setTimeout(() => {
-      sprite1.move(map.getCoordinates({ x: 10, y: 10 }))
-      sprite2.move(map.getCoordinates({ x: 4, y: 10 }))
+      if (map.value) {
+        sprite1.move(map.value.getCoordinates({ x: 10, y: 10 }))
+        sprite2.move(map.value.getCoordinates({ x: 4, y: 10 }))
+      }
     }, 2000)
 
     const canvasElement = app.view as HTMLCanvasElement
@@ -95,7 +158,7 @@ onMounted(() => {
     <div
       class="w-4/12 h-screen border-4 border-l-yellow_design border-t-stroke_grey border-r-stroke_grey border-b-stroke_grey"
     >
-      <EventList />
+      <EventList @on-add-cashier="addCashier" :is-cashier-addition-done="isCashierAdditionDone" />
     </div>
   </main>
 </template>

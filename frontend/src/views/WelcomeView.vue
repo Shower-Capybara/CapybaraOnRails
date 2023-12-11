@@ -24,16 +24,18 @@ import SelectInput from '@/components/atoms/AppSelectInput.vue'
       />
     </div>
 
-    <div class="p-4 w-64 top-20 relative text-left inline-flex flex-col">
+    <div class="p-4 w-60 top-20 relative text-left inline-flex flex-col">
       <SelectInput
-        class="h-14"
+        class="h-10"
         :id="'1'"
         :value="'none'"
         :title="'Оберіть станцію'"
         :required="true"
         :options="['1', '2']"
       />
-      <AppButton class="mt-10 h-14" text="До праці" />
+      <router-link to="/home">
+        <AppButton class="mt-10 h-16" text="До праці" />
+      </router-link>
     </div>
   </div>
 </template>
