@@ -1,9 +1,6 @@
 package com.StationManager.simulator.core.ticketOffice;
 
 import com.StationManager.simulator.handlers.CommandHandlersMap;
-import com.StationManager.app.services.unitofwork.IUnitOfWork;
-import com.StationManager.app.services.unitofwork.PostgresUnitOfWork;
-import com.StationManager.app.services.unitofwork.UnitOfWork;
 import com.StationManager.shared.domain.Message;
 import com.StationManager.shared.domain.commands.CloseTicketOfficeCommand;
 import com.StationManager.shared.domain.commands.Command;
@@ -86,6 +83,8 @@ public class TicketOfficeSimulator implements Runnable {
             this.redis.publish(channel, this.objectMapper.writeValueAsString(newEvent));
         } catch (JsonProcessingException e) {
             logger.error(e.toString());
+        }catch (Exception ex){
+            logger.error("Event cant be sent!!!");
         }
     }
     private void handleOpenTicketOfficeCommand(OpenTicketOfficeCommand command) {
@@ -117,6 +116,9 @@ public class TicketOfficeSimulator implements Runnable {
             logger.info("No handler found for " + command.getClass().getSimpleName() + " command");
             return;
         }
+        else{
+            logger.info("Handler found " + command.getClass().getSimpleName() + " command!");
+        }
         handler.accept(command);
     }
 
@@ -126,8 +128,12 @@ public class TicketOfficeSimulator implements Runnable {
             try {
                 var data = this.messageQueue.take();
                 var message = objectMapper.readValue(data, Message.class);
-                if (message instanceof Event event) handleEvent(event);
-                else if (message instanceof Command command) handleCommand(command);
+                if (message instanceof Event event){
+                    handleEvent(event);
+                }
+                else if (message instanceof Command command){
+                    handleCommand(command);
+                }
             } catch (InterruptedException | JsonProcessingException e) {
                 break;
             }

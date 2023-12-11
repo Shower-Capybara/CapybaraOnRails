@@ -1,8 +1,6 @@
 package com.StationManager.simulator.handlers;
 
-import com.StationManager.app.services.handlers.commands.CommandHandler;
 import com.StationManager.shared.domain.commands.Command;
-import com.StationManager.shared.domain.events.Event;
 
 import java.util.HashMap;
 import java.util.List;

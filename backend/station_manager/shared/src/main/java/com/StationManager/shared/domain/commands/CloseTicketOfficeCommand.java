@@ -10,7 +10,7 @@ public class CloseTicketOfficeCommand extends Command {
 
     @JsonCreator
     public CloseTicketOfficeCommand(
-        @JsonProperty(value = "ticketOffice", required = true) Integer ticketOfficeId
+        @JsonProperty(value = "ticketOfficeId", required = true) Integer ticketOfficeId
     ) {
         this.ticketOfficeId = ticketOfficeId;
     }

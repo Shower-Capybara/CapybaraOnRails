@@ -11,7 +11,7 @@ public class OpenTicketOfficeCommand extends Command {
 
     @JsonCreator
     public OpenTicketOfficeCommand(
-        @JsonProperty(value = "ticketOffice", required = true) Integer ticketOfficeId
+        @JsonProperty(value = "ticketOfficeId", required = true) Integer ticketOfficeId
     ) {
         this.ticketOfficeId = ticketOfficeId;
     }
