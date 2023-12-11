@@ -116,9 +116,6 @@ public class TicketOfficeSimulator implements Runnable {
             logger.info("No handler found for " + command.getClass().getSimpleName() + " command");
             return;
         }
-        else{
-            logger.info("Handler found " + command.getClass().getSimpleName() + " command!");
-        }
         handler.accept(command);
     }
 
