@@ -8,10 +8,19 @@
             <generator class="identity"/>
         </id>
 
-        <many-to-one name="client" class="com.StationManager.shared.domain.client.Client" column="client_id"/>
+        <many-to-one
+            lazy="false"
+            name="client"
+            class="com.StationManager.shared.domain.client.Client"
+            column="client_id"
+        />
 
-        <many-to-one name="ticketOffice" class="com.StationManager.shared.storage.database.dto.TicketOfficeDTO"
-                     column="ticket_office_id"/>
+        <many-to-one
+            lazy="false"
+            name="ticketOffice"
+            class="com.StationManager.shared.storage.database.dto.TicketOfficeDTO"
+            column="ticket_office_id"
+        />
 
         <property name="positionInQueue" type="java.lang.Integer">
             <column name="position_in_queue"/>

@@ -6,8 +6,17 @@
             <column name="id"/>
             <generator class="increment"/>
         </id>
-        <many-to-one name="hall" class="com.StationManager.shared.storage.database.dto.HallDTO" column="hall_id"/>
-        <many-to-one name="ticketOffice" class="com.StationManager.shared.storage.database.dto.TicketOfficeDTO"
-                     column="ticket_office_id"/>
+        <many-to-one
+            lazy="false"
+            name="hall"
+            class="com.StationManager.shared.storage.database.dto.HallDTO"
+            column="hall_id"
+        />
+        <many-to-one
+            lazy="false"
+            name="ticketOffice"
+            class="com.StationManager.shared.storage.database.dto.TicketOfficeDTO"
+            column="ticket_office_id"
+        />
     </class>
 </hibernate-mapping>
