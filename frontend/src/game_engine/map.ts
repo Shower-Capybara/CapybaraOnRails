@@ -4,6 +4,7 @@ import type { Point } from './types'
 type Cell = PIXI.Graphics
 export class Map {
   private cells: Cell[] = []
+  public cashpointsContainer: PIXI.Container<PIXI.DisplayObject> | null = null
   constructor(
     private size: number,
     private cellSize: number,
@@ -13,6 +14,9 @@ export class Map {
     const gridContainer = new PIXI.Container()
     this.container.addChild(gridContainer)
     this.createGrid(gridContainer)
+
+    this.cashpointsContainer = new PIXI.Container() // створіть контейнер для кас
+    this.container.addChild(this.cashpointsContainer)
   }
 
   private createGrid(gridContainer: PIXI.Container<PIXI.DisplayObject>): void {
@@ -61,6 +65,10 @@ export class Map {
 
   getAllCells(): Cell[] {
     return this.cells
+  }
+
+  getAllCashpoints(): PIXI.Container<PIXI.DisplayObject> | null {
+    return this.cashpointsContainer
   }
 
   getAdjacentCells(currentCell: Point): Point[] {

@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import * as TWEEN from '@tweenjs/tween.js'
 import type { Point } from './types'
 import type { Map } from './map'
+import { Cashpoint } from './cashpoint'
 import { CELL_SIZE } from './constants'
 import { cs } from 'vuetify/locale'
 export class Sprite {
@@ -48,6 +49,26 @@ export class Sprite {
     return false
   }
 
+  private checkCollisionForCashpoints(targetPosition: Point): boolean {
+    const targetBounds = new PIXI.Rectangle(
+      targetPosition.x,
+      targetPosition.y,
+      this.width,
+      this.height
+    )
+
+    if (this.map.cashpointsContainer) {
+      for (const cashpoint of this.map.cashpointsContainer.children) {
+        const cashpointBounds = cashpoint.getBounds()
+        if (targetBounds.intersects(cashpointBounds)) {
+          return true
+        }
+      }
+    }
+
+    return false
+  }
+
   private moveWithCollisionHandling(start: Point, end: Point, duration: number): void {
     const tween = new TWEEN.Tween(start)
       .to(end, duration)
@@ -85,6 +106,7 @@ export class Sprite {
 
     const path: Point[] = this.findPathDijkstra(this.map.getCell(start), this.map.getCell(end))
 
+    console.log('collision', this.checkCollisionForCashpoints({ x: 0, y: 120 }))
     console.log('path', path)
 
     // Індекс, що вказує на поточну позицію у масиві маршруту
@@ -165,7 +187,8 @@ export class Sprite {
 
           if (
             distance < distances[`${neighbor.x},${neighbor.y}`] && // якщо відстань від сусідньої клітинки до стартової менша за відстань від сусідньої клітинки до стартової
-            !this.checkCollision(neighbor)
+            !this.checkCollision(this.map.getCoordinates(neighbor)) &&
+            !this.checkCollisionForCashpoints(this.map.getCoordinates(neighbor)) // якщо сусідня клітинка не зайнята
           ) {
             distances[`${neighbor.x},${neighbor.y}`] = distance // оновлюємо відстань
             previous[`${neighbor.x},${neighbor.y}`] = currentCell // оновлюємо попередню клітинку
@@ -176,15 +199,5 @@ export class Sprite {
     }
 
     return []
-  }
-
-  convertPathToCoordinates(path: Point[]): Point[] {
-    const coordinates: Point[] = []
-
-    for (const cell of path) {
-      coordinates.push(this.map.getCoordinates(cell))
-    }
-
-    return coordinates
   }
 }

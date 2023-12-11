@@ -59,7 +59,7 @@ onMounted(() => {
 
     const sprite1 = new Sprite(
       1,
-      map.getCoordinates({ x: 4, y: 5 }),
+      map.getCoordinates({ x: 0, y: 0 }),
       CELL_SIZE,
       CELL_SIZE,
       '/images/man.svg',
@@ -85,8 +85,11 @@ onMounted(() => {
     )
 
     setTimeout(() => {
-      sprite1.move(map.getCoordinates({ x: 10, y: 10 }))
-      sprite2.move(map.getCoordinates({ x: 4, y: 10 }))
+      sprite1.move(map.getCoordinates({ x: 1, y: 19 }))
+    }, 10)
+
+    setTimeout(() => {
+      sprite2.move(map.getCoordinates({ x: 0, y: 5 }))
     }, 2000)
 
     const canvasElement = app.view as HTMLCanvasElement
