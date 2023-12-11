@@ -34,9 +34,9 @@ public class Api {
                     path("/ticket_offices", ()->{
                         post(TicketOfficeController::createTicketOffice);
                         path("/{t_id}/open", () ->
-                            put(TicketOfficeController::openTicketOffice));
+                            post(TicketOfficeController::openTicketOffice));
                         path("/{t_id}/close", () ->
-                            put(TicketOfficeController::closeTicketOffice));
+                            post(TicketOfficeController::closeTicketOffice));
                     });
                 });
             });
