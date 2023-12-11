@@ -11,6 +11,8 @@ import { Sprite } from '@/game_engine/sprite'
 
 const pixiCanvasContainer = ref<HTMLDivElement | null>(null)
 const map = ref<Map | null>(null)
+const cashpoints = ref<Cashpoint[] | null>(null)
+
 const isCashierAdditionDone = ref<boolean>(true)
 
 const connection: WebSocket = new WebSocket('wss://ws.bitmex.com/realtime') // replace with your WebSocket URL
@@ -40,30 +42,42 @@ const addCashier = () => {
   isCashierAdditionDone.value = false
   map.value?.showGrid()
   app.stage.interactive = true
+
   let clicks = 0
-  let x1,
-    y1,
-    x2,
-    y2 = 0
+  let x1, y1, x2, y2
+
   app.stage.on('pointerdown', (event) => {
-    if (clicks >= 1) {
-      const { x, y } = getClickCanvasCoords(event)
+    const { x, y } = getClickCanvasCoords(event)
+    clicks++
+
+    if (clicks === 1) {
+      x1 = x
+      y1 = y
+    } else if (clicks === 2) {
       x2 = x
       y2 = y
       app.stage.interactive = false
-      console.log('end')
-      console.log(map.value?.getCellCoordinates(x1, y1))
-      console.log(map.value?.getCellCoordinates(x2, y2))
-      isCashierAdditionDone.value = true
-      map.value?.hideGrid()
+      console.log('End:', x1, y1, x2, y2)
+      let coords1 = map.value?.getCellCoordinates(x1, y1)
+      let coords2 = map.value?.getCellCoordinates(x2, y2)
 
+      console.log('Coords:', coords1.x, coords1.y, coords2.x, coords2.y)
+      const number = cashpoints.value.length + 1
+      const newCashpoint = new Cashpoint(
+        number,
+        { x: coords1.x, y: coords1.y },
+        { x: coords2.x, y: coords2.y },
+        map.value as Map,
+        {
+          status: 'working'
+        }
+      )
+      cashpoints.value.push(newCashpoint)
+      console.log(cashpoints.value)
+      map.value?.hideGrid()
+      isCashierAdditionDone.value = true
       return
     }
-    clicks = clicks + 1
-    const { x, y } = getClickCanvasCoords(event)
-    console.log(x, y)
-    x1 = x
-    y1 = y
   })
 }
 // app.stage.interactive = false
@@ -113,8 +127,8 @@ onMounted(() => {
       }
     )
 
-    const cashpoints = [cashpoint1, cashpoint2, cashpoint3, cashpoint4, cashpoint5]
-    for (let cashpoint of cashpoints) {
+    cashpoints.value = [cashpoint1, cashpoint2, cashpoint3, cashpoint4, cashpoint5]
+    for (let cashpoint of cashpoints.value) {
       cashpoint.mount(app.stage)
     }
 

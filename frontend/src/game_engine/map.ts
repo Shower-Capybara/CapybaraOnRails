@@ -72,8 +72,8 @@ export class Map {
     return this.cellSize
   }
   getCellCoordinates(x: number, y: number) {
-    const cellX = Math.round(x / this.cellSize)
-    const cellY = Math.round(y / this.cellSize)
+    const cellX: number = Math.floor(x / this.cellSize)
+    const cellY: number = Math.floor(y / this.cellSize)
 
     return { x: cellX, y: cellY }
   }
