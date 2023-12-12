@@ -9,6 +9,11 @@ on:
     branches:
       - main
 
+env:
+  PG_URL: ${{ secrets.PG_URL }}
+  PG_USER: ${{ secrets.PG_USER }}
+  PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+
 defaults:
   run:
     working-directory: ./backend

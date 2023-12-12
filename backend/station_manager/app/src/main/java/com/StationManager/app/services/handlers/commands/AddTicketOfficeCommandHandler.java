@@ -1,7 +1,7 @@
 package com.StationManager.app.services.handlers.commands;
 
 import com.StationManager.shared.domain.commands.AddTicketOfficeCommand;
-import com.StationManager.app.services.unitofwork.UnitOfWork;
+import com.StationManager.shared.services.unitofwork.UnitOfWork;
 
 public class AddTicketOfficeCommandHandler implements CommandHandler<AddTicketOfficeCommand> {
     @Override

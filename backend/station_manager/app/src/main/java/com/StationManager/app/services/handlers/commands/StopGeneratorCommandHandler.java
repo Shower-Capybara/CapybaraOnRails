@@ -1,7 +1,7 @@
 package com.StationManager.app.services.handlers.commands;
 
 import com.StationManager.shared.domain.commands.StopGeneratorCommand;
-import com.StationManager.app.services.unitofwork.UnitOfWork;
+import com.StationManager.shared.services.unitofwork.UnitOfWork;
 import kotlin.NotImplementedError;
 
 public class StopGeneratorCommandHandler implements CommandHandler<StopGeneratorCommand> {

@@ -20,13 +20,17 @@ public class Hall {
 
     public final transient Queue<Event> events = new LinkedList<>();
 
-    private Hall() {}  // required for Jackson
+//    private Hall() {}  // required for Jackson
+    public Hall() {
+        this.entrances = new ArrayList<>();
+        this.ticketOffices = new ArrayList<>();
+    }
 
     public Hall(
-        Integer id,
-        Segment segment,
-        List<Segment> entrances,
-        List<TicketOffice> ticketOffices
+            Integer id,
+            Segment segment,
+            List<Segment> entrances,
+            List<TicketOffice> ticketOffices
     ) {
         if (entrances.isEmpty()) {
             throw new IllegalArgumentException("Entrances list can not be empty");
@@ -36,6 +40,19 @@ public class Hall {
         this.segment = segment;
         this.ticketOffices = ticketOffices;
         this.entrances = entrances;
+    }
+
+    private static int getSizeOfShortestQueue(ArrayList<TicketOffice> ticketOffices) {
+        if (ticketOffices.isEmpty()) {
+            throw new IllegalStateException("No ticket offices available");
+        }
+
+        var ticketOfficeWithShortestQueue = ticketOffices
+                .stream()
+                .min(Comparator.comparingInt(ticketOffice -> ticketOffice.getQueue().size()))
+                .get();
+
+        return ticketOfficeWithShortestQueue.getQueue().size();
     }
 
     public void addTicketOffice(TicketOffice ticketOffice) {
@@ -51,10 +68,10 @@ public class Hall {
     public void addClient(Client client) {
         // split into adding to the hall and adding to the ticket office
         var entrancesPoints = this.entrances
-            .stream()
-            .map(Segment::getAllPoints)
-            .flatMap(Collection::stream)
-            .toList();
+                .stream()
+                .map(Segment::getAllPoints)
+                .flatMap(Collection::stream)
+                .toList();
 
         this.addClient(client, entrancesPoints.get(new Random().nextInt(entrancesPoints.size())));
     }
@@ -66,8 +83,8 @@ public class Hall {
 
     public void assignToTicketOffice(Client client) {
         var workingTicketOffices = ticketOffices.stream()
-            .filter(ticketOffice -> !ticketOffice.getClosed())
-            .collect(Collectors.toCollection(ArrayList::new));
+                .filter(ticketOffice -> !ticketOffice.getIsClosed())
+                .collect(Collectors.toCollection(ArrayList::new));
 
         var ticketOfficesWithFreePositionsInQueue = workingTicketOffices
             .stream()
@@ -96,36 +113,42 @@ public class Hall {
             .collect(Collectors.toCollection(ArrayList::new));
 
         var closestTicketOffice = MapManager.getClosestTicketOffice(
-            client,
-            shortestQueueTicketOffices
+                client,
+                shortestQueueTicketOffices
         );
         closestTicketOffice.addClient(client);
-    }
-
-    private static int getSizeOfShortestQueue(ArrayList<TicketOffice> ticketOffices) {
-        if (ticketOffices.isEmpty()) {
-            throw new IllegalStateException("No ticket offices available");
-        }
-
-        var ticketOfficeWithShortestQueue = ticketOffices
-            .stream()
-            .min(Comparator.comparingInt(ticketOffice -> ticketOffice.getQueue().size()))
-            .get();
-
-        return ticketOfficeWithShortestQueue.getQueue().size();
     }
 
     public Integer getId() {
         return this.id;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Segment getSegment() {
         return segment;
     }
+
+    public void setSegment(Segment segment) {
+        this.segment = segment;
+    }
+
     public List<Segment> getEntrances() {
         return entrances;
     }
+
+    public void setEntrances(List<Segment> entrances) {
+        this.entrances = entrances;
+    }
+
     public List<TicketOffice> getTicketOffices() {
         return ticketOffices;
+    }
+
+    public void setTicketOffices(List<TicketOffice> ticketOffices) {
+        this.ticketOffices = ticketOffices;
     }
 
     @Override
