@@ -2,14 +2,10 @@ package com.StationManager.app.controllers;
 
 import com.StationManager.app.Settings;
 import com.StationManager.app.services.command_listener.Json;
-import com.StationManager.app.services.command_listener.RedisPubSub;
 import com.StationManager.shared.domain.commands.AddEntranceCommand;
 import com.StationManager.shared.domain.commands.AddTicketOfficeCommand;
 import com.StationManager.shared.domain.train_station.Segment;
-import com.StationManager.shared.domain.train_station.TicketOffice;
-import com.StationManager.shared.domain.train_station.TrainStation;
 import com.StationManager.shared.services.unitofwork.PostgresUnitOfWork;
-import com.StationManager.shared.storage.database.dto.Entrance;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
@@ -19,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 
 public class HallController {
     public static ObjectMapper objectMapper = Json.getObjectMapper();
@@ -53,31 +48,14 @@ public class HallController {
 
     public static void getServiceHistory(Context ctx) {
         try {
-            String filePath = "/Users/erikhpetrushynets/Documents/CapybaraOnRails/backend/station_manager/app/log.txt";
+            String filePath = "log.txt";
             Path path = Paths.get(filePath);
             List<String> fileLines = Files.readAllLines(path);
             ctx.status(200).json(fileLines);
         } catch (Exception e) {
-            ctx.status(500).json("Error getting file, should bu fixed Path!");
+            ctx.status(500).json("Error getting file, path should bu fixed!");
         }
     }
-//    {
-//        "segment": {
-//        "start": {
-//            "x": 18.0,
-//                "y": 20.0
-//        },
-//        "end": {
-//            "x": 20.0,
-//                "y": 20.0
-//        }
-//    },
-//        "direction": "Down",
-//        "isReserved": false,
-//        "timeToServeTicket": 2,
-//        "isClosed": false
-//    }
-
 
     public static void createEntry(Context ctx) {
         // Implementation
