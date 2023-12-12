@@ -1,15 +1,18 @@
 package com.StationManager.app.services;
 
-import com.StationManager.app.services.handlers.events.*;
 import com.StationManager.app.services.handlers.commands.*;
-import com.StationManager.app.services.unitofwork.UnitOfWork;
+import com.StationManager.app.services.handlers.events.*;
+import com.StationManager.shared.services.unitofwork.UnitOfWork;
+
 import com.StationManager.shared.domain.Message;
-import com.StationManager.shared.domain.events.*;
 import com.StationManager.shared.domain.commands.*;
+import com.StationManager.shared.domain.events.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MessageBus {
     protected static final Logger logger = LoggerFactory.getLogger(MessageBus.class);
@@ -58,7 +61,7 @@ public class MessageBus {
             return;
         }
 
-        for (var handler: handlers) {
+        for (var handler : handlers) {
             try {
                 handler.handle(event, uow);
                 queue.addAll(uow.collectNewEvents());
@@ -91,6 +94,9 @@ public class MessageBus {
         eventHandlers.put(ClientMovedEvent.class, List.of(new ClientMovedEventHandler()));
         eventHandlers.put(TicketOfficeAddedEvent.class, List.of(new TicketOfficeAddedEventHandler()));
         eventHandlers.put(ClientServedEvent.class, List.of(new ClientServedEventHandler()));
+        eventHandlers.put(TicketOfficeOpenedEvent.class, List.of(new TicketOfficeOpenedEventHandler()));
+        eventHandlers.put(TicketOfficeClosedEvent.class, List.of(new TicketOfficeClosedEventHandler()));
+        eventHandlers.put(LogRecordEvent.class, List.of(new LogRecordEventHandler()));
 
         commandHandlers.put(AddClientCommand.class, new AddClientCommandHandler());
         commandHandlers.put(AddTicketOfficeCommand.class, new AddTicketOfficeCommandHandler());

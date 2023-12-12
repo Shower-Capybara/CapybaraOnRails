@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "https://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.StationManager.shared.domain.client">
+    <class name="Client" table="clients">
+
+        <id name="id" type="int" column="id">
+            <generator class="increment"/>
+        </id>
+
+        <property name="firstName" column="first_name" type="string"/>
+        <property name="lastName" column="last_name" type="string"/>
+        <property name="position" column="position"
+                  type="converted::com.StationManager.shared.storage.database.converters.PointConverter"/>
+        <many-to-one lazy="false" name="privilegy" class="Privilegy" column="privilegy" not-null="false"/>
+
+    </class>
+</hibernate-mapping>

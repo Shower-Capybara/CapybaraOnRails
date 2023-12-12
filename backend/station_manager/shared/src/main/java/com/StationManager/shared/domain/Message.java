@@ -14,10 +14,17 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = TicketOfficeAddedEvent.class, name = "TicketOfficeAddedEvent"),
     @JsonSubTypes.Type(value = ClientServedEvent.class, name = "ClientServedEvent"),
     @JsonSubTypes.Type(value = ClientBoughtTicketEvent.class, name = "ClientBoughtTicketEvent"),
+    @JsonSubTypes.Type(value = TicketOfficeClosedEvent.class, name = "TicketOfficeClosedEvent"),
+    @JsonSubTypes.Type(value = TicketOfficeOpenedEvent.class, name = "TicketOfficeOpenedEvent"),
+    @JsonSubTypes.Type(value = LogRecordEvent.class, name = "LogRecordEvent"),
+
 
     @JsonSubTypes.Type(value = AddClientCommand.class, name = "AddClientCommand"),
     @JsonSubTypes.Type(value = AddTicketOfficeCommand.class, name = "AddTicketOfficeCommand"),
     @JsonSubTypes.Type(value = ResumeGeneratorCommand.class, name = "ResumeGenerator"),
     @JsonSubTypes.Type(value = StopGeneratorCommand.class, name = "ClientMovedEvent"),
+    @JsonSubTypes.Type(value = CloseTicketOfficeCommand.class, name = "CloseTicketOfficeCommand"),
+    @JsonSubTypes.Type(value = OpenTicketOfficeCommand.class, name = "OpenTicketOfficeCommand"),
+
 })
 public interface Message { }

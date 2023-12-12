@@ -25,7 +25,9 @@ public class TicketOffice {
 
     public final transient Queue<Event> events = new LinkedList<>();
 
-    private TicketOffice() {} // require for jackson
+    public TicketOffice() {
+        this.queue = new LinkedList<>();
+    }
 
     public TicketOffice(
         Integer id,
@@ -109,18 +111,21 @@ public class TicketOffice {
     }
 
     public Integer getId() { return this.id;}
+    public void setId(Integer id) { this.id = id; }
     public List<Client> getQueue() { return this.queue; }
+    public void setQueue(List<Client> queue) { this.queue.clear(); this.queue.addAll(queue); }
     public Direction getDirection() { return this.direction; }
     public Segment getSegment() { return this.segment; }
-    public Boolean getClosed() { return this.isClosed; }
+    public void setIsClosed(Boolean isClosed) { this.isClosed = isClosed; }
+    public Boolean getIsClosed() { return this.isClosed; }
     public Boolean getReserved() { return isReserved; }
     public Integer getTimeToServeTicket() { return timeToServeTicket; }
     public Iterable<ServeRecord> getTransactions() { return transactions; }
 
     public void setDirection(Direction direction) { this.direction = direction; }
     public void setSegment(Segment segment) { this.segment = segment; }
-    public void setClosed(Boolean bool) { this.isClosed = bool; }
-    public void setReserved(Boolean reserved) { isReserved = reserved; }
+    public void setIsReserved(Boolean reserved) { isReserved = reserved; }
+    public boolean getIsReserved() { return isReserved; }
     public void setTimeToServeTicket(Integer timeToServeTicket) { this.timeToServeTicket = timeToServeTicket; }
     public void setTransactions(Iterable<ServeRecord> transactions) { this.transactions = transactions; }
 

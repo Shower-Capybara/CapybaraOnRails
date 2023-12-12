@@ -1,6 +1,6 @@
 package com.StationManager.app.services.handlers.events;
 
-import com.StationManager.app.services.unitofwork.UnitOfWork;
+import com.StationManager.shared.services.unitofwork.UnitOfWork;
 import com.StationManager.shared.domain.events.ClientServedEvent;
 
 public class ClientServedEventHandler implements EventHandler<ClientServedEvent> {

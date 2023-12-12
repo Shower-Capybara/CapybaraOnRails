@@ -1,0 +1,22 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.StationManager.shared.storage.database.dto.HallsTicketOffices" table="halls_ticket_offices">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="increment"/>
+        </id>
+        <many-to-one
+            lazy="false"
+            name="hall"
+            class="com.StationManager.shared.storage.database.dto.HallDTO"
+            column="hall_id"
+        />
+        <many-to-one
+            lazy="false"
+            name="ticketOffice"
+            class="com.StationManager.shared.storage.database.dto.TicketOfficeDTO"
+            column="ticket_office_id"
+        />
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.StationManager.shared.storage.database.dto">
+    <class name="com.StationManager.shared.storage.database.dto.ClientPositions" table="client_positions">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+
+        <many-to-one
+            lazy="false"
+            name="client"
+            class="com.StationManager.shared.domain.client.Client"
+            column="client_id"
+        />
+
+        <many-to-one
+            lazy="false"
+            name="ticketOffice"
+            class="com.StationManager.shared.storage.database.dto.TicketOfficeDTO"
+            column="ticket_office_id"
+        />
+
+        <property name="positionInQueue" type="java.lang.Integer">
+            <column name="position_in_queue"/>
+        </property>
+    </class>
+</hibernate-mapping>

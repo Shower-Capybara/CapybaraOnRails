@@ -8,6 +8,7 @@ import { Cashpoint } from '@/game_engine/cashpoint'
 import { Map } from '@/game_engine/map'
 import { CELL_SIZE, MAP_SIZE } from '@/game_engine/constants'
 import { Sprite } from '@/game_engine/sprite'
+import { Entrance } from '@/game_engine/entrance'
 
 const pixiCanvasContainer = ref<HTMLDivElement | null>(null)
 const map = ref<Map | null>(null)
@@ -155,12 +156,24 @@ onMounted(() => {
       map.value as Map
     )
 
+    const sprite3 = new Sprite(
+      1,
+      map.getCoordinates({ x: 10, y: 10 }),
+      CELL_SIZE,
+      CELL_SIZE,
+      '/images/man.svg',
+      map
+    )
+
+    setTimeout(() => {
+      sprite1.move(map.getCoordinates({ x: 1, y: 19 }))
+    }, 10)
+
     setTimeout(() => {
       if (map.value) {
         sprite1.move(map.value.getCoordinates({ x: 10, y: 10 }))
         sprite2.move(map.value.getCoordinates({ x: 4, y: 10 }))
       }
-    }, 2000)
 
     const canvasElement = app.view as HTMLCanvasElement
     container.appendChild(canvasElement)
