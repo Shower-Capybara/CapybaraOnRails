@@ -1,4 +1,5 @@
 import type { Privilegy } from '@/game_engine/types'
+import type { Point } from '@/game_engine/types'
 
 export interface ClientServedEvent {
   type: string
@@ -8,7 +9,7 @@ export interface ClientServedEvent {
     firstName: string
     lastName: string
     privilegy: Privilegy
-    position: { x: number; y: number }
+    position: Point
   }
   timestamp: [number, number, number, number, number, number, number]
 }

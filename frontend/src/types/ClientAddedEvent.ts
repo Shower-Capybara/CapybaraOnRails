@@ -1,22 +1,23 @@
 import type { Privilegy } from '@/game_engine/types'
+import type { Point } from '@/game_engine/types'
 
 export interface ClientAddedEvent {
   type: string
   hall: {
     id: number
-    entrances: { start: { x: number; y: number }; end: { x: number; y: number } }[]
+    entrances: { start: Point; end: Point }[]
     ticketOffices: {
       id: number
       segment: {
-        start: { x: number; y: number }
-        end: { x: number; y: number }
+        start: Point
+        end: Point
       }
       queue: {
         id: number
         firstName: string
         lastName: string
         privilegy: Privilegy
-        position: { x: number; y: number }
+        position: Point
       }[]
       timeToServeTicket: number
       isClosed: boolean
@@ -26,8 +27,8 @@ export interface ClientAddedEvent {
       reserved: boolean
     }[]
     segment: {
-      start: { x: number; y: number }
-      end: { x: number; y: number }
+      start: Point
+      end: Point
     }
   }
   client: {
@@ -35,7 +36,7 @@ export interface ClientAddedEvent {
     firstName: string
     lastName: string
     privilegy: Privilegy
-    position: { x: number; y: number }
+    position: Point
   }
   timestamp: [number, number, number, number, number, number, number]
 }

@@ -1,19 +1,20 @@
 import type { Privilegy } from '@/game_engine/types'
+import type { Point } from '@/game_engine/types'
 
 export interface ClientBeingServedEvent {
   type: string
   ticketOffice: {
     id: number
     segment: {
-      start: { x: number; y: number }
-      end: { x: number; y: number }
+      start: Point
+      end: Point
     }
     queue: {
       id: number
       firstName: string
       lastName: string
       privilegy: Privilegy
-      position: { x: number; y: number }
+      position: Point
     }[]
     timeToServeTicket: number
     direction: string
@@ -26,7 +27,7 @@ export interface ClientBeingServedEvent {
     firstName: string
     lastName: string
     privilegy: Privilegy
-    position: { x: number; y: number }
+    position: Point
   }
   timestamp: [number, number, number, number, number, number, number]
 }

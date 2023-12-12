@@ -1,4 +1,5 @@
 import type { Privilegy } from '@/game_engine/types'
+import type { Point } from '@/game_engine/types'
 
 export interface ClientMovedEvent {
   type: string
@@ -7,9 +8,9 @@ export interface ClientMovedEvent {
     firstName: string
     lastName: string
     privilegy: Privilegy
-    position: { x: number; y: number }
+    position: Point
   }
-  previousPoint: { x: number; y: number }
+  previousPoint: Point
   timestamp: [number, number, number, number, number, number, number]
-  newPoint: { x: number; y: number }
+  newPoint: Point
 }

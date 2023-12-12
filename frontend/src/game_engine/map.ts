@@ -38,7 +38,7 @@ export class Map {
         if ((j === 0 || j === this.size - 1 || i === 0 || i === this.size - 1) && isFilled) {
           cell.beginFill(0x00ff00, 0.2)
         }
-        cell.lineStyle(1, 0x000000, 0.5)
+        //cell.lineStyle(1, 0x000000, 0.5)
         cell.drawRect(0, 0, this.cellSize, this.cellSize)
         cell.position.set(i * this.cellSize, j * this.cellSize)
         this.gridContainer.addChild(cell)

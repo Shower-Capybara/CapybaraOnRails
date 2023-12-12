@@ -1,19 +1,20 @@
 import type { Privilegy } from '@/game_engine/types'
+import type { Point } from '@/game_engine/types'
 
 export interface TicketOfficeAddedEvent {
   type: string
   ticketOffice: {
     id: number
     segment: {
-      start: { x: number; y: number }
-      end: { x: number; y: number }
+      start: Point
+      end: Point
     }
     queue: {
       id: number
       firstName: string
       lastName: string
       privilegy: Privilegy
-      position: { x: number; y: number }
+      position: Point
     }[]
     timeToServeTicket: number
     isClosed: boolean

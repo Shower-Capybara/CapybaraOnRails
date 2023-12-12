@@ -9,6 +9,8 @@ import { Map } from '@/game_engine/map'
 import { CELL_SIZE, MAP_SIZE } from '@/game_engine/constants'
 import { Sprite } from '@/game_engine/sprite'
 import { Entrance } from '@/game_engine/entrance'
+import useCashpointStore from '@/stores/cashpoint'
+import type { Point } from '@/game_engine/types'
 import type {
   ClientAddedEvent,
   ClientBeingServedEvent,
@@ -22,6 +24,11 @@ import type {
 const pixiCanvasContainer = ref<HTMLDivElement | null>(null)
 const map = ref<Map | null>(null)
 const cashpoints = ref<Cashpoint[] | null>(null)
+const sprites = ref<Sprite[] | null>(null)
+const cashpointStore = useCashpointStore()
+// cashpointStore.createCashpoint() - action call example
+// cashpointStore.cashpointError - get state exmaple
+// watch()) => cashpointStore.cashpointError,
 // #TODO: const events = ref<type[]>([])
 
 const isCashierAdditionDone = ref<boolean>(true)
@@ -39,11 +46,90 @@ connection.onopen = (event: Event) => {
   console.log('Successfully connected')
 }
 
-const handleClientBoughtTicketEvent = (message: string) => {}
-
 const handleClientAddedEvent = (message: string) => {
   try {
     const parsedMessage = JSON.parse(message) as ClientAddedEvent
+    const { id, firstName, lastName, privilegy, position } = parsedMessage.client
+
+    const sprite = new Sprite(
+      id,
+      firstName,
+      lastName,
+      privilegy,
+      { x: position.x, y: position.y },
+      CELL_SIZE,
+      CELL_SIZE,
+      '/images/man.svg',
+      map.value as Map
+    )
+    sprites.value?.push(sprite)
+  } catch (error) {
+    console.error('Error parsing JSON:', error)
+  }
+}
+
+const handleClientBeingServedEvent = (message: string) => {
+  try {
+    const parsedMessage = JSON.parse(message) as ClientBeingServedEvent
+    // ??????
+  } catch (error) {
+    console.error('Error parsing JSON:', error)
+  }
+}
+
+const handleClientBoughtTicketEvent = (message: string) => {
+  try {
+    const parsedMessage = JSON.parse(message) as ClientBoughtTicketEvent
+    // ???????
+  } catch (error) {
+    console.error('Error parsing JSON:', error)
+  }
+}
+
+const handleClientLeftEvent = (message: string) => {
+  try {
+    const parsedMessage = JSON.parse(message) as ClientLeftEvent
+    // видалити клієнта
+  } catch (error) {
+    console.error('Error parsing JSON:', error)
+  }
+}
+
+const handleClientMovedEvent = (message: string) => {
+  try {
+    const parsedMessage = JSON.parse(message) as ClientMovedEvent
+    const { position, id } = parsedMessage.client
+
+    const foundSprite = sprites.value?.find((sprite) => sprite.getId() === id)
+    if (foundSprite) {
+      foundSprite.move(map.value?.getCell(position)) //воно працює, тут все окей
+    } else {
+      console.error('Sprite with the given ID was not found')
+    }
+  } catch (error) {
+    console.error('Error parsing JSON:', error)
+  }
+}
+
+const handleClientServedEvent = (message: string) => {
+  try {
+    const parsedMessage = JSON.parse(message) as ClientServedEvent
+    // вивести інфу в сайдбар
+  } catch (error) {
+    console.error('Error parsing JSON:', error)
+  }
+}
+
+const handleTicketOfficeAddedEvent = (message: string) => {
+  try {
+    const parsedMessage = JSON.parse(message) as TicketOfficeAddedEvent
+
+    const { id, segment, direction, isClosed, isReserved } = parsedMessage.ticketOffice
+    const cashpoint = new Cashpoint(id, segment.start, segment.end, map.value as Map, {
+      status: 'working'
+    })
+
+    cashpoints.value?.push(cashpoint)
   } catch (error) {
     console.error('Error parsing JSON:', error)
   }
@@ -91,10 +177,22 @@ const addCashier = () => {
       let coords2 = map.value?.getCellCoordinates(x2, y2)
 
       console.log('Coords:', coords1.x, coords1.y, coords2.x, coords2.y)
+
+      if (coords1.y > coords2.y) {
+        let coords3Y = coords1.y
+        coords1.y = coords2?.y
+        coords2.y = coords3Y
+      }
+
+      if (coords1.x > coords2.x) {
+        let coords3X = coords1.x
+        coords1.x = coords2?.x
+        coords2.x = coords3X
+      }
       coords2.x = coords2.x + 1
       coords2.y = coords2.y + 1
-      console.log('New:', coords1.x, coords1.y, coords2.x, coords2.y)
 
+      console.log('New:', coords1.x, coords1.y, coords2.x, coords2.y)
       const number = cashpoints.value.length + 1
       const newCashpoint = new Cashpoint(
         number,

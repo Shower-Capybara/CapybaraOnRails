@@ -1,18 +1,14 @@
 import axios, { AxiosError } from 'axios'
 import { defineStore } from 'pinia'
-
 type Status = 'working' | 'stopped' | 'reserved'
-
 interface Point {
   x: number
   y: number
 }
-
 interface Segment {
   start: Point
   end: Point
 }
-
 interface CreateCashpointPayload {
   segment: Segment
   direction: string
@@ -20,20 +16,17 @@ interface CreateCashpointPayload {
   timeToServeTicket: number
   isClosed: boolean
 }
-
 interface CreateCashpointInput {
   start: Point
   end: Point
   status: Status
   timeToServeTicket: number
 }
-
 const BASE_API = 'http://localhost:8000/'
-
 export default defineStore('cashpoint', {
   state: () => ({
-    isError: false,
-    error: ''
+    isCashpointError: false,
+    cashpointError: ''
   }),
   actions: {
     async createCashpoint(data: CreateCashpointInput) {
@@ -57,16 +50,14 @@ export default defineStore('cashpoint', {
         isClosed: data.status === 'stopped',
         direction
       }
-
       try {
         await axios.post(`${BASE_API}train_station/halls/1/ticket_offices`, payload)
       } catch (e) {
         const err = e as AxiosError
-        this.isError = true
-        this.error = err.message
+        this.isCashpointError = true
+        this.cashpointError = err.message
       }
     },
-
     async toggleCashpointStatus({
       id,
       status
@@ -82,8 +73,8 @@ export default defineStore('cashpoint', {
         }
       } catch (e) {
         const err = e as AxiosError
-        this.isError = true
-        this.error = err.message
+        this.isCashpointError = true
+        this.cashpointError = err.message
       }
     }
   }
