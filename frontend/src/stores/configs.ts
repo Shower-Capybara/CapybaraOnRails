@@ -1,6 +1,6 @@
-import type { AxiosError } from ‘axios’
-import axios from ‘axios’
-import { defineStore } from ‘pinia’
+import type { AxiosError } from 'axios'
+import axios from 'axios'
+import { defineStore } from 'pinia'
 interface Position {
   x: number
   y: number
@@ -40,16 +40,16 @@ export interface InitialStateData {
   id: number
   hall: Hall
 }
-const BASE_API = ‘http://localhost:8000/’
-export default defineStore(‘configs’, {
+const BASE_API = 'http://localhost:8000/'
+export default defineStore('configs', {
   state: () => ({
     isConfigError: false,
-    configError: ‘’
+    configError: ''
   }),
   actions: {
     async getInitialConfig(): Promise<InitialStateData | undefined> {
       try {
-        const response = await axios.get<InitialStateData>(`${BASE_API}/train_station/1`)
+        const response = await axios.get<InitialStateData>(`${BASE_API}train_station/1`)
         return response.data
       } catch (e) {
         const err = e as AxiosError
