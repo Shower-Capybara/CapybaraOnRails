@@ -14,13 +14,10 @@ export class Map {
     this.gridContainer = new PIXI.Container()
   }
   generate(): void {
-    
     this.container.addChild(this.gridContainer)
     this.createGrid({ isLinesShown: false, isFilled: false })
     const gridContainer = new PIXI.Container()
     this.container.addChild(gridContainer)
-    this.createGrid(gridContainer)
-
     this.cashpointsContainer = new PIXI.Container() // створіть контейнер для кас
     this.container.addChild(this.cashpointsContainer)
   }
@@ -41,7 +38,7 @@ export class Map {
         if ((j === 0 || j === this.size - 1 || i === 0 || i === this.size - 1) && isFilled) {
           cell.beginFill(0x00ff00, 0.2)
         }
-        cell.lineStyle(1, 0x000000, 0.5)
+        //cell.lineStyle(1, 0x000000, 0.5)
         cell.drawRect(0, 0, this.cellSize, this.cellSize)
         cell.position.set(i * this.cellSize, j * this.cellSize)
         this.gridContainer.addChild(cell)
@@ -85,6 +82,7 @@ export class Map {
     const cellY: number = Math.floor(y / this.cellSize)
 
     return { x: cellX, y: cellY }
+  }
 
   getSize(): number {
     return this.size

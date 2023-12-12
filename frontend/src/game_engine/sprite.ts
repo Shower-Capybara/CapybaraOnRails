@@ -5,18 +5,24 @@ import type { Map } from './map'
 import { Cashpoint } from './cashpoint'
 import { CELL_SIZE } from './constants'
 import { cs } from 'vuetify/locale'
+
+import type { Privilegy } from './types'
+
 export class Sprite {
   private sprite!: PIXI.Sprite
   private static spritesContainer: PIXI.Container<PIXI.DisplayObject> = new PIXI.Container()
   constructor(
     private id: number,
-    private point: Point,
+    private firstName: string,
+    private lastName: string,
+    private privilegy: Privilegy,
+    private position: Point,
     private width: number,
     private height: number,
     private texturePath: string,
     private map: Map
   ) {
-    this.renderSprite(this.point)
+    this.renderSprite(this.position)
     this.map.addSpritesContainer(Sprite.spritesContainer)
   }
 
@@ -99,12 +105,15 @@ export class Sprite {
   }
 
   move(point: Point): void {
-    const start = { x: this.point.x, y: this.point.y }
+    const start = { x: this.position.x, y: this.position.y }
     const end = { x: point.x, y: point.y }
 
     const duration = 500 // milliseconds
 
-    const path: Point[] = this.findPathDijkstra(this.map.getCell(start), this.map.getCell(end))
+    const path: Point[] = this.findPathDijkstra(
+      this.map.getCell(start) as Point,
+      this.map.getCell(end) as Point
+    )
 
     console.log('collision', this.checkCollisionForCashpoints({ x: 0, y: 120 }))
     console.log('path', path)

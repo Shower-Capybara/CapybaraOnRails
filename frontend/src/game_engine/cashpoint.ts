@@ -29,16 +29,6 @@ export class Cashpoint {
       fontSize: 12,
       fill: 0x000000
     })
-    this.graphics.interactive = true
-    this.graphics.on('dblclick', this.handleDoubleClick.bind(this))
-  }
-
-  private handleDoubleClick(): void {
-    // Change status to 'closed' on double-click
-    if (this.options.status != 'stopped') {
-      this.options.status = 'stopped'
-      this.render()
-    }
   }
 
   mount(container: PIXI.Container<PIXI.DisplayObject>): void {
