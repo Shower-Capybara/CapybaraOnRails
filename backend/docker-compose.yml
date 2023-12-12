@@ -6,3 +6,13 @@ services:
     image: redis:7.2.3-alpine
     ports:
       - "6379:6379"
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    ports:
+      - "5533:5432"
+    environment:
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=user
+      - POSTGRES_DB=db
