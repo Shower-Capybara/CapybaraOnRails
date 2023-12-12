@@ -7,5 +7,7 @@ export default defineStore('configs', {
     isError: false,
     error: ''
   }),
-  actions: {}
+  actions: {
+    async
+  }
 })

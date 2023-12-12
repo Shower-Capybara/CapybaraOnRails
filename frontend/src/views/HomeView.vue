@@ -43,9 +43,7 @@ const handleClientBoughtTicketEvent = (message: string) => {}
 
 const handleClientAddedEvent = (message: string) => {
   try {
-    //const parsedMessage = JSON.parse(message) as ClientAddedEvent;
-    //
-    //
+    const parsedMessage = JSON.parse(message) as ClientAddedEvent
   } catch (error) {
     console.error('Error parsing JSON:', error)
   }
