@@ -37,8 +37,16 @@ export default defineStore('cashpoint', {
   }),
   actions: {
     async createCashpoint(data: CreateCashpointInput) {
-      let direction
-
+      let direction: string
+      if (data.start.x - data.end.x === 2 && data.start.y < data.end.y) {
+        direction = 'Down'
+      } else if (data.start.x - data.end.x === 2 && data.start.y > data.end.y) {
+        direction = 'Up'
+      } else if (data.start.y - data.end.y === 2 && data.start.x > data.end.x) {
+        direction = 'Right'
+      } else {
+        direction = 'Left'
+      }
       const payload: CreateCashpointPayload = {
         segment: {
           start: data.start,
@@ -46,7 +54,8 @@ export default defineStore('cashpoint', {
         },
         isReserved: data.status === 'reserved',
         timeToServeTicket: data.timeToServeTicket,
-        isClosed: data.status === 'stopped'
+        isClosed: data.status === 'stopped',
+        direction
       }
 
       try {
@@ -56,9 +65,26 @@ export default defineStore('cashpoint', {
         this.isError = true
         this.error = err.message
       }
+    },
+
+    async toggleCashpointStatus({
+      id,
+      status
+    }: {
+      id: number
+      status: Exclude<Status, 'reserved'>
+    }) {
+      try {
+        if (status === 'stopped') {
+          await axios.post(`${BASE_API}train_station/halls/${id}/ticket_offices/close`)
+        } else {
+          await axios.post(`${BASE_API}train_station/halls/${id}/ticket_offices/open`)
+        }
+      } catch (e) {
+        const err = e as AxiosError
+        this.isError = true
+        this.error = err.message
+      }
     }
   }
 })
-
-// path("/train_station", () -> {
-//     path("/halls/{h_id}", () ->

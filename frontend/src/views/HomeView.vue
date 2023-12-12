@@ -9,10 +9,20 @@ import { Map } from '@/game_engine/map'
 import { CELL_SIZE, MAP_SIZE } from '@/game_engine/constants'
 import { Sprite } from '@/game_engine/sprite'
 import { Entrance } from '@/game_engine/entrance'
+import type {
+  ClientAddedEvent,
+  ClientBeingServedEvent,
+  ClientBoughtTicketEvent,
+  ClientLeftEvent,
+  ClientMovedEvent,
+  ClientServedEvent,
+  TicketOfficeAddedEvent
+} from '@/types/index'
 
 const pixiCanvasContainer = ref<HTMLDivElement | null>(null)
 const map = ref<Map | null>(null)
 const cashpoints = ref<Cashpoint[] | null>(null)
+// #TODO: const events = ref<type[]>([])
 
 const isCashierAdditionDone = ref<boolean>(true)
 
@@ -22,7 +32,6 @@ const sendMessage = (message: string) => {
   console.log(connection)
   connection.send(message)
 }
-
 console.log('Starting connection to websocket server')
 
 connection.onopen = (event: Event) => {
@@ -32,16 +41,24 @@ connection.onopen = (event: Event) => {
 
 const handleClientBoughtTicketEvent = (message: string) => {}
 
+const handleClientAddedEvent = (message: string) => {
+  try {
+    //const parsedMessage = JSON.parse(message) as ClientAddedEvent;
+    //
+    //
+  } catch (error) {
+    console.error('Error parsing JSON:', error)
+  }
+}
+
 connection.onmessage = (event: MessageEvent) => {
   try {
     const message = JSON.parse(event.data)
-    switch (message.type) {
-      case 'ClientBoughtTicketEvent':
-        handleClientBoughtTicketEvent(message)
-        break
-      default:
-        console.warn('Unknown message type:', message.type)
-    }
+    console.log(message)
+    // switch (message.type) {
+    //   default:
+    //     console.warn('Unknown message type:', message.type)
+    // }
   } catch (error) {
     console.error('Error parsing JSON:', error)
   }
@@ -142,43 +159,6 @@ onMounted(() => {
     for (let cashpoint of cashpoints.value) {
       cashpoint.mount(app.stage)
     }
-
-    const sprite1 = new Sprite(
-      1,
-      map.value.getCoordinates({ x: 4, y: 5 }),
-      CELL_SIZE,
-      CELL_SIZE,
-      '/images/man.svg',
-      map.value as Map
-    )
-
-    const sprite2 = new Sprite(
-      1,
-      map.value.getCoordinates({ x: 10, y: 5 }),
-      CELL_SIZE,
-      CELL_SIZE,
-      '/images/man.svg',
-      map.value as Map
-    )
-
-    const sprite3 = new Sprite(
-      1,
-      map.getCoordinates({ x: 10, y: 10 }),
-      CELL_SIZE,
-      CELL_SIZE,
-      '/images/man.svg',
-      map
-    )
-
-    setTimeout(() => {
-      sprite1.move(map.getCoordinates({ x: 1, y: 19 }))
-    }, 10)
-
-    setTimeout(() => {
-      if (map.value) {
-        sprite1.move(map.value.getCoordinates({ x: 10, y: 10 }))
-        sprite2.move(map.value.getCoordinates({ x: 4, y: 10 }))
-      }
 
     const canvasElement = app.view as HTMLCanvasElement
     container.appendChild(canvasElement)
