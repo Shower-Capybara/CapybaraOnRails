@@ -15,7 +15,7 @@ const cashpoints = ref<Cashpoint[] | null>(null)
 
 const isCashierAdditionDone = ref<boolean>(true)
 
-const connection: WebSocket = new WebSocket('wss://ws.bitmex.com/realtime') // replace with your WebSocket URL
+const connection: WebSocket = new WebSocket('ws://localhost:8000/events') // replace with your WebSocket URL
 
 const sendMessage = (message: string) => {
   console.log(connection)
@@ -29,8 +29,21 @@ connection.onopen = (event: Event) => {
   console.log('Successfully connected')
 }
 
+const handleClientBoughtTicketEvent = (message: string) => {}
+
 connection.onmessage = (event: MessageEvent) => {
-  console.log(event)
+  try {
+    const message = JSON.parse(event.data)
+    switch (message.type) {
+      case 'ClientBoughtTicketEvent':
+        handleClientBoughtTicketEvent(message)
+        break
+      default:
+        console.warn('Unknown message type:', message.type)
+    }
+  } catch (error) {
+    console.error('Error parsing JSON:', error)
+  }
 }
 
 function getClickCanvasCoords(event) {
@@ -85,14 +98,6 @@ const addCashier = () => {
     }
   })
 }
-// app.stage.interactive = false
-
-// map lightCell
-// send position of cells
-// get response (error/200)
-// if 200 display cashier
-// if error display error
-//isCashierAdditionDone.value = true
 
 onMounted(() => {
   const container = pixiCanvasContainer.value
