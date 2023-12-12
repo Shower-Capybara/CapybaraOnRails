@@ -1,13 +1,15 @@
 package com.StationManager.simulator.core.ticketOffice;
 
-import com.StationManager.simulator.handlers.CommandHandlersMap;
 import com.StationManager.shared.domain.Message;
 import com.StationManager.shared.domain.commands.CloseTicketOfficeCommand;
 import com.StationManager.shared.domain.commands.Command;
 import com.StationManager.shared.domain.commands.OpenTicketOfficeCommand;
+import com.StationManager.shared.domain.commands.ReassignClientCommand;
 import com.StationManager.shared.domain.events.*;
+import com.StationManager.shared.services.unitofwork.PostgresUnitOfWork;
 import com.StationManager.simulator.Json;
 import com.StationManager.simulator.Settings;
+import com.StationManager.simulator.handlers.CommandHandlersMap;
 import com.StationManager.simulator.handlers.EventHandlersMap;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,19 +22,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.Semaphore;
 
 public class TicketOfficeSimulator implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(TicketOfficeSimulator.class);
-    private Boolean isSuspended = false;
-
     private final Integer id;
     private final BlockingQueue<String> messageQueue = new LinkedBlockingQueue<>();
     private final Jedis redis;
     private final ObjectMapper objectMapper = Json.getObjectMapper();
     private final EventHandlersMap eventHandlers = new EventHandlersMap();
     private final CommandHandlersMap commandHandlers = new CommandHandlersMap();
-
+    private Boolean isSuspended = false;
 
     public TicketOfficeSimulator(Integer id, Jedis redis) {
         this.id = id;
@@ -48,15 +47,25 @@ public class TicketOfficeSimulator implements Runnable {
     }
 
     private void handleClientBeingServedEvent(ClientBeingServedEvent event) {
-        if(isSuspended){
+        PostgresUnitOfWork uow = new PostgresUnitOfWork();
+
+        if (isSuspended) {
+            uow.getTicketOfficeRepository().getById(this.id).get().getQueue().forEach(client -> {
+                try {
+                    redis.publish(Settings.getCommandChannel(ReassignClientCommand.class.getSimpleName()), objectMapper.writeValueAsString(new ReassignClientCommand(client, 1, this.id)));
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+            });
             return;
         }
+        Integer timeToServeTicket = uow.getTicketOfficeRepository().getById(this.id).get().getTimeToServeTicket();
         Timestamp clientServeStartTime = Timestamp.valueOf(LocalDateTime.now());
-        var numTickets = 2; // add numTickets somewhere to the client
+        var numTickets = Math.floor(Math.random() * 3) + 1; // add numTickets somewhere to the client
         for (int ticket = 1; ticket < numTickets + 1; ticket++) {
             try {
-                Thread.sleep(3 * 1000); // simulate buying
-            } catch (InterruptedException e) {
+                Thread.sleep(timeToServeTicket * 1000); // simulate buying
+            } catch (Exception e) {
                 break;
             }
 
@@ -80,6 +89,7 @@ public class TicketOfficeSimulator implements Runnable {
         } catch (JsonProcessingException e) {
             logger.error(e.toString());
         }
+        uow.close();
     }
 
     private void handleCloseTicketOfficeCommand(CloseTicketOfficeCommand command)  {
