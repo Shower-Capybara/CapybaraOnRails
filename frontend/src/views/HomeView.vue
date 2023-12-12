@@ -8,6 +8,7 @@ import { Cashpoint } from '@/game_engine/cashpoint'
 import { Map } from '@/game_engine/map'
 import { CELL_SIZE, MAP_SIZE } from '@/game_engine/constants'
 import { Sprite } from '@/game_engine/sprite'
+import { Entrance } from '@/game_engine/entrance'
 
 const pixiCanvasContainer = ref<HTMLDivElement | null>(null)
 
