@@ -52,7 +52,7 @@ public class TicketOfficeSimulator implements Runnable {
             return;
         }
         Timestamp clientServeStartTime = Timestamp.valueOf(LocalDateTime.now());
-        var numTickets = 2; // add numTickets somewhere to the client
+        var numTickets = Math.floor(Math.random() * 3) + 1;
         for (int ticket = 1; ticket < numTickets + 1; ticket++) {
             try {
                 Thread.sleep(3 * 1000); // simulate buying
