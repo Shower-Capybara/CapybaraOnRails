@@ -4,13 +4,19 @@ import type { Point } from './types'
 type Cell = PIXI.Graphics
 export class Map {
   private cells: Cell[] = []
+  private gridContainer: PIXI.Container<PIXI.DisplayObject>
   public cashpointsContainer: PIXI.Container<PIXI.DisplayObject> | null = null
   constructor(
     private size: number,
     private cellSize: number,
     private container: PIXI.Container<PIXI.DisplayObject>
-  ) {}
+  ) {
+    this.gridContainer = new PIXI.Container()
+  }
   generate(): void {
+    
+    this.container.addChild(this.gridContainer)
+    this.createGrid({ isLinesShown: false, isFilled: false })
     const gridContainer = new PIXI.Container()
     this.container.addChild(gridContainer)
     this.createGrid(gridContainer)
@@ -19,18 +25,47 @@ export class Map {
     this.container.addChild(this.cashpointsContainer)
   }
 
-  private createGrid(gridContainer: PIXI.Container<PIXI.DisplayObject>): void {
+  private createGrid({
+    isLinesShown,
+    isFilled
+  }: {
+    isLinesShown: boolean
+    isFilled: boolean
+  }): void {
     for (let i = 0; i < this.size; i++) {
       for (let j = 0; j < this.size; j++) {
         const cell = new PIXI.Graphics()
+        if (isLinesShown) {
+          cell.lineStyle(1, 0x000000, 0.2)
+        }
+        if ((j === 0 || j === this.size - 1 || i === 0 || i === this.size - 1) && isFilled) {
+          cell.beginFill(0x00ff00, 0.2)
+        }
         cell.lineStyle(1, 0x000000, 0.5)
         cell.drawRect(0, 0, this.cellSize, this.cellSize)
         cell.position.set(i * this.cellSize, j * this.cellSize)
-        gridContainer.addChild(cell)
+        this.gridContainer.addChild(cell)
+        if ((j === 0 || j === this.size - 1 || i === 0 || i === this.size - 1) && isFilled) {
+          cell.endFill()
+        }
         this.cells.push(cell)
       }
     }
   }
+
+  showGrid(): void {
+    this.cells = []
+    this.gridContainer.removeChildren()
+    this.createGrid({ isLinesShown: true, isFilled: true })
+  }
+
+  hideGrid(): void {
+    this.cells = []
+    this.gridContainer.removeChildren()
+    this.createGrid({ isLinesShown: false, isFilled: false })
+  }
+
+  lightCells(): void {}
 
   addSpritesContainer(spritesContainer: PIXI.Container<PIXI.DisplayObject>): void {
     this.container.addChild(spritesContainer)
@@ -45,6 +80,11 @@ export class Map {
   getCellSize(): number {
     return this.cellSize
   }
+  getCellCoordinates(x: number, y: number) {
+    const cellX: number = Math.floor(x / this.cellSize)
+    const cellY: number = Math.floor(y / this.cellSize)
+
+    return { x: cellX, y: cellY }
 
   getSize(): number {
     return this.size

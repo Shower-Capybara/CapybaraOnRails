@@ -11,8 +11,12 @@ import { Sprite } from '@/game_engine/sprite'
 import { Entrance } from '@/game_engine/entrance'
 
 const pixiCanvasContainer = ref<HTMLDivElement | null>(null)
+const map = ref<Map | null>(null)
+const cashpoints = ref<Cashpoint[] | null>(null)
 
-const connection: WebSocket = new WebSocket('wss://ws.bitmex.com/realtime') // replace with your WebSocket URL
+const isCashierAdditionDone = ref<boolean>(true)
+
+const connection: WebSocket = new WebSocket('ws://localhost:8000/events') // replace with your WebSocket URL
 
 const sendMessage = (message: string) => {
   console.log(connection)
@@ -26,54 +30,135 @@ connection.onopen = (event: Event) => {
   console.log('Successfully connected')
 }
 
+const handleClientBoughtTicketEvent = (message: string) => {}
+
 connection.onmessage = (event: MessageEvent) => {
-  console.log(event)
+  try {
+    const message = JSON.parse(event.data)
+    switch (message.type) {
+      case 'ClientBoughtTicketEvent':
+        handleClientBoughtTicketEvent(message)
+        break
+      default:
+        console.warn('Unknown message type:', message.type)
+    }
+  } catch (error) {
+    console.error('Error parsing JSON:', error)
+  }
+}
+
+function getClickCanvasCoords(event) {
+  const { x, y } = event.data.global
+  return { x, y }
+}
+
+const addCashier = () => {
+  isCashierAdditionDone.value = false
+  map.value?.showGrid()
+  app.stage.interactive = true
+
+  let clicks = 0
+  let x1, y1, x2, y2
+
+  app.stage.on('pointerdown', (event) => {
+    const { x, y } = getClickCanvasCoords(event)
+    clicks++
+
+    if (clicks === 1) {
+      x1 = x
+      y1 = y
+    } else if (clicks === 2) {
+      x2 = x
+      y2 = y
+      app.stage.interactive = false
+      console.log('End:', x1, y1, x2, y2)
+      let coords1 = map.value?.getCellCoordinates(x1, y1)
+      let coords2 = map.value?.getCellCoordinates(x2, y2)
+
+      console.log('Coords:', coords1.x, coords1.y, coords2.x, coords2.y)
+      coords2.x = coords2.x + 1
+      coords2.y = coords2.y + 1
+      console.log('New:', coords1.x, coords1.y, coords2.x, coords2.y)
+
+      const number = cashpoints.value.length + 1
+      const newCashpoint = new Cashpoint(
+        number,
+        { x: coords1.x, y: coords1.y },
+        { x: coords2.x, y: coords2.y },
+        map.value as Map,
+        {
+          status: 'working'
+        }
+      )
+      cashpoints.value.push(newCashpoint)
+      newCashpoint.mount(app.stage)
+      console.log(cashpoints.value)
+      map.value?.hideGrid()
+      isCashierAdditionDone.value = true
+      return
+    }
+  })
 }
 
 onMounted(() => {
   const container = pixiCanvasContainer.value
 
   if (container) {
-    const map = new Map(MAP_SIZE, CELL_SIZE, app.stage)
-    map.generate()
-
-    const cashpoint1 = new Cashpoint(1, { x: 0, y: 3 }, { x: 1, y: 5 }, map, { status: 'working' })
-
-    const cashpoint2 = new Cashpoint(2, { x: 0, y: 7 }, { x: 1, y: 9 }, map, { status: 'working' })
-
-    const cashpoint3 = new Cashpoint(3, { x: 0, y: 11 }, { x: 1, y: 13 }, map, {
+    map.value = new Map(MAP_SIZE, CELL_SIZE, app.stage)
+    map.value.generate()
+    const cashpoint1 = new Cashpoint(1, { x: 0, y: 3 }, { x: 1, y: 5 }, map.value as Map, {
       status: 'working'
     })
 
-    const cashpoint4 = new Cashpoint(4, { x: 3, y: MAP_SIZE - 1 }, { x: 5, y: MAP_SIZE }, map, {
-      status: 'stopped'
+    const cashpoint2 = new Cashpoint(2, { x: 0, y: 7 }, { x: 1, y: 9 }, map.value as Map, {
+      status: 'working'
     })
 
-    const cashpoint5 = new Cashpoint(5, { x: 3, y: MAP_SIZE - 1 }, { x: 5, y: MAP_SIZE }, map, {
-      status: 'stopped'
+    const cashpoint3 = new Cashpoint(3, { x: 0, y: 11 }, { x: 1, y: 13 }, map.value as Map, {
+      status: 'working'
     })
 
-    const cashpoints = [cashpoint1, cashpoint2, cashpoint3, cashpoint4, cashpoint5]
-    for (let cashpoint of cashpoints) {
+    const cashpoint4 = new Cashpoint(
+      4,
+      { x: 3, y: MAP_SIZE - 1 },
+      { x: 5, y: MAP_SIZE },
+      map.value as Map,
+      {
+        status: 'stopped'
+      }
+    )
+
+    const cashpoint5 = new Cashpoint(
+      5,
+      { x: 3, y: MAP_SIZE - 1 },
+      { x: 5, y: MAP_SIZE },
+      map.value as Map,
+      {
+        status: 'stopped'
+      }
+    )
+
+    cashpoints.value = [cashpoint1, cashpoint2, cashpoint3, cashpoint4, cashpoint5]
+    for (let cashpoint of cashpoints.value) {
       cashpoint.mount(app.stage)
     }
 
     const sprite1 = new Sprite(
       1,
-      map.getCoordinates({ x: 0, y: 0 }),
+      map.value.getCoordinates({ x: 4, y: 5 }),
       CELL_SIZE,
       CELL_SIZE,
       '/images/man.svg',
-      map
+      map.value as Map
     )
 
     const sprite2 = new Sprite(
       1,
-      map.getCoordinates({ x: 10, y: 5 }),
+      map.value.getCoordinates({ x: 10, y: 5 }),
       CELL_SIZE,
       CELL_SIZE,
       '/images/man.svg',
-      map
+      map.value as Map
     )
 
     const sprite3 = new Sprite(
@@ -90,8 +175,10 @@ onMounted(() => {
     }, 10)
 
     setTimeout(() => {
-      sprite2.move(map.getCoordinates({ x: 0, y: 5 }))
-    }, 2000)
+      if (map.value) {
+        sprite1.move(map.value.getCoordinates({ x: 10, y: 10 }))
+        sprite2.move(map.value.getCoordinates({ x: 4, y: 10 }))
+      }
 
     const canvasElement = app.view as HTMLCanvasElement
     container.appendChild(canvasElement)
@@ -108,7 +195,7 @@ onMounted(() => {
     <div
       class="w-4/12 h-screen border-4 border-l-yellow_design border-t-stroke_grey border-r-stroke_grey border-b-stroke_grey"
     >
-      <EventList />
+      <EventList @on-add-cashier="addCashier" :is-cashier-addition-done="isCashierAdditionDone" />
     </div>
   </main>
 </template>
