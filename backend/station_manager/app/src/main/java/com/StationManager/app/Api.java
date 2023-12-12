@@ -41,6 +41,9 @@ public class Api {
                         path("/{t_id}/close", () ->
                             post(TicketOfficeController::closeTicketOffice));
                     });
+                    path("/entrance", ()->{
+                        post(HallController::createEntry);
+                    });
                 });
             });
             ws("/events", SocketController.configEvents());
