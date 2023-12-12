@@ -85,8 +85,8 @@ public class HallController {
             var hallId = Integer.parseInt(ctx.pathParam("h_id"));
             Segment entrance = objectMapper.readValue(ctx.body(), Segment.class);
             var createCommand = new AddEntranceCommand(entrance, hallId);
-            redisPublisher.publish(Settings.getCommandChannel(AddTicketOfficeCommand.class.getSimpleName()), objectMapper.writeValueAsString(createCommand));
-            ctx.status(200).result("Entrance created successfully");
+            redisPublisher.publish(Settings.getCommandChannel(AddEntranceCommand.class.getSimpleName()), objectMapper.writeValueAsString(createCommand));
+            ctx.status(200).result("Entrance created successfully:" + hallId);
         } catch (JsonProcessingException e) {
             ctx.status(400).result("Error processing JSON body");
         }
