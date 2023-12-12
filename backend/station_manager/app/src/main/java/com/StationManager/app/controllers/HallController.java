@@ -2,14 +2,9 @@ package com.StationManager.app.controllers;
 
 import com.StationManager.app.Settings;
 import com.StationManager.app.services.command_listener.Json;
-import com.StationManager.app.services.command_listener.RedisPubSub;
 import com.StationManager.shared.domain.commands.AddEntranceCommand;
-import com.StationManager.shared.domain.commands.AddTicketOfficeCommand;
 import com.StationManager.shared.domain.train_station.Segment;
-import com.StationManager.shared.domain.train_station.TicketOffice;
-import com.StationManager.shared.domain.train_station.TrainStation;
 import com.StationManager.shared.services.unitofwork.PostgresUnitOfWork;
-import com.StationManager.shared.storage.database.dto.Entrance;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
@@ -61,23 +56,6 @@ public class HallController {
             ctx.status(500).json("Error getting file, should bu fixed Path!");
         }
     }
-//    {
-//        "segment": {
-//        "start": {
-//            "x": 18.0,
-//                "y": 20.0
-//        },
-//        "end": {
-//            "x": 20.0,
-//                "y": 20.0
-//        }
-//    },
-//        "direction": "Down",
-//        "isReserved": false,
-//        "timeToServeTicket": 2,
-//        "isClosed": false
-//    }
-
 
     public static void createEntry(Context ctx) {
         // Implementation
