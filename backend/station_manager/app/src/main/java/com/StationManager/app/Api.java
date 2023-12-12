@@ -18,7 +18,14 @@ public class Api {
     public static void main(String[] args) {
         MessageBus.bootstrap();
 
-        Javalin app = Javalin.create().start(Settings.JAVALIN_PORT);
+        var app = Javalin.create(config -> {
+            config.plugins.enableCors(cors -> {
+                cors.add(it -> {
+                    it.anyHost();
+                });
+            });
+        }).start(Settings.JAVALIN_PORT);
+
         var redisListener = new Jedis(Settings.REDIS_HOST, Settings.REDIS_PORT);
 
         app.routes(() -> {
