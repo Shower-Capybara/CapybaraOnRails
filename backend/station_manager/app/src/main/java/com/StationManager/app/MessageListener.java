@@ -25,7 +25,9 @@ public class MessageListener {
             Settings.getEventChannel(ClientServedEvent.class.getSimpleName()),
             Settings.getEventChannel(TicketOfficeOpenedEvent.class.getSimpleName()),
             Settings.getEventChannel(TicketOfficeClosedEvent.class.getSimpleName()),
-            Settings.getEventChannel(LogRecordEvent.class.getSimpleName())
+            Settings.getEventChannel(LogRecordEvent.class.getSimpleName()),
+            Settings.getEventChannel(EntranceAddedEvent.class.getSimpleName()),
+            Settings.getEventChannel(ClientReassignedEvent.class.getSimpleName())
         );
         redisListener.close();
         redisPublisher.close();

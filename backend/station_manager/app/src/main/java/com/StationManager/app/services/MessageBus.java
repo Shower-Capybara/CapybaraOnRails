@@ -2,11 +2,10 @@ package com.StationManager.app.services;
 
 import com.StationManager.app.services.handlers.commands.*;
 import com.StationManager.app.services.handlers.events.*;
-import com.StationManager.shared.services.unitofwork.UnitOfWork;
-
 import com.StationManager.shared.domain.Message;
 import com.StationManager.shared.domain.commands.*;
 import com.StationManager.shared.domain.events.*;
+import com.StationManager.shared.services.unitofwork.UnitOfWork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,8 +82,7 @@ public class MessageBus {
             handler.handle(command, uow);
             queue.addAll(uow.collectNewEvents());
         } catch (Exception e) {
-            logger.error(String.format("Exception when handling event: %s", e));
-            throw e;
+            logger.error(String.format("Exception when handling command: %s", e));
         }
     }
 
@@ -97,10 +95,15 @@ public class MessageBus {
         eventHandlers.put(TicketOfficeOpenedEvent.class, List.of(new TicketOfficeOpenedEventHandler()));
         eventHandlers.put(TicketOfficeClosedEvent.class, List.of(new TicketOfficeClosedEventHandler()));
         eventHandlers.put(LogRecordEvent.class, List.of(new LogRecordEventHandler()));
+        eventHandlers.put(EntranceAddedEvent.class, List.of(new EntranceAddedEventHandler()));
+        eventHandlers.put(ClientReassignedEvent.class, List.of(new ClientReassignedEventHandler()));
+
 
         commandHandlers.put(AddClientCommand.class, new AddClientCommandHandler());
         commandHandlers.put(AddTicketOfficeCommand.class, new AddTicketOfficeCommandHandler());
         commandHandlers.put(ResumeGeneratorCommand.class, new ResumeGeneratorCommandHandler());
         commandHandlers.put(StopGeneratorCommand.class, new StopGeneratorCommandHandler());
+        commandHandlers.put(AddEntranceCommand.class, new AddEntranceCommandHandler());
+        commandHandlers.put(ReassignClientCommand.class, new ReassignClientCommandHandler());
     }
 }
