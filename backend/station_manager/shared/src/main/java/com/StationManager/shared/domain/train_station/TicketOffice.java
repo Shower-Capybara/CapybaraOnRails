@@ -118,7 +118,6 @@ public class TicketOffice {
     public Segment getSegment() { return this.segment; }
     public void setIsClosed(Boolean isClosed) { this.isClosed = isClosed; }
     public Boolean getIsClosed() { return this.isClosed; }
-    public Boolean getReserved() { return isReserved; }
     public Integer getTimeToServeTicket() { return timeToServeTicket; }
     public Iterable<ServeRecord> getTransactions() { return transactions; }
 

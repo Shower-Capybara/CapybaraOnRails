@@ -25,6 +25,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = StopGeneratorCommand.class, name = "ClientMovedEvent"),
     @JsonSubTypes.Type(value = CloseTicketOfficeCommand.class, name = "CloseTicketOfficeCommand"),
     @JsonSubTypes.Type(value = OpenTicketOfficeCommand.class, name = "OpenTicketOfficeCommand"),
+    @JsonSubTypes.Type(value = AddEntranceCommand.class, name = "AddEntranceCommand"),
+
 
 })
 public interface Message { }
