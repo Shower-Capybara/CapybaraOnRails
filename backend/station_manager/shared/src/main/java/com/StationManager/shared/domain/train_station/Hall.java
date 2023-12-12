@@ -142,6 +142,10 @@ public class Hall {
     public void setEntrances(List<Segment> entrances) {
         this.entrances = entrances;
     }
+    public void setEntrance(Segment entrance) {
+        this.entrances.add(entrance);
+    }
+
 
     public List<TicketOffice> getTicketOffices() {
         return ticketOffices;
