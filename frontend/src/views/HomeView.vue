@@ -8,10 +8,69 @@ import { Cashpoint } from '@/game_engine/cashpoint'
 import { Map } from '@/game_engine/map'
 import { CELL_SIZE, MAP_SIZE } from '@/game_engine/constants'
 import { Sprite } from '@/game_engine/sprite'
-const pixiCanvasContainer = ref<HTMLDivElement | null>(null)
-const connection: WebSocket = new WebSocket('wss://ws.bitmex.com/realtime') // repl
+import { Entrance } from '@/game_engine/entrance'
+import useCashpointStore from '@/stores/cashpoint'
+import useConfigsStore from '@/stores/configs'
+import type { Point } from '@/game_engine/types'
+import type {
+  ClientAddedEvent,
+  ClientBeingServedEvent,
+  ClientBoughtTicketEvent,
+  ClientLeftEvent,
+  ClientMovedEvent,
+  ClientServedEvent,
+  TicketOfficeAddedEvent
+} from '@/types/index'
 
-const isCashierAdditionDone = ref(true)// ace with your WebSocket URL
+const pixiCanvasContainer = ref<HTMLDivElement | null>(null)
+const map = ref<Map | null>(null)
+const cashpoints = ref<Cashpoint[]>([])
+const entrances = ref<Entrance[]>([])
+const sprites = ref<Sprite[]>([])
+const configsStore = useConfigsStore()
+// const cashpointStore = useCashpointStore()
+// cashpointStore.createCashpoint() - action call example
+// cashpointStore.cashpointError - get state exmaple
+// watch()) => cashpointStore.cashpointError,
+
+// const events = ref<type[]>([])
+onMounted(() => {
+  configsStore.getInitialConfig().then((res) => {
+    if (res) {
+      const entrances = res?.hall.entrances
+      const ticketOffices = res?.hall.ticketOffices
+
+      for (let ticketOffice of ticketOffices) {
+        const status = ticketOffice.isClosed
+          ? 'stopped'
+          : ticketOffice.isReserved
+            ? 'reserved'
+            : 'working'
+        const cashpoint = new Cashpoint(
+          ticketOffice.id,
+          ticketOffice.segment.start,
+          ticketOffice.segment.end,
+          map.value as Map,
+          {
+            status
+          }
+        )
+        cashpoints.value.push(cashpoint)
+        cashpoint.mount(app.stage)
+      }
+
+      for (let entrance of entrances) {
+        const alignent = entrance.start.x <= 1 ? 'left' : entrance.start.y <= 1 ? 'top' : 'bottom'
+        const entranceItem = new Entrance(1, entrance.start, map.value as Map, alignent)
+        entranceItem.mount(app.stage)
+      }
+    }
+  })
+})
+
+const connection: WebSocket = new WebSocket('ws://localhost:8000/events') // replace with your WebSocket URL
+
+const isCashierAdditionDone = ref(true) // ace with your WebSocket URL
 const sendMessage = (message: string) => {
   console.log(connection)
   connection.send(message)
@@ -28,8 +87,7 @@ function getClickCanvasCoords(event) {
   const { x, y } = event.data.global
   return { x, y }
 }
-const cashpoints = ref<Cashpoint[]>([])
-const map = ref<Map | null>(null)
+
 const addCashier = () => {
   isCashierAdditionDone.value = false
   map.value?.showGrid()
@@ -72,13 +130,13 @@ const addCashier = () => {
       console.log('New:', coords1.x, coords1.y, coords2.x, coords2.y)
       const number = cashpoints.value.length + 1
       const newCashpoint = new Cashpoint(
-          number,
-          { x: coords1.x, y: coords1.y },
-          { x: coords2.x, y: coords2.y },
-          map.value as Map,
-          {
-            status: 'working'
-          }
+        number,
+        { x: coords1.x, y: coords1.y },
+        { x: coords2.x, y: coords2.y },
+        map.value as Map,
+        {
+          status: 'working'
+        }
       )
       cashpoints.value.push(newCashpoint)
       newCashpoint.mount(app.stage)
@@ -92,8 +150,8 @@ const addCashier = () => {
 onMounted(() => {
   const container = pixiCanvasContainer.value
   if (container) {
-    const map = new Map(MAP_SIZE, CELL_SIZE, app.stage)
-    map.generate()
+    map.value = new Map(MAP_SIZE, CELL_SIZE, app.stage)
+    map.value.generate()
     const cashpoint1 = new Cashpoint(1, { x: 0, y: 3 }, { x: 1, y: 5 }, map, { status: 'working' })
     const cashpoint2 = new Cashpoint(2, { x: 0, y: 7 }, { x: 1, y: 9 }, map, { status: 'working' })
     const cashpoint3 = new Cashpoint(3, { x: 0, y: 11 }, { x: 1, y: 13 }, map, {
@@ -110,58 +168,57 @@ onMounted(() => {
       cashpoint.mount(app.stage)
     }
     const sprite1 = new Sprite(
-        1,
-        'dsfdfs',
-        'sdfsdf',
-        {type: "dsfs", significance : 3},
-        map.getCoordinates({ x: 4, y: 5 }),
-        CELL_SIZE,
-        CELL_SIZE,
-        '/images/man.svg',
-        map
+      1,
+      'dsfdfs',
+      'sdfsdf',
+      { type: 'dsfs', significance: 3 },
+      map.value.getCoordinates({ x: 4, y: 5 }),
+      CELL_SIZE,
+      CELL_SIZE,
+      '/images/man.svg',
+      map
     )
     const sprite2 = new Sprite(
-        1,
-        'dsfdfs',
-        'sdfsdf',
-        {type: "dsfs", significance : 3},
-        map.getCoordinates({ x: 10, y: 5 }),
-        CELL_SIZE,
-        CELL_SIZE,
-        '/images/man.svg',
-        map
+      1,
+      'dsfdfs',
+      'sdfsdf',
+      { type: 'dsfs', significance: 3 },
+      map.value.getCoordinates({ x: 10, y: 5 }),
+      CELL_SIZE,
+      CELL_SIZE,
+      '/images/man.svg',
+      map
     )
     const sprite3 = new Sprite(
-        1,
-        'dsfdfs',
-        'sdfsdf',
-        {type: "dsfs", significance : 3},
-        map.getCoordinates({ x: 10, y: 10 }),
-        CELL_SIZE,
-        CELL_SIZE,
-        '/images/man.svg',
-        map
+      1,
+      'dsfdfs',
+      'sdfsdf',
+      { type: 'dsfs', significance: 3 },
+      map.value.getCoordinates({ x: 10, y: 10 }),
+      CELL_SIZE,
+      CELL_SIZE,
+      '/images/man.svg',
+      map
     )
     const sprite4 = new Sprite(
-        1,
-        'dsfdfs',
-        'sdfsdf',
-        {type: "dsfs", significance : 3},
-        map.getCoordinates({ x: 0, y: 0 }),
-        CELL_SIZE,
-        CELL_SIZE,
-        '/images/man.svg',
-        map
+      1,
+      'dsfdfs',
+      'sdfsdf',
+      { type: 'dsfs', significance: 3 },
+      map.value.getCoordinates({ x: 0, y: 0 }),
+      CELL_SIZE,
+      CELL_SIZE,
+      '/images/man.svg',
+      map
     )
 
-    setTimeout(()=>{
-      sprite4.move(map.getCoordinates({ x: 2, y: 3}))
-
-    }, 9000);
     setTimeout(() => {
-      sprite1.move(map.getCoordinates({ x: 1, y: 3 }))
-      sprite2.move(map.getCoordinates({ x: 1, y: 7 }))
-      sprite3.move(map.getCoordinates({ x: 1, y: 11 }))
+      sprite4.move(map.value.getCoordinates({ x: 2, y: 3 }))
+    }, 9000)
+    setTimeout(() => {
+      sprite1.move(map.value.getCoordinates({ x: 1, y: 3 }))
+      sprite2.move(map.value.getCoordinates({ x: 1, y: 7 }))
+      sprite3.move(map.value.getCoordinates({ x: 1, y: 11 }))
     }, 2000)
     const canvasElement = app.view as HTMLCanvasElement
     container.appendChild(canvasElement)
@@ -171,11 +228,11 @@ onMounted(() => {
 <template>
   <main class="min-h-screen max-h-screen flex flex-row justify-center w-full">
     <div
-        class="w-8/12 h-screen border-4 border-primary pixi-container"
-        ref="pixiCanvasContainer"
+      class="w-8/12 h-screen border-4 border-primary pixi-container"
+      ref="pixiCanvasContainer"
     ></div>
     <div
-        class="w-4/12 h-screen border-4 border-l-yellow_design border-t-stroke_grey border-r-stroke_grey border-b-stroke_grey"
+      class="w-4/12 h-screen border-4 border-l-yellow_design border-t-stroke_grey border-r-stroke_grey border-b-stroke_grey"
     >
       <EventList @on-add-cashier="addCashier" :is-cashier-addition-done="isCashierAdditionDone" />
     </div>

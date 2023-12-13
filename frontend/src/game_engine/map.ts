@@ -87,6 +87,7 @@ export class Map {
     const cellY: number = Math.floor(y / this.cellSize)
 
     return {x: cellX, y: cellY}
+    return { x: cellX, y: cellY }
   }
 
   getSize(): number {
