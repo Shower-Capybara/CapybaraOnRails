@@ -2,9 +2,8 @@
 
 ## About
 
-This part of the project is the core of the whole system.
-It's responsible for holding all the business logic, messages bus
-and the REST API.
+Station manager backend. To get more info on the subprojects
+navigate to their README.md's.
 
 Javalin is a web framework of chosen.<br />
 Java `20.0.*` is required to run the application.<br />
@@ -49,35 +48,4 @@ Requirements:
 
 - `GNU make`
 - `Docker`
-- `docker-compose` (future)
-
-Run the web application:
-
-```shell
-make run
-```
-
-Run the tests:
-
-```shell
-make test
-```
-
-Build docker image from the application:
-
-```shell
-make build
-```
-
-Run the docker image:
-
-```shell
-make docker_run
-```
-
-If you are interested in additional gradle features you can read it online or
-execute following command to list available tasks:
-
-```shell
-gradle tasks --all
-```
+- `docker compose`
