@@ -17,7 +17,7 @@ export default defineStore('entrance', {
   actions: {
     async craeteEntrance(data: Segment) {
       try {
-        await axios.post(`${BASE_API}train_station/1/halls/1/entrance`, data)
+        await axios.post(`${BASE_API}train_station/3/halls/1/entrance`, data)
       } catch (e) {
         const err = e as AxiosError
         this.isEntranceError = true

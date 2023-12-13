@@ -49,7 +49,7 @@ export default defineStore('configs', {
   actions: {
     async getInitialConfig(): Promise<InitialStateData | undefined> {
       try {
-        const response = await axios.get<InitialStateData>(`${BASE_API}train_station/1`)
+        const response = await axios.get<InitialStateData>(`${BASE_API}train_station/3`)
         return response.data
       } catch (e) {
         const err = e as AxiosError

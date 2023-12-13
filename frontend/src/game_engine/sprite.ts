@@ -135,7 +135,9 @@ export class Sprite {
       }
     }, duration) // Кожні duration мілісекунд
   }
-
+  getFirstName(): string {
+    return this.firstName;
+  }
   getSprite(): PIXI.Sprite {
     return this.sprite
   }

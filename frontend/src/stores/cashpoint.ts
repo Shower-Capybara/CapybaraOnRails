@@ -51,7 +51,7 @@ export default defineStore('cashpoint', {
         direction
       }
       try {
-        await axios.post(`${BASE_API}train_station/halls/1/ticket_offices`, payload)
+        await axios.post(`${BASE_API}train_station/halls/3/ticket_offices`, payload)
       } catch (e) {
         const err = e as AxiosError
         this.isCashpointError = true
@@ -67,9 +67,9 @@ export default defineStore('cashpoint', {
     }) {
       try {
         if (status === 'stopped') {
-          await axios.post(`${BASE_API}train_station/halls/${id}/ticket_offices/close`)
+          await axios.post(`${BASE_API}train_station/3/halls/${id}/ticket_offices/close`)
         } else {
-          await axios.post(`${BASE_API}train_station/halls/${id}/ticket_offices/open`)
+          await axios.post(`${BASE_API}train_station/3/halls/${id}/ticket_offices/open`)
         }
       } catch (e) {
         const err = e as AxiosError

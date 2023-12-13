@@ -6,16 +6,18 @@ export class Map {
   private cells: Cell[] = []
   private gridContainer: PIXI.Container<PIXI.DisplayObject>
   public cashpointsContainer: PIXI.Container<PIXI.DisplayObject> | null = null
+
   constructor(
-    private size: number,
-    private cellSize: number,
-    private container: PIXI.Container<PIXI.DisplayObject>
+      private size: number,
+      private cellSize: number,
+      private container: PIXI.Container<PIXI.DisplayObject>
   ) {
     this.gridContainer = new PIXI.Container()
   }
+
   generate(): void {
     this.container.addChild(this.gridContainer)
-    this.createGrid({ isLinesShown: false, isFilled: false })
+    this.createGrid({isLinesShown: false, isFilled: false})
     const gridContainer = new PIXI.Container()
     this.container.addChild(gridContainer)
     this.cashpointsContainer = new PIXI.Container() // створіть контейнер для кас
@@ -23,9 +25,9 @@ export class Map {
   }
 
   private createGrid({
-    isLinesShown,
-    isFilled
-  }: {
+                       isLinesShown,
+                       isFilled
+                     }: {
     isLinesShown: boolean
     isFilled: boolean
   }): void {
@@ -53,16 +55,17 @@ export class Map {
   showGrid(): void {
     this.cells = []
     this.gridContainer.removeChildren()
-    this.createGrid({ isLinesShown: true, isFilled: true })
+    this.createGrid({isLinesShown: true, isFilled: true})
   }
 
   hideGrid(): void {
     this.cells = []
     this.gridContainer.removeChildren()
-    this.createGrid({ isLinesShown: false, isFilled: false })
+    this.createGrid({isLinesShown: false, isFilled: false})
   }
 
-  lightCells(): void {}
+  lightCells(): void {
+  }
 
   addSpritesContainer(spritesContainer: PIXI.Container<PIXI.DisplayObject>): void {
     this.container.addChild(spritesContainer)
@@ -74,14 +77,16 @@ export class Map {
       y: this.cells[point.x * this.size + point.y].y
     }
   }
+
   getCellSize(): number {
     return this.cellSize
   }
+
   getCellCoordinates(x: number, y: number) {
     const cellX: number = Math.floor(x / this.cellSize)
     const cellY: number = Math.floor(y / this.cellSize)
 
-    return { x: cellX, y: cellY }
+    return {x: cellX, y: cellY}
   }
 
   getSize(): number {
@@ -94,7 +99,7 @@ export class Map {
 
     // Перевірка чи координати знаходяться на мапі
     if (x >= 0 && x < this.size && y >= 0 && y < this.size) {
-      return { x, y }
+      return {x, y}
     }
 
     // Якщо координати поза межами мапи, повертаємо undefined
@@ -114,10 +119,10 @@ export class Map {
 
     // Визначте всі можливі напрямки для сусідніх комірок (верх, низ, ліво, право)
     const directions: Point[] = [
-      { x: 0, y: -1 }, // верх
-      { x: 0, y: 1 }, // низ
-      { x: -1, y: 0 }, // ліво
-      { x: 1, y: 0 } // право
+      {x: 0, y: -1}, // верх
+      {x: 0, y: 1}, // низ
+      {x: -1, y: 0}, // ліво
+      {x: 1, y: 0} // право
     ]
 
     // Перевірте кожне напрямок і додайте сусідню комірку, якщо вона належить до мапи
@@ -135,9 +140,8 @@ export class Map {
     }
 
     return adjacentCells
-  }
-
-  isValidCell(cell: Point): boolean {
-    return cell.x >= 0 && cell.x < this.size && cell.y >= 0 && cell.y < this.size
-  }
+    }
+isValidCell(cell: Point): boolean {
+  return cell.x >= 0 && cell.x < this.size && cell.y >= 0 && cell.y < this.size
+}
 }
